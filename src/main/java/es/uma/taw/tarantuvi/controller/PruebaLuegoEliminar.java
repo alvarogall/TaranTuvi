@@ -10,7 +10,7 @@ import es.uma.taw.tarantuvi.entity.PruebaEntity;
 import java.util.List;
 
 @Controller
-public class Controlador {
+public class PruebaLuegoEliminar {
     @Autowired
     protected PruebaRepository pruebaRepository;
 
