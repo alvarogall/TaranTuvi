@@ -28,7 +28,7 @@
 
 .logo-icon {
     font-size: 22px;
-    color: #ffffff; /* ¡Aquí le damos color visible al emoji! */
+    color: #ffffff;
     margin-top: 2px;
     animation: bounce 3s infinite ease-in-out;
 }
@@ -40,12 +40,8 @@
 }
 
 @keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-3px);
-    }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
 }
 
 .nav-right {
@@ -105,21 +101,13 @@ body {
     font-size: 16px;
 }
 
-.search-bar button {
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
 .actions {
     display: flex;
     gap: 10px;
     margin-left: 10px;
 }
 
-.actions button {
+.actions input {
     padding: 8px 16px;
     border: none;
     border-radius: 5px;
@@ -158,36 +146,19 @@ th, td {
     text-align: center;
     display: flex;
     flex-direction: row;
-    justify-content: center;  /* Centra los elementos */
+    justify-content: center;
     gap: 10px;
     flex-wrap: wrap;
     align-items: center;
 }
 
-.footer > button {
-    padding: 5px 10px;
-    margin: 2px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #f0f0f0;
-}
-
-/* Efecto hover para botones "TODAS" y letras */
-.footer > button:hover {
-    background-color: #007bff;
-    color: white;
-}
-
-/* Clase para la letra seleccionada */
 .footer .active-letter,
 #allButton.active-letter {
-    background-color: #007bff; /* Fondo cuando está seleccionado */
+    background-color: #007bff;
     color: white;
     font-weight: bold;
 }
 
-/* Letras A-Z */
 .letters {
     display: flex;
     flex-wrap: wrap;
@@ -195,7 +166,8 @@ th, td {
     gap: 5px;
 }
 
-.letters button {
+.letter-btn,
+#allButton {
     padding: 5px 10px;
     margin: 2px;
     border: none;
@@ -204,8 +176,8 @@ th, td {
     background-color: #f0f0f0;
 }
 
-/* Efecto hover para las letras */
-.letters button:hover {
+.letter-btn:hover,
+#allButton:hover {
     background-color: #007bff;
     color: white;
 }

@@ -28,11 +28,9 @@
 <div class="container">
     <div class="search-bar">
         <input type="text" placeholder="Buscar..." onkeyup="searchByTitle(this.value)">
-        <button>🔍</button>
+        <input type="submit" value="🔍"/>
         <div class="actions">
-            <button class="edit-btn">✏️ Editar</button>
-            <button class="delete-btn">🗑️ Borrar</button>
-            <button class="add-btn">➕ Añadir</button>
+            <input type="submit" value="➕ Añadir" class="add-btn"/>
         </div>
     </div>
 
@@ -50,6 +48,7 @@
                 <th>Compañías</th>
                 <th>Idiomas</th>
                 <th>Géneros</th>
+                <th>Acciones</th>
             </tr>
             </thead>
             <tbody id="moviesTableBody">
@@ -98,6 +97,17 @@
                         }
                     %>
                 </td>
+                <td>
+                    <form method="post" action="/peliculas/editar" style="display:inline;">
+                        <input type="hidden" name="id" value="<%= pelicula.getId() %>"/>
+                        <input type="submit" value="✏️ Editar" class="edit-btn"/>
+                    </form>
+                    <form method="post" action="/peliculas/borrar" style="display:inline;"
+                          onsubmit="return confirm('¿Está seguro de que quiere borrar la película <%= pelicula.getTitulooriginal() %>?');">
+                        <input type="hidden" name="id" value="<%= pelicula.getId() %>"/>
+                        <input type="submit" value="🗑️ Borrar" class="delete-btn"/>
+                    </form>
+                </td>
             </tr>
             <%
                 }
@@ -122,39 +132,33 @@
     alphabet.forEach(letter => {
         const btn = document.createElement("button");
         btn.textContent = letter;
-        btn.onclick = () => selectLetter(letter); // Añadir el evento para el clic
-        btn.classList.add("letter-btn"); // Añadir la clase para el estilo
-        lettersContainer.appendChild(btn); // Agregar el botón al contenedor
+        btn.onclick = () => selectLetter(letter);
+        btn.classList.add("letter-btn");
+        lettersContainer.appendChild(btn);
     });
 
     // Botón "TODAS"
     const allButton = document.createElement("button");
     allButton.id = "allButton";
     allButton.textContent = "TODAS";
-    allButton.onclick = () => selectLetter('ALL'); // Acción para seleccionar "TODAS"
-    lettersContainer.insertBefore(allButton, lettersContainer.firstChild); // Insertar al principio
+    allButton.onclick = () => selectLetter('ALL');
+    lettersContainer.insertBefore(allButton, lettersContainer.firstChild);
 
-    // Función para seleccionar letra
     function selectLetter(letter) {
-        // Eliminar la clase 'active-letter' de todos los botones
         document.querySelectorAll(".letter-btn, #allButton").forEach(btn => {
             btn.classList.remove("active-letter");
         });
 
-        // Si no es "ALL", añadimos la clase 'active-letter' al botón de la letra seleccionada
         if (letter !== "ALL") {
             const active = [...document.querySelectorAll(".letter-btn")].find(b => b.textContent === letter);
             if (active) active.classList.add("active-letter");
         } else {
-            // Si selecciona "TODAS", añadir la clase 'active-letter' al botón "TODAS"
             allButton.classList.add("active-letter");
         }
 
-        // Filtrar las películas por la letra seleccionada
         filterMoviesByLetter(letter);
     }
 
-    // Función para filtrar películas por letra
     function filterMoviesByLetter(letter) {
         const rows = document.querySelectorAll(".movie-row");
         rows.forEach(row => {
@@ -167,7 +171,6 @@
         });
     }
 
-    // Función para buscar películas por título
     function searchByTitle(query) {
         const rows = document.querySelectorAll(".movie-row");
         rows.forEach(row => {
