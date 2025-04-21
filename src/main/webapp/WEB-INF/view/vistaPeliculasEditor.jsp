@@ -43,7 +43,7 @@
             <thead>
             <tr>
                 <th>Título</th>
-                <th>Año de Producción</th>
+                <th>Fecha de Estreno</th>
                 <th>Actores</th>
                 <th>Compañías</th>
                 <th>Idiomas</th>
