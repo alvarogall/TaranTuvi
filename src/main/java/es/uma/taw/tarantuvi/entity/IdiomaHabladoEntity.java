@@ -22,4 +22,11 @@ public class IdiomaHabladoEntity {
     @ManyToMany(mappedBy = "idiomaHabladoList")
     private List<PeliculaEntity> peliculaList;
 
+    public void addPeliculaId(PeliculaEntity pelicula) {
+        this.peliculaList.add(pelicula);
+    }
+
+    public void setIdiomaHabladoId(IdiomaHabladoEntity idioma) {
+        this.id = idioma.getId();
+    }
 }

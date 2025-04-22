@@ -29,4 +29,11 @@ public class TrabajoEntity {
     @JoinColumn(name = "DEPARTAMENTOID")
     private DepartamentoEntity departamentoid;
 
+    public void setPersonaId(PersonaEntity crewMember) {
+        this.personaid = crewMember;
+    }
+
+    public void setPeliculaId(PeliculaEntity pelicula) {
+        this.peliculaid = pelicula;
+    }
 }

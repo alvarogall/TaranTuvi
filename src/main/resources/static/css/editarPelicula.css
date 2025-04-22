@@ -1,0 +1,158 @@
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1f1f1f;
+    padding: 10px 20px;
+    color: white;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-text {
+    font-size: 26px;
+    font-weight: bold;
+    background: linear-gradient(90deg, #00c3ff, #7700ff, #ff0090);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientMove 5s ease infinite;
+    text-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.logo-icon {
+    font-size: 22px;
+    color: #ffffff; /* ¡Aquí le damos color visible al emoji! */
+    margin-top: 2px;
+    animation: bounce 3s infinite ease-in-out;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+    100% { background-position: 0% center; }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* PERFIL */
+.profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffffffaa;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right, #f0f0f0, #dcdcdc);
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+form {
+    width: 95%;
+    max-width: 1400px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+form img {
+    display: block;
+    max-width: 220px;
+    height: auto;
+    margin-bottom: 20px;
+    box-shadow: 6px 6px 6px rgba(0, 0, 0, 2);
+}
+
+input[type="text"], textarea {
+    width: calc(100% - 20px);
+    padding: 12px;
+    margin: 10px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: inline-block;
+    color: #444;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+
+label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: inline-block;
+    color: #444;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}

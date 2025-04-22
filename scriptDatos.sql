@@ -117,20 +117,17 @@ INSERT INTO PRODUCTORA (PRODUCTORANOMBRE) VALUES
 INSERT INTO PELICULA (
     TITULOORIGINAL, IDIOMAORIGINALHABLADOID, PRESUPUESTO, FECHAESTRENO,
     DURACION, RECAUDACION, ESTADO, PAGINAWEB, DESCRIPCION, ESLOGAN,
-    URLCARATULA, VOTOS, NOTA, POPULARIDAD, RESUMEN
+    URLCARATULA, VOTOS, NOTA, POPULARIDAD,
 ) VALUES
       ('Iron Man', 1, 140000000, '2008-05-02', 126, 585000000,
        'Estrenada', 'https://marvel.com/ironman', 'Un empresario crea una armadura para luchar contra el crimen.',
-       'Héroe en armadura', 'https://ejemplo.com/ironman.jpg', 800000, 7.9, 90.5,
-       'Tony Stark construye una armadura de alta tecnología para escapar de sus captores y convertirse en un superhéroe.'),
+       'Héroe en armadura', 'https://i.postimg.cc/0jgKktHX/Iron-Man-1-Portada.webp', 800000, 7.9, 90.5),
       ('The Avengers', 1, 220000000, '2012-05-04', 143, 1510000000,
        'Estrenada', 'https://marvel.com/avengers', 'Un grupo de superhéroes se une para salvar el mundo.',
-       'Los héroes se unen', 'https://ejemplo.com/avengers.jpg', 1200000, 8.1, 91.2,
-       'Los héroes más poderosos de la Tierra se unen para enfrentar una amenaza global dirigida por Loki.'),
+       'Los héroes se unen', 'https://ejemplo.com/avengers.jpg', 1200000, 8.1, 91.2),
       ('Titanic', 2, 200000000, '1997-12-19', 195, 2200000000,
        'Estrenada', 'https://paramount.com/titanic', 'Una historia de amor en un desastre histórico.',
-       'Nunca dejaré ir', 'https://ejemplo.com/titanic.jpg', 1800000, 7.8, 85.7,
-       'Una joven aristócrata y un artista pobre se enamoran a bordo del desafortunado RMS Titanic.');
+       'Nunca dejaré ir', 'https://ejemplo.com/titanic.jpg', 1800000, 7.8, 85.7);
 
 -- Insertar relación película-género
 INSERT INTO PELICULAGENEROPELICULA (GENEROPELICULAID, PELICULAID) VALUES

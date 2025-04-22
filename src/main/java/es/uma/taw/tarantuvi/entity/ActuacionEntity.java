@@ -32,4 +32,12 @@ public class ActuacionEntity {
     @Column(name = "ORDEN")
     private Integer orden;
 
+    public void setPersonaId(PersonaEntity actor) {
+        this.personaid = actor;
+    }
+
+    public void setPeliculaId(PeliculaEntity pelicula) {
+        this.peliculaid = pelicula;
+    }
+
 }

@@ -22,4 +22,11 @@ public class ProductoraEntity {
     @ManyToMany(mappedBy = "productoraList")
     private List<PeliculaEntity> peliculaList;
 
+    public void addPeliculaId(PeliculaEntity pelicula) {
+        this.peliculaList.add(pelicula);
+    }
+
+    public void setProductoraId(ProductoraEntity productora) {
+        this.id = productora.getId();
+    }
 }

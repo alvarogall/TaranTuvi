@@ -22,4 +22,11 @@ public class PaisRodajeEntity {
     @ManyToMany(mappedBy = "paisRodajeList")
     private List<PeliculaEntity> peliculaList;
 
+    public void addPeliculaId(PeliculaEntity pelicula) {
+        this.peliculaList.add(pelicula);
+    }
+
+    public void setPaisRodajeId(PaisRodajeEntity paisRodaje) {
+        this.id = paisRodaje.getId();
+    }
 }

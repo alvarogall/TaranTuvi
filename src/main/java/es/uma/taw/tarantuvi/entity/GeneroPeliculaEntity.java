@@ -21,4 +21,12 @@ public class GeneroPeliculaEntity {
 
     @ManyToMany(mappedBy = "generoPeliculaList")
     private List<PeliculaEntity> peliculaList;
+
+    public void addPeliculaId(PeliculaEntity pelicula) {
+        this.peliculaList.add(pelicula);
+    }
+
+    public void setGeneroPeliculaId(GeneroPeliculaEntity genero) {
+        this.id = genero.getId();
+    }
 }
