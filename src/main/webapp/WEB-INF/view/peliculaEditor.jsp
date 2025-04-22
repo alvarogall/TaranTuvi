@@ -26,8 +26,9 @@
 <body>
 <h1><%= (esEditar? "Editar" : "Nuevo") %> Película</h1>
 
-Pelicula: <input type="text" name="nombre" value="<%= pelicula.getTitulooriginal()!=null?pelicula.getTitulooriginal():""%>">
-Fecha de Estreno: <input type="text" name="anyo" value="<%= pelicula.getFechaestreno()!=null?pelicula.getFechaestreno():""%>">
+Pelicula: <input type="text" name="nombre" value="<%= pelicula.getTitulooriginal()!=null?pelicula.getTitulooriginal():""%>"> <br/>
+Fecha de Estreno: <input type="text" name="anyo" value="<%= pelicula.getFechaestreno()!=null?pelicula.getFechaestreno():""%>"> <br/>
+Sinópsis: <input type="text" name="descripcion" value="<%= pelicula.getDescripcion()!=null?pelicula.getDescripcion():""%>"> <br/>
 
 </body>
 </html>

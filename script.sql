@@ -16,7 +16,6 @@ CREATE TABLE `PELICULA` (
 	`VOTOS` INT,
 	`NOTA` DECIMAL,
 	`POPULARIDAD` DECIMAL,
-	`RESUMEN` TEXT, -- Nueva columna para el resumen breve
 	PRIMARY KEY(`PELICULAID`)
 );
 

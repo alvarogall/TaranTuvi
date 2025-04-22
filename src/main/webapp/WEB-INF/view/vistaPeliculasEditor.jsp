@@ -57,7 +57,7 @@
             %>
             <tr class="movie-row">
                 <td><%= pelicula.getTitulooriginal() %></td>
-                <td><%= (pelicula.getFechaestreno() != null) ? pelicula.getFechaestreno().getYear() : "" %></td>
+                <td><%= (pelicula.getFechaestreno() != null) ? pelicula.getFechaestreno() : "" %></td>
                 <td>
                     <%
                         if (pelicula.getActuacionList() != null) {
