@@ -7,30 +7,18 @@
     <link rel="stylesheet" type="text/css" href="/css/vistaPeliculasEditor.css">
 </head>
 <body>
-
-<nav class="navbar">
-    <div class="logo">
-        <span class="logo-text">TaranTuvi</span>
-        <span class="logo-icon">🎬</span>
-    </div>
-    <div class="nav-right">
-        <ul class="nav-links">
-            <li><a href="/">Inicio</a></li>
-            <li><a href="/peliculas" class="active">Películas</a></li>
-            <li><a href="/actores">Actores</a></li>
-        </ul>
-        <div class="profile">
-            <img src="/img/imagenPerfil.png" alt="Perfil" onerror="this.onerror=null; this.src='https://via.placeholder.com/40';">
-        </div>
-    </div>
-</nav>
+<jsp:include page="navBarNormal.jsp">
+    <jsp:param name="activePage" value="peliculas"/>
+</jsp:include>
 
 <div class="container">
     <div class="search-bar">
         <input type="text" placeholder="Buscar..." onkeyup="searchByTitle(this.value)">
         <input type="submit" value="🔍"/>
         <div class="actions">
-            <input type="submit" value="➕ Añadir" class="add-btn"/>
+            <form method="post" action="/peliculas/editar">
+                <input type="submit" value="➕ Añadir" class="add-btn"/>
+            </form>
         </div>
     </div>
 

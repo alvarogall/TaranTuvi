@@ -22,84 +22,104 @@
 
 <head>
     <title><%= (esEditar? "Edición de la" : "Nuevo") %> Película</title>
-  <link rel="stylesheet" type="text/css" href="/css/editarPelicula.css">
+    <link rel="stylesheet" type="text/css" href="/css/editarPelicula.css">
 </head>
 <body>
+<jsp:include page="navBarEditarAñadir.jsp" />
 
-<nav class="navbar">
-  <div class="logo">
-    <span class="logo-text">TaranTuvi</span>
-    <span class="logo-icon">🎬</span>
-  </div>
-  <div class="nav-right">
-    <div class="profile">
-      <img src="/img/imagenPerfil.png" alt="Perfil" onerror="this.onerror=null; this.src='https://via.placeholder.com/40';">
-    </div>
-  </div>
-</nav>
-
-<h1><%= (esEditar? "Editar" : "Nuevo") %> Película</h1>
+<h1><%= (esEditar? "Editar" : "Nueva") %> Película</h1>
 
 <form method="post" action="/peliculas/confirmarCambios">
   <input type="hidden" name="id" value="<%= pelicula.getId() != null ? pelicula.getId() : -1 %>"/>
-  <img src="<%= pelicula.getUrlcaratula() %>" alt="Portada"> <br/>
-  <!--<label for="caratula">Cambiar carátula:</label>
-  <input type="file" name="caratula" accept="image/*"> <br/>-->
-  Pelicula: <input type="text" name="nombre" value="<%= pelicula.getTitulooriginal()!=null?pelicula.getTitulooriginal():""%>"> <br/>
-  Fecha de Estreno: <input type="text" name="fecha" value="<%= pelicula.getFechaestreno()!=null?pelicula.getFechaestreno():""%>"> <br/>
-  Duración: <input type="text" name="duracion" value="<%= pelicula.getDuracion()!=null?pelicula.getDuracion() + " min" :""%>"> <br/>
-  <label for="descripcion" style="display: inline-block; vertical-align: top; margin-right: 5px;">Sinópsis:</label>
-  <textarea id="descripcion" name="descripcion" rows="5" cols="50" style="display: inline-block;"><%
-    out.println(pelicula.getDescripcion()!=null?pelicula.getDescripcion():"");
-  %></textarea> <br/>
+  <!-- Contenedor flex (imagen + campos) -->
+  <div class="movie-header-container">
+    <!-- Imagen -->
+    <div class="movie-poster">
+      <img src="<%= pelicula.getUrlcaratula() != null ? pelicula.getUrlcaratula() : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>" alt="Portada">
+    </div>
 
-  <label for="crew" style="display: inline-block; vertical-align: top; margin-right: 5px;">Crew:</label>
-  <textarea id="crew" name="crew" rows="5" cols="50" style="display: inline-block;"><%
-    for (TrabajoEntity trabajo : pelicula.getTrabajoList()) {
-      out.println(trabajo.getPersonaid().getNombre() + " - " + trabajo.getTrabajonombre());
-    }
-  %></textarea> <br/>
+    <!-- Campos a la derecha -->
+    <div class="movie-info-fields">
+      <!-- URL -->
+      <div class="movie-field-row">
+        <label>URL de la portada:</label>
+        <input type="text" name="url" value="<%= pelicula.getUrlcaratula()!=null?pelicula.getUrlcaratula():""%>">
+      </div>
 
-  <label for="cast" style="display: inline-block; vertical-align: top; margin-right: 5px;">Cast:</label>
-  <textarea id="cast" name="cast" rows="5" cols="50" style="display: inline-block;"><%
-    for (ActuacionEntity actuacion : pelicula.getActuacionList()) {
-      out.println(actuacion.getPersonaid().getNombre() + " - " + actuacion.getPersonaje());
-    }
-  %>
-</textarea> <br/>
+      <!-- Nombre -->
+      <div class="movie-field-row">
+        <label>Película:</label>
+        <input type="text" name="nombre" value="<%= pelicula.getTitulooriginal()!=null?pelicula.getTitulooriginal():""%>">
+      </div>
 
-  <label for="cast" style="display: inline-block; vertical-align: top; margin-right: 5px;">Productoras:</label>
-  <textarea id="productoras" name="productoras" rows="5" cols="50" style="display: inline-block;"><%
-    for(ProductoraEntity productora : pelicula.getProductoraList()){
-      out.println(productora.getProductoranombre());
-    }
-  %></textarea> <br/>
+      <!-- Fecha -->
+      <div class="movie-field-row">
+        <label>Fecha de Estreno:</label>
+        <input type="text" name="fecha" value="<%= pelicula.getFechaestreno()!=null?pelicula.getFechaestreno():""%>">
+      </div>
 
-  <label for="cast" style="display: inline-block; vertical-align: top; margin-right: 5px;">Países de rodaje:</label>
-  <textarea id="paisesRodaje" name="paisesRodaje" rows="5" cols="50" style="display: inline-block;"><%
-    for(PaisRodajeEntity pais : pelicula.getPaisRodajeList()){
-      out.println(pais.getPaisrodajenombre());
-    }
-  %></textarea> <br/>
+      <!-- Duración -->
+      <div class="movie-field-row">
+        <label>Duración (min):</label>
+        <input type="text" name="duracion" value="<%= pelicula.getDuracion()!=null?pelicula.getDuracion():""%>">
+      </div>
 
-  <label for="cast" style="display: inline-block; vertical-align: top; margin-right: 5px;">Idiomas:</label>
-  <textarea id="idiomas" name="idiomas" rows="5" cols="50" style="display: inline-block;"><%
-    for(IdiomaHabladoEntity idioma : pelicula.getIdiomaHabladoList()){
-      out.println(idioma.getIdiomahabladonombre());
-    }
-  %></textarea> <br/>
+      <!-- Sinopsis -->
+      <div class="movie-field-row">
+        <label>Sinópsis:</label>
+        <textarea name="descripcion"><%= pelicula.getDescripcion()!=null?pelicula.getDescripcion():""%></textarea>
+      </div>
+    </div>
+  </div>
 
-  <label for="cast" style="display: inline-block; vertical-align: top; margin-right: 5px;">Géneros:</label>
-  <textarea id="generos" name="generos" rows="5" cols="50" style="display: inline-block;"><%
-    for(GeneroPeliculaEntity genero : pelicula.getGeneroPeliculaList()){
-      out.println(genero.getGeneronombre());
-    }
-  %></textarea> <br/>
 
-  Recaudación: <input type="text" name="recaudacion" value="<%= pelicula.getRecaudacion()!=null?pelicula.getRecaudacion()+" €":""%>"> <br/>
-  Estado: <input type="text" name="estado" value="<%= pelicula.getEstado()!=null?pelicula.getEstado():""%>">
 
-  <input type="submit" value="Confirmar cambios">
+  <!-- Contenedor de 3 columnas -->
+  <div class="columns-container">
+    <!-- Columna 1 (Crew, Cast, Productoras) -->
+    <div class="column">
+      <label for="crew">Crew:</label>
+      <textarea id="crew" name="crew"><% if(esEditar) { for (TrabajoEntity trabajo : pelicula.getTrabajoList()) { out.println(trabajo.getPersonaid().getNombre() + " - " + trabajo.getTrabajonombre()); } } %></textarea>
+
+      <label for="cast">Cast:</label>
+      <textarea id="cast" name="cast"><% if(esEditar) { for (ActuacionEntity actuacion : pelicula.getActuacionList()) { out.println(actuacion.getPersonaid().getNombre() + " - " + actuacion.getPersonaje()); } } %></textarea>
+
+      <label for="productoras">Productoras:</label>
+      <textarea id="productoras" name="productoras"><% if(esEditar) { for(ProductoraEntity productora : pelicula.getProductoraList()) { out.println(productora.getProductoranombre()); } } %></textarea>
+
+      <label>Página Web:</label>
+      <input type="text" name="paginaweb" value="<%= pelicula.getPaginaweb()!=null?pelicula.getPaginaweb():""%>">
+
+      <label>Presupuesto (€):</label>
+      <input type="text" name="presupuesto" value="<%= pelicula.getPresupuesto()!=null?pelicula.getPresupuesto():""%>">
+
+      <label>Recaudación (€):</label>
+      <input type="text" name="recaudacion" value="<%= pelicula.getRecaudacion()!=null?pelicula.getRecaudacion():""%>">
+    </div>
+
+    <!-- Columna 2 (Países, Idiomas, Géneros) -->
+    <div class="column">
+      <label for="paisesRodaje">Países de rodaje:</label>
+      <textarea id="paisesRodaje" name="paisesRodaje"><% if(esEditar) { for(PaisRodajeEntity pais : pelicula.getPaisRodajeList()) { out.println(pais.getPaisrodajenombre()); } } %></textarea>
+
+      <label for="idiomas">Idiomas:</label>
+      <textarea id="idiomas" name="idiomas"><% if(esEditar) { for(IdiomaHabladoEntity idioma : pelicula.getIdiomaHabladoList()) { out.println(idioma.getIdiomahabladonombre()); } } %></textarea>
+
+      <label for="generos">Géneros:</label>
+      <textarea id="generos" name="generos"><% if(esEditar) { for(GeneroPeliculaEntity genero : pelicula.getGeneroPeliculaList()) { out.println(genero.getGeneronombre()); } } %></textarea>
+
+      <label for="eslogan" style="display: inline-block; vertical-align: top; margin-right: 5px;">Eslogan:</label>
+      <textarea id="eslogan" name="eslogan" rows="5" cols="50" style="display: inline-block;"><%out.println(pelicula.getEslogan()!=null?pelicula.getEslogan():"");%></textarea>
+
+      <label>Estado:</label>
+      <input type="text" name="estado" value="<%= pelicula.getEstado()!=null?pelicula.getEstado():""%>">
+    </div>
+  </div>
+
+  <!-- Botón de enviar -->
+  <div class="submit-btn-container">
+    <input type="submit" class="submit-btn" value="<%= esEditar ? "Confirmar Cambios" : "Añadir película"%>">
+  </div>
 </form>
 </body>
 </html>

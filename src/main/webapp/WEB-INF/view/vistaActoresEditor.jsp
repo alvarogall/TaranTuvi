@@ -12,23 +12,9 @@
     <link rel="stylesheet" type="text/css" href="/css/vistaPeliculasEditor.css">
 </head>
 <body>
-
-<nav class="navbar">
-    <div class="logo">
-        <span class="logo-text">TaranTuvi</span>
-        <span class="logo-icon">🎬</span>
-    </div>
-    <div class="nav-right">
-        <ul class="nav-links">
-            <li><a href="/">Inicio</a></li>
-            <li><a href="/peliculas">Películas</a></li>
-            <li><a href="/actores" class="active">Actores</a></li>
-        </ul>
-        <div class="profile">
-            <img src="/img/imagenPerfil.png" alt="Perfil" onerror="this.onerror=null; this.src='https://via.placeholder.com/40';">
-        </div>
-    </div>
-</nav>
+<jsp:include page="navBarNormal.jsp">
+    <jsp:param name="activePage" value="actores"/>
+</jsp:include>
 
 <div class="container">
     <div class="search-bar">

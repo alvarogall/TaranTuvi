@@ -13,23 +13,9 @@
 </head>
 <body>
 <body>
-
-<nav class="navbar">
-  <div class="logo">
-    <span class="logo-text">TaranTuvi</span>
-    <span class="logo-icon">🎬</span>
-  </div>
-  <div class="nav-right">
-    <ul class="nav-links">
-      <li><a href="/" class="active">Inicio</a></li>
-      <li><a href="/peliculas">Películas</a></li>
-      <li><a href="/actores">Actores</a></li>
-    </ul>
-    <div class="profile">
-      <img src="/img/imagenPerfil.png" alt="Perfil" onerror="this.onerror=null; this.src='https://via.placeholder.com/40';">
-    </div>
-  </div>
-</nav>
+<jsp:include page="navBarNormal.jsp">
+  <jsp:param name="activePage" value="inicio"/>
+</jsp:include>
 
 <div class="welcome-container">
   <h1>Bienvenido, Editor 👋</h1>

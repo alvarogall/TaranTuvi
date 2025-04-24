@@ -51,7 +51,7 @@ public class Editor {
     }
 
     @PostMapping("/peliculas/editar")
-    public String vistaEditarPelicula(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model) {
+    public String doEditarPelicula(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model) {
         PeliculaEntity pelicula = this.peliculaRepository.findById(id).orElse(new PeliculaEntity());
 
         List<ActuacionEntity> actuaciones = this.actuacionRepository.findAll();
@@ -71,7 +71,7 @@ public class Editor {
     }
 
     @PostMapping("peliculas/confirmarCambios")
-    public String vistaConfirmarCambios(
+    public String doConfirmarCambios(
             @RequestParam(value = "id", defaultValue = "-1") Integer id,
             @RequestParam("nombre") String nombre,
             @RequestParam("fecha") String fecha,
@@ -85,16 +85,24 @@ public class Editor {
             @RequestParam("generos") String generos,
             @RequestParam("recaudacion") String recaudacion,
             @RequestParam("estado") String estado,
+            @RequestParam("presupuesto") String presupuesto,
+            @RequestParam("url") String url,
+            @RequestParam("paginaweb") String paginaweb,
+            @RequestParam("eslogan") String eslogan,
             Model model) {
 
         PeliculaEntity pelicula = peliculaRepository.findById(id).orElse(new PeliculaEntity());
 
         pelicula.setTitulooriginal(nombre);
         pelicula.setFechaestreno(LocalDate.parse(fecha));
-        pelicula.setDuracion(Integer.parseInt(duracion.replace(" min", "").trim()));
+        pelicula.setDuracion(Integer.parseInt(duracion.trim()));
         pelicula.setDescripcion(descripcion);
-        pelicula.setRecaudacion(BigDecimal.valueOf(Long.parseLong(recaudacion.replace("€", "").replace(" ", "").trim())));
+        pelicula.setRecaudacion(BigDecimal.valueOf(Long.parseLong(recaudacion.trim())));
         pelicula.setEstado(estado);
+        pelicula.setPresupuesto(BigDecimal.valueOf(Long.parseLong(presupuesto.trim())));
+        pelicula.setUrlcaratula(url);
+        pelicula.setPaginaweb(paginaweb);
+        pelicula.setEslogan(eslogan);
 
         // Inicializar o limpiar listas
         if (pelicula.getActuacionList() != null) {
@@ -164,6 +172,12 @@ public class Editor {
 
         peliculaRepository.save(pelicula);
 
+        return "redirect:/peliculas";
+    }
+
+    @PostMapping("peliculas/borrar")
+    public String doBorrar(@RequestParam("id") Integer id){
+        this.peliculaRepository.deleteById(id);
         return "redirect:/peliculas";
     }
 
