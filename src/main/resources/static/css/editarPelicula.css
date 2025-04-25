@@ -167,6 +167,17 @@ form {
     box-shadow: 0 6px 20px rgba(110, 72, 170, 0.4);
 }
 
+.multi-select {
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 15px;
+}
+.select-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
     .columns-container {

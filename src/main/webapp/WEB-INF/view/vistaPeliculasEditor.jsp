@@ -33,13 +33,13 @@
                 <th>Título</th>
                 <th>Duración (min)</th>
                 <th>Fecha de Estreno</th>
-                <th>Actores</th>
+                <th>Cast (Actor/actriz - Personaje)</th>
+                <th>Crew (Persona - Trabajo)</th>
                 <th>Compañías</th>
                 <th>Idiomas</th>
                 <th>Géneros</th>
                 <th>Presupuesto (€)</th>
                 <th>Recaudación (€)</th>
-                <th>Página Web</th>
                 <th>Eslogan</th>
                 <th>Acciones</th>
             </tr>
@@ -63,7 +63,19 @@
                             for (ActuacionEntity actuacion : pelicula.getActuacionList()) {
                                 PersonaEntity persona = actuacion.getPersonaid();
                                 if (persona != null) {
-                                    out.print(persona.getNombre() + "<br/>");
+                                    out.print(persona.getNombre() + " - " + actuacion.getPersonaje() + "<br/>");
+                                }
+                            }
+                        }
+                    %>
+                </td>
+                <td>
+                    <%
+                        if (pelicula.getTrabajoList() != null) {
+                            for (TrabajoEntity trabajo : pelicula.getTrabajoList()) {
+                                PersonaEntity persona = trabajo.getPersonaid();
+                                if (persona != null) {
+                                    out.print(persona.getNombre() + " - " + trabajo.getTrabajonombre() + "<br/>");
                                 }
                             }
                         }
@@ -98,7 +110,6 @@
                 </td>
                 <td><%= pelicula.getPresupuesto() != null ? pelicula.getPresupuesto() : ""%></td>
                 <td><%= pelicula.getRecaudacion() != null ? pelicula.getRecaudacion() : ""%></td>
-                <td><%= pelicula.getPaginaweb() != null ? pelicula.getPaginaweb() : ""%></td>
                 <td><%= pelicula.getEslogan() != null ? pelicula.getEslogan() : ""%></td>
                 <td>
                     <form method="post" action="/peliculas/editar" style="display:inline;">

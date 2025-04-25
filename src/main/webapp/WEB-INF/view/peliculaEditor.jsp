@@ -20,23 +20,12 @@
   List<GeneroPeliculaEntity> generos = (List<GeneroPeliculaEntity>) request.getAttribute("generos");
   List<PaisRodajeEntity> paisesRodaje = (List<PaisRodajeEntity>) request.getAttribute("paisesRodaje");
   List<DepartamentoEntity> departamentos = (List<DepartamentoEntity>) request.getAttribute("departamentos");
+  List<TrabajoEntity> trabajos = (List<TrabajoEntity>) request.getAttribute("trabajos");
 %>
 
 <head>
-  <title><%= (esEditar? "Edición de la" : "Nuevo") %> Película</title>
+  <title><%= (esEditar? "Edición de la" : "Nueva") %> Película</title>
   <link rel="stylesheet" type="text/css" href="/css/editarPelicula.css">
-  <style>
-    .multi-select {
-      width: 100%;
-      min-height: 100px;
-      margin-bottom: 15px;
-    }
-    .select-label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-  </style>
 </head>
 <body>
 <jsp:include page="navBarEditarAñadir.jsp" />
@@ -90,36 +79,37 @@
   <div class="columns-container">
     <!-- Columna 1 (Crew, Cast, Productoras) -->
     <div class="column">
-      <label for="crew" class="select-label">Crew (Persona - Departamento - Trabajo):</label>
-      <select id="crew" name="crew" multiple class="multi-select">
-        <% for (PersonaEntity persona : personas) { %>
-        <% for (DepartamentoEntity departamento : departamentos) { %>
-        <option value="<%= persona.getId() %>-<%= departamento.getId() %>"
-                <% if(esEditar) {
-                  for (TrabajoEntity trabajo : pelicula.getTrabajoList()) {
-                    if(trabajo.getPersonaid().getId() == persona.getId() &&
-                            trabajo.getDepartamentoid() != null &&
-                            trabajo.getDepartamentoid().getId() == departamento.getId()) {
-                %> selected <% } } } %>
-        >
-          <%= persona.getNombre() %> - <%= departamento.getDepartamentonombre() %>
-        </option>
-        <% } %>
-        <% } %>
-      </select>
 
-      <label for="cast" class="select-label">Cast (Persona - Personaje):</label>
+      <label for="cast" class="select-label">Cast (Actor/Actriz - Personaje):</label>
       <select id="cast" name="cast" multiple class="multi-select">
         <% for (ActuacionEntity actuacion : actuaciones) {
           PersonaEntity actor = actuacion.getPersonaid();
           String personaje = actuacion.getPersonaje();
         %>
-        <option value="<%= actor.getId() + "-" + personaje %>"
-                <% if (esEditar) {
-                  for (ActuacionEntity act : pelicula.getActuacionList()) {
-                    if (act.getPersonaid().getId().equals(actor.getId()) && act.getPersonaje().equals(personaje)) {
-                %> selected <% } } } %>>
+        <option value="<%= actuacion.getId() %>"
+            <% if (esEditar) {
+              for (ActuacionEntity act : pelicula.getActuacionList()) {
+                if (act.getPersonaid().getId().equals(actor.getId()) && act.getPersonaje().equals(personaje)) {
+            %> selected <% } } } %>>
           <%= actor.getNombre() %> - <%= personaje %>
+        </option>
+        <% } %>
+      </select>
+
+      <label for="crew" class="select-label">Crew (Persona - Trabajo):</label>
+      <select id="crew" name="crew" multiple class="multi-select">
+        <% for (TrabajoEntity trabajo : trabajos) { %>
+        <option value="<%= trabajo.getId() %>"
+                <% if(esEditar) {
+                  List<TrabajoEntity> trabajosPelicula = pelicula.getTrabajoList();
+                  for (TrabajoEntity t : trabajosPelicula) {
+                    if(trabajo.getDepartamentoid().getId() == t.getDepartamentoid().getId() && trabajo.getPersonaid().getId() == t.getPersonaid().getId()) { %>
+                selected
+                <% }
+                }
+                } %>
+        >
+          <%= trabajo.getPersonaid().getNombre() %> - <%= trabajo.getDepartamentoid().getDepartamentonombre() %>
         </option>
         <% } %>
       </select>
@@ -128,11 +118,10 @@
       <select id="productoras" name="productoras" multiple class="multi-select">
         <% for (ProductoraEntity productora : productoras) { %>
         <option value="<%= productora.getId() %>"
-                <% if(esEditar) {
-                  for(ProductoraEntity peliculaProd : pelicula.getProductoraList()) {
-                    if(peliculaProd.getId() == productora.getId()) {
-                %> selected <% } } } %>
-        >
+            <% if(esEditar) {
+              for(ProductoraEntity peliculaProd : pelicula.getProductoraList()) {
+                if(peliculaProd.getId() == productora.getId()) {
+            %> selected <% } } } %>>
           <%= productora.getProductoranombre() %>
         </option>
         <% } %>
