@@ -15,14 +15,28 @@
   if(pelicula.getId() == null) esEditar = false;
   List<ActuacionEntity> actuaciones = (List<ActuacionEntity>) request.getAttribute("actuaciones");
   List<PersonaEntity> personas = (List<PersonaEntity>) request.getAttribute("personas");
-  List<ProductoraEntity> productoras = (List<ProductoraEntity>) request.getAttribute(("productores"));
+  List<ProductoraEntity> productoras = (List<ProductoraEntity>) request.getAttribute(("productoras"));
   List<IdiomaHabladoEntity> idiomas = (List<IdiomaHabladoEntity>) request.getAttribute("idiomas");
   List<GeneroPeliculaEntity> generos = (List<GeneroPeliculaEntity>) request.getAttribute("generos");
+  List<PaisRodajeEntity> paisesRodaje = (List<PaisRodajeEntity>) request.getAttribute("paisesRodaje");
+  List<DepartamentoEntity> departamentos = (List<DepartamentoEntity>) request.getAttribute("departamentos");
 %>
 
 <head>
-    <title><%= (esEditar? "Edición de la" : "Nuevo") %> Película</title>
-    <link rel="stylesheet" type="text/css" href="/css/editarPelicula.css">
+  <title><%= (esEditar? "Edición de la" : "Nuevo") %> Película</title>
+  <link rel="stylesheet" type="text/css" href="/css/editarPelicula.css">
+  <style>
+    .multi-select {
+      width: 100%;
+      min-height: 100px;
+      margin-bottom: 15px;
+    }
+    .select-label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 <jsp:include page="navBarEditarAñadir.jsp" />
@@ -72,20 +86,57 @@
     </div>
   </div>
 
-
-
   <!-- Contenedor de 3 columnas -->
   <div class="columns-container">
     <!-- Columna 1 (Crew, Cast, Productoras) -->
     <div class="column">
-      <label for="crew">Crew:</label>
-      <textarea id="crew" name="crew"><% if(esEditar) { for (TrabajoEntity trabajo : pelicula.getTrabajoList()) { out.println(trabajo.getPersonaid().getNombre() + " - " + trabajo.getTrabajonombre()); } } %></textarea>
+      <label for="crew" class="select-label">Crew (Persona - Departamento - Trabajo):</label>
+      <select id="crew" name="crew" multiple class="multi-select">
+        <% for (PersonaEntity persona : personas) { %>
+        <% for (DepartamentoEntity departamento : departamentos) { %>
+        <option value="<%= persona.getId() %>-<%= departamento.getId() %>"
+                <% if(esEditar) {
+                  for (TrabajoEntity trabajo : pelicula.getTrabajoList()) {
+                    if(trabajo.getPersonaid().getId() == persona.getId() &&
+                            trabajo.getDepartamentoid() != null &&
+                            trabajo.getDepartamentoid().getId() == departamento.getId()) {
+                %> selected <% } } } %>
+        >
+          <%= persona.getNombre() %> - <%= departamento.getDepartamentonombre() %>
+        </option>
+        <% } %>
+        <% } %>
+      </select>
 
-      <label for="cast">Cast:</label>
-      <textarea id="cast" name="cast"><% if(esEditar) { for (ActuacionEntity actuacion : pelicula.getActuacionList()) { out.println(actuacion.getPersonaid().getNombre() + " - " + actuacion.getPersonaje()); } } %></textarea>
+      <label for="cast" class="select-label">Cast (Persona - Personaje):</label>
+      <select id="cast" name="cast" multiple class="multi-select">
+        <% for (ActuacionEntity actuacion : actuaciones) {
+          PersonaEntity actor = actuacion.getPersonaid();
+          String personaje = actuacion.getPersonaje();
+        %>
+        <option value="<%= actor.getId() + "-" + personaje %>"
+                <% if (esEditar) {
+                  for (ActuacionEntity act : pelicula.getActuacionList()) {
+                    if (act.getPersonaid().getId().equals(actor.getId()) && act.getPersonaje().equals(personaje)) {
+                %> selected <% } } } %>>
+          <%= actor.getNombre() %> - <%= personaje %>
+        </option>
+        <% } %>
+      </select>
 
-      <label for="productoras">Productoras:</label>
-      <textarea id="productoras" name="productoras"><% if(esEditar) { for(ProductoraEntity productora : pelicula.getProductoraList()) { out.println(productora.getProductoranombre()); } } %></textarea>
+      <label for="productoras" class="select-label">Productoras:</label>
+      <select id="productoras" name="productoras" multiple class="multi-select">
+        <% for (ProductoraEntity productora : productoras) { %>
+        <option value="<%= productora.getId() %>"
+                <% if(esEditar) {
+                  for(ProductoraEntity peliculaProd : pelicula.getProductoraList()) {
+                    if(peliculaProd.getId() == productora.getId()) {
+                %> selected <% } } } %>
+        >
+          <%= productora.getProductoranombre() %>
+        </option>
+        <% } %>
+      </select>
 
       <label>Página Web:</label>
       <input type="text" name="paginaweb" value="<%= pelicula.getPaginaweb()!=null?pelicula.getPaginaweb():""%>">
@@ -99,14 +150,47 @@
 
     <!-- Columna 2 (Países, Idiomas, Géneros) -->
     <div class="column">
-      <label for="paisesRodaje">Países de rodaje:</label>
-      <textarea id="paisesRodaje" name="paisesRodaje"><% if(esEditar) { for(PaisRodajeEntity pais : pelicula.getPaisRodajeList()) { out.println(pais.getPaisrodajenombre()); } } %></textarea>
+      <label for="paisesRodaje" class="select-label">Países de rodaje:</label>
+      <select id="paisesRodaje" name="paisesRodaje" multiple class="multi-select">
+        <% for (PaisRodajeEntity pais : paisesRodaje) { %>
+        <option value="<%= pais.getId() %>"
+                <% if(esEditar) {
+                  for(PaisRodajeEntity peliculaPais : pelicula.getPaisRodajeList()) {
+                    if(peliculaPais.getId() == pais.getId()) {
+                %> selected <% } } } %>
+        >
+          <%= pais.getPaisrodajenombre() %>
+        </option>
+        <% } %>
+      </select>
 
-      <label for="idiomas">Idiomas:</label>
-      <textarea id="idiomas" name="idiomas"><% if(esEditar) { for(IdiomaHabladoEntity idioma : pelicula.getIdiomaHabladoList()) { out.println(idioma.getIdiomahabladonombre()); } } %></textarea>
+      <label for="idiomas" class="select-label">Idiomas:</label>
+      <select id="idiomas" name="idiomas" multiple class="multi-select">
+        <% for (IdiomaHabladoEntity idioma : idiomas) { %>
+        <option value="<%= idioma.getId() %>"
+                <% if(esEditar) {
+                  for(IdiomaHabladoEntity peliculaIdioma : pelicula.getIdiomaHabladoList()) {
+                    if(peliculaIdioma.getId() == idioma.getId()) {
+                %> selected <% } } } %>
+        >
+          <%= idioma.getIdiomahabladonombre() %>
+        </option>
+        <% } %>
+      </select>
 
-      <label for="generos">Géneros:</label>
-      <textarea id="generos" name="generos"><% if(esEditar) { for(GeneroPeliculaEntity genero : pelicula.getGeneroPeliculaList()) { out.println(genero.getGeneronombre()); } } %></textarea>
+      <label for="generos" class="select-label">Géneros:</label>
+      <select id="generos" name="generos" multiple class="multi-select">
+        <% for (GeneroPeliculaEntity genero : generos) { %>
+        <option value="<%= genero.getId() %>"
+                <% if(esEditar) {
+                  for(GeneroPeliculaEntity peliculaGenero : pelicula.getGeneroPeliculaList()) {
+                    if(peliculaGenero.getId() == genero.getId()) {
+                %> selected <% } } } %>
+        >
+          <%= genero.getGeneronombre() %>
+        </option>
+        <% } %>
+      </select>
 
       <label for="eslogan" style="display: inline-block; vertical-align: top; margin-right: 5px;">Eslogan:</label>
       <textarea id="eslogan" name="eslogan" rows="5" cols="50" style="display: inline-block;"><%out.println(pelicula.getEslogan()!=null?pelicula.getEslogan():"");%></textarea>

@@ -116,4 +116,7 @@ public class PeliculaEntity {
     @OneToMany(mappedBy = "peliculaid")
     private List<ValoracionEntity> valoracionList;
 
+    public void add(ActuacionEntity actuacion) {
+        this.actuacionList.add(actuacion);
+    }
 }
