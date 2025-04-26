@@ -161,7 +161,7 @@
         });
 
         // Mostrar todas las películas al inicio
-        filterMoviesByLetter('ALL');
+        filterActorsByLetter('ALL');
     });
 
     function selectLetter(letter) {

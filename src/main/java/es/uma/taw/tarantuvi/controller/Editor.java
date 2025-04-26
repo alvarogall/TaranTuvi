@@ -48,7 +48,15 @@ public class Editor {
     }
 
     @GetMapping("/actores")
-    public String vistaActores() {
+    public String vistaActores(Model model) {
+        List<PersonaEntity> personas = personaRepository.findAll();
+        List<ActuacionEntity> actuaciones = actuacionRepository.findAll();
+        List<PeliculaEntity> peliculas = peliculaRepository.findAll();
+        List<GeneroPeliculaEntity> generos = generoPeliculaRepository.findAll();
+        model.addAttribute("personas", personas);
+        model.addAttribute("generos", generos);
+        model.addAttribute("peliculas", peliculas);
+        model.addAttribute("actuaciones", actuaciones);
         return "vistaActoresEditor";
     }
 
