@@ -37,14 +37,14 @@ public class Editor {
 
     @GetMapping("/")
     public String vistaEditor() {
-        return "inicioEditor";
+        return "Editor/inicio";
     }
 
     @GetMapping("/peliculas")
     public String vistaPeliculas(Model model) {
         List<PeliculaEntity> peliculas = peliculaRepository.findAll();
         model.addAttribute("peliculas", peliculas);
-        return "vistaPeliculasEditor";
+        return "Editor/peliculas";
     }
 
     @GetMapping("/actores")
@@ -57,7 +57,7 @@ public class Editor {
         model.addAttribute("generos", generos);
         model.addAttribute("peliculas", peliculas);
         model.addAttribute("actuaciones", actuaciones);
-        return "vistaActoresEditor";
+        return "Editor/actores";
     }
 
     @PostMapping("/peliculas/editar")
@@ -83,11 +83,11 @@ public class Editor {
         model.addAttribute("paisesRodaje", paisesRodaje);
         model.addAttribute("trabajos", trabajos);
 
-        return "peliculaEditor";
+        return "Editor/pelicula";
     }
 
     @PostMapping("/peliculas/confirmarCambios")
-    public String doConfirmarCambios(
+    public String doConfirmarCambiosPelicula(
             @RequestParam(value = "id", defaultValue = "-1") Integer id,
             @RequestParam("nombre") String nombre,
             @RequestParam("fecha") String fecha,
@@ -211,9 +211,25 @@ public class Editor {
 
 
     @PostMapping("peliculas/borrar")
-    public String doBorrar(@RequestParam("id") Integer id){
+    public String doBorrarPelicula(@RequestParam("id") Integer id){
         this.peliculaRepository.deleteById(id);
         return "redirect:/peliculas";
+    }
+
+    @PostMapping("/actores/editar")
+    public String doEditarActor(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model){
+        PersonaEntity persona = personaRepository.findById(id).orElse(null);
+
+        List<PeliculaEntity> peliculas = peliculaRepository.findAll();
+        List<ActuacionEntity> actuaciones = actuacionRepository.findAll();
+        List<GeneroPeliculaEntity> generos = generoPeliculaRepository.findAll();
+
+        model.addAttribute("persona", persona);
+        model.addAttribute("peliculas", peliculas);
+        model.addAttribute("actuaciones", actuaciones);
+        model.addAttribute("generos", generos);
+
+        return "Editor/actor";
     }
 
 }

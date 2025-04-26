@@ -13,10 +13,10 @@
 <html>
 <head>
     <title>Actores</title>
-    <link rel="stylesheet" type="text/css" href="/css/vistaPeliculasEditor.css">
+    <link rel="stylesheet" type="text/css" href="/css/vistaPeliculasActoresEditor.css">
 </head>
 <body>
-<jsp:include page="navBarNormal.jsp">
+<jsp:include page="../navBarNormal.jsp">
     <jsp:param name="activePage" value="actores"/>
 </jsp:include>
 
@@ -51,88 +51,88 @@
         </tr>
         </thead>
         <tbody id="actoresTableBody">
-            <%
-                boolean esActor = false;
-                for(PersonaEntity persona : personas){
-                    esActor = false;
-                    for(ActuacionEntity actuacion : actuaciones){
-                        if(actuacion.getPersonaid().getId() == persona.getId()){
-                            esActor = true;
+        <%
+            boolean esActor = false;
+            for(PersonaEntity persona : personas){
+                esActor = false;
+                for(ActuacionEntity actuacion : actuaciones){
+                    if(actuacion.getPersonaid().getId() == persona.getId()){
+                        esActor = true;
+                    }
+                }
+                if(esActor){
+        %>
+        <tr class="movie-row">
+            <td>
+                <div class="movie-poster">
+                    <img src="<%= persona.getUrlfoto() != null ? persona.getUrlfoto() : "https://i.postimg.cc/x1GgSpbn/add-circle-svgrepo-com.png" %>" alt="Foto">
+                </div>
+            </td>
+
+            <td>
+                <%= persona.getNombre() != null ? persona.getNombre() : ""%>
+            </td>
+
+            <td>
+                <%= persona.getGeneropersonaid().getGeneropersonanombre() != null ? persona.getGeneropersonaid().getGeneropersonanombre() : ""%>
+            </td>
+
+            <td>
+                <%= persona.getNacionalidadid().getNacionalidadnombre() != null ? persona.getNacionalidadid().getNacionalidadnombre() : ""%>
+            </td>
+
+            <td>
+                <%
+                    for(PeliculaEntity pelicula : peliculas){
+                        for(ActuacionEntity act : pelicula.getActuacionList()){
+                            if(act.getPersonaid().getNombre().equals(persona.getNombre())){
+                                out.print(pelicula.getTitulooriginal() + "<br/>");
+                            }
                         }
                     }
-                    if(esActor){
-            %>
-            <tr class="movie-row">
-                <td>
-                    <div class="movie-poster">
-                        <img src="<%= persona.getUrlfoto() != null ? persona.getUrlfoto() : "https://i.postimg.cc/x1GgSpbn/add-circle-svgrepo-com.png" %>" alt="Foto">
-                    </div>
-                </td>
+                %>
+            </td>
 
-                <td>
-                    <%= persona.getNombre() != null ? persona.getNombre() : ""%>
-                </td>
+            <td>
+                <%
+                    for(ActuacionEntity act : actuaciones){
+                        if(act.getPersonaid().getId() == persona.getId()){
+                            out.print(act.getPersonaje() + "<br/>");
+                        }
+                    }
+                %>
+            </td>
 
-                <td>
-                    <%= persona.getGeneropersonaid().getGeneropersonanombre() != null ? persona.getGeneropersonaid().getGeneropersonanombre() : ""%>
-                </td>
-
-                <td>
-                    <%= persona.getNacionalidadid().getNacionalidadnombre() != null ? persona.getNacionalidadid().getNacionalidadnombre() : ""%>
-                </td>
-
-                <td>
-                    <%
-                        for(PeliculaEntity pelicula : peliculas){
+            <td>
+                <%
+                    for(GeneroPeliculaEntity genero : generos){
+                        for(PeliculaEntity pelicula : genero.getPeliculaList()){
                             for(ActuacionEntity act : pelicula.getActuacionList()){
-                                if(act.getPersonaid().getNombre().equals(persona.getNombre())){
-                                    out.print(pelicula.getTitulooriginal() + "<br/>");
+                                if(act.getPersonaid().getId() == persona.getId()){
+                                    out.print(genero.getGeneronombre() + "<br/>");
                                 }
                             }
                         }
-                    %>
-                </td>
+                    }
+                %>
+            </td>
 
-                <td>
-                    <%
-                        for(ActuacionEntity act : actuaciones){
-                            if(act.getPersonaid().getId() == persona.getId()){
-                                out.print(act.getPersonaje() + "<br/>");
-                            }
-                        }
-                    %>
-                </td>
-
-                <td>
-                    <%
-                        for(GeneroPeliculaEntity genero : generos){
-                            for(PeliculaEntity pelicula : genero.getPeliculaList()){
-                                for(ActuacionEntity act : pelicula.getActuacionList()){
-                                    if(act.getPersonaid().getNombre().equals(persona.getNombre())){
-                                        out.print(genero.getGeneronombre() + "<br/>");
-                                    }
-                                }
-                            }
-                        }
-                    %>
-                </td>
-
-                <td>
-                    <form method="post" action="/actores/editar" style="display:inline;">
-                        <input type="hidden" name="id" value="<%= persona.getId() %>"/>
-                        <input type="submit" value="✏️ Editar" class="edit-btn"/>
-                    </form>
-                    <form method="post" action="/actores/borrar" style="display:inline;"
-                          onsubmit="return confirm('¿Está seguro de que quiere borrar al actor/actriz <%= persona.getNombre() %>?');">
-                        <input type="hidden" name="id" value="<%= persona.getId() %>"/>
-                        <input type="submit" value="🗑️ Borrar" class="delete-btn"/>
-                    </form>
-                </td>
-            </tr>
-            <%
+            <td>
+                <form method="post" action="/actores/editar" style="display:inline;">
+                    <input type="hidden" name="id" value="<%= persona.getId() %>"/>
+                    <input type="submit" value="✏️ Editar" class="edit-btn"/>
+                </form>
+                <form method="post" action="/actores/borrar" style="display:inline;"
+                      onsubmit="return confirm('¿Está seguro de que quiere borrar al actor/actriz <%= persona.getNombre() %>?');">
+                    <input type="hidden" name="id" value="<%= persona.getId() %>"/>
+                    <input type="submit" value="🗑️ Borrar" class="delete-btn"/>
+                </form>
+            </td>
+        </tr>
+        <%
                 }
-                }
-            %>
+            }
+        %>
         </tbody>
     </table>
 
