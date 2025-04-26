@@ -1,7 +1,17 @@
 package es.uma.taw.tarantuvi.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class UsuarioPremium {
+
+
+    @GetMapping("/usuarioPlus")
+    public String usuarioPlus(Model model) {
+        return "inicioUsuarioPremium";
+    }
+
+
 }
