@@ -1,0 +1,24 @@
+.submit-btn-container {
+    text-align: center;
+    margin-top: 40px;
+    clear: both;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #6e48aa, #9d50bb);
+    color: white;
+    padding: 14px 35px;
+    border: none;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(110, 72, 170, 0.3);
+}
+
+.submit-btn:hover {
+    background: linear-gradient(135deg, #9d50bb, #6e48aa);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(110, 72, 170, 0.4);
+}

@@ -4,10 +4,10 @@
 <html>
 <head>
     <title>Películas</title>
-    <link rel="stylesheet" type="text/css" href="/css/vistaPeliculasActoresEditor.css">
+    <link rel="stylesheet" type="text/css" href="/css/Editor/vistaPeliculasActoresEditor.css">
 </head>
 <body>
-<jsp:include page="../navBarNormal.jsp">
+<jsp:include page="../Componentes/navBarNormal.jsp">
     <jsp:param name="activePage" value="peliculas"/>
 </jsp:include>
 

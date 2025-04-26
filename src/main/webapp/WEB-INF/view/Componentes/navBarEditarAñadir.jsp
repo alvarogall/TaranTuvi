@@ -2,20 +2,15 @@
   Created by IntelliJ IDEA.
   User: jesus
   Date: 24/04/2025
-  Time: 20:56
+  Time: 20:51
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>NavBarNormal</title>
-    <link rel="stylesheet" type="text/css" href="/css/navBarNormal.css">
+    <title>NavBar</title>
+    <link rel="stylesheet" type="text/css" href="/css/Componentes/navBarEditarAñadir.css">
 </head>
-
-<%
-    String activePage = request.getParameter("activePage");
-%>
-
 <body>
 
 <nav class="navbar">
@@ -24,11 +19,6 @@
         <span class="logo-icon">🎬</span>
     </div>
     <div class="nav-right">
-        <ul class="nav-links">
-            <li><a href="/" class="nav-link <%= "inicio".equals(activePage) ? "active" : "" %>">Inicio</a></li>
-            <li><a href="/peliculas" class="nav-link <%= "peliculas".equals(activePage) ? "active" : "" %>">Películas</a></li>
-            <li><a href="/actores" class="nav-link <%= "actores".equals(activePage) ? "active" : "" %>">Actores</a></li>
-        </ul>
         <div class="profile">
             <img src="/img/imagenPerfil.png" alt="Perfil" onerror="this.onerror=null; this.src='https://via.placeholder.com/40';">
         </div>

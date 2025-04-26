@@ -9,11 +9,11 @@
 <html>
 <head>
     <title>Inicio</title>
-    <link rel="stylesheet" type="text/css" href="/css/inicioEditor.css">
+    <link rel="stylesheet" type="text/css" href="/css/Editor/inicioEditor.css">
 </head>
 <body>
 <body>
-<jsp:include page="../navBarNormal.jsp">
+<jsp:include page="../Componentes/navBarNormal.jsp">
     <jsp:param name="activePage" value="inicio"/>
 </jsp:include>
 

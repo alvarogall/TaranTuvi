@@ -91,7 +91,7 @@ INSERT INTO DEPARTAMENTO (DEPARTAMENTONOMBRE) VALUES
 
 -- Insertar personas
 INSERT INTO PERSONA (NOMBRE, GENEROPERSONAID, NACIONALIDADID, URLFOTO) VALUES
-                                                                           ('Robert Downey Jr.', 1, 1, 'https://ejemplo.com/robert.jpg'),
+                                                                           ('Robert Downey Jr.', 1, 1, 'https://i.postimg.cc/CK7m8gXr/robert-downey-jr-star-wars.webp'),
                                                                            ('Salma Hayek', 2, 2, 'https://ejemplo.com/salma.jpg'),
                                                                            ('Chris Hemsworth', 1, 1, 'https://ejemplo.com/chris.jpg'),
                                                                            ('Scarlett Johansson', 2, 3, 'https://ejemplo.com/scarlett.jpg'),

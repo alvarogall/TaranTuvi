@@ -20,10 +20,10 @@
 
 <head>
     <title><%= (esEditar? "Edición del" : "Nuevo/a") %> Actor/Actriz</title>
-    <link rel="stylesheet" type="text/css" href="/css/editarAñadir.css">
+    <link rel="stylesheet" type="text/css" href="/css/Editor/editarAñadir.css">
 </head>
 <body>
-<jsp:include page="../navBarEditarAñadir.jsp" />
+<jsp:include page="../Componentes/navBarEditarAñadir.jsp" />
 
 <h1><%= (esEditar? "Editar" : "Nuevo/a") %> Actor/Actriz</h1>
 
@@ -118,6 +118,7 @@
     <div class="submit-btn-container">
         <input type="submit" class="submit-btn" value="<%= esEditar ? "Confirmar Cambios" : "Añadir película"%>">
     </div>
+    <jsp:include page="../Componentes/botonCancelar.jsp" />
 </form>
 </body>
 </html>
