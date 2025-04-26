@@ -1,5 +1,25 @@
+<%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Random" %>
+<%@ page import="java.util.Collections" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+
+<%
+
+List<PeliculaEntity> peliculas = (List<PeliculaEntity>) request.getAttribute("peliculas");
+Collections.shuffle(peliculas);
+
+String img1 = peliculas.get(0).getUrlcaratula();
+String img2 = peliculas.get(1).getUrlcaratula();
+String img3 = peliculas.get(2).getUrlcaratula();
+
+
+
+%>
+
+
+
 <head>
     <title>Usuario Recomendador</title>
     <link rel="stylesheet" type="text/css" href="css/inicioUsuarioPremium.css">
@@ -15,16 +35,16 @@
         <!-- Carrusel -->
         <div class="carousel-container">
             <div class="carousel-slide active">
-                <img src="/img/img1.png" alt="Película 1">
-                <div class="caption">Texto de la película 1</div>
+                <img src="<%= img1 != null ? img1 : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>" alt="Película 1">
+                <div class="caption"><%=peliculas.get(0).getTitulooriginal() + " (" + peliculas.get(0).getFechaestreno().getYear() + ")"%></div>
             </div>
             <div class="carousel-slide">
-                <img src="/img/img2.png" alt="Película 2">
-                <div class="caption">Texto de la película 2</div>
+                <img src="<%= img2 != null ? img2 : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>" alt="Película 2">
+                <div class="caption"><%=peliculas.get(1).getTitulooriginal() + " (" + peliculas.get(1).getFechaestreno().getYear() + ")"%></div>
             </div>
             <div class="carousel-slide">
-                <img src="/img/img3.png" alt="Película 3">
-                <div class="caption">Texto de la película 3</div>
+                <img src="<%= img3 != null ? img3 : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>" alt="Película 3">
+                <div class="caption"><%=peliculas.get(2).getTitulooriginal() + " (" + peliculas.get(2).getFechaestreno().getYear() + ")"%></div>
             </div>
 
             <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>

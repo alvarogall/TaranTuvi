@@ -22,10 +22,11 @@ body {
 /* Carrusel */
 .carousel-container {
     position: relative;
-    width: 60%;
+    width: 40%;
     max-width: 700px;
     border-radius: 10px;
     overflow: hidden;
+    margin-left: 120px;
 }
 
 .carousel-slide {
