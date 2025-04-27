@@ -27,7 +27,7 @@
 
 <h1><%= (esEditar? "Editar" : "Nuevo/a") %> Actor/Actriz</h1>
 
-<form method="post" action="/actores/confirmarCambiosActores">
+<form method="post" action="/actores/confirmarCambios">
     <input type="hidden" name="id" value="<%= persona.getId() != null ? persona.getId() : -1 %>"/>
     <!-- Contenedor flex (imagen + campos) -->
     <div class="movie-header-container">
@@ -50,23 +50,23 @@
                 <input type="text" name="nombre" value="<%= persona.getNombre()!=null?persona.getNombre():""%>">
             </div>
 
-            <!-- Fecha -->
+            <!-- Género -->
             <div class="movie-field-row">
                 <label>Género:</label>
-                <input type="text" name="fecha" value="<%= persona.getGeneropersonaid().getGeneropersonanombre()!=null?persona.getGeneropersonaid().getGeneropersonanombre():""%>">
+                <input type="text" name="genero" value="<%= persona.getGeneropersonaid().getGeneropersonanombre()!=null?persona.getGeneropersonaid().getGeneropersonanombre():""%>">
             </div>
 
-            <!-- Duración -->
+            <!-- Nacionalidad -->
             <div class="movie-field-row">
                 <label>Nacionalidad:</label>
-                <input type="text" name="duracion" value="<%= persona.getNacionalidadid().getNacionalidadnombre()!=null?persona.getNacionalidadid().getNacionalidadnombre():""%>">
+                <input type="text" name="nacionalidad" value="<%= persona.getNacionalidadid().getNacionalidadnombre()!=null?persona.getNacionalidadid().getNacionalidadnombre():""%>">
             </div>
         </div>
     </div>
 
     <!-- Contenedor de 3 columnas -->
     <div class="columns-container">
-        <!-- Columna 1 (Crew, Cast, Productoras) -->
+        <!-- Columna 1 (Peliculas, Personajes) -->
         <div class="column">
 
             <label for="peliculas" class="select-label">Películas:</label>
@@ -95,7 +95,7 @@
             </select>
         </div>
 
-        <!-- Columna 2 (Países, Idiomas, Géneros) -->
+        <!-- Columna 2 (Géneros) -->
         <div class="column">
 
             <label for="generos" class="select-label">Géneros:</label>
@@ -116,9 +116,15 @@
 
     <!-- Botón de enviar -->
     <div class="submit-btn-container">
-        <input type="submit" class="submit-btn" value="<%= esEditar ? "Confirmar Cambios" : "Añadir película"%>">
+        <input type="submit" class="submit-btn" value="<%= esEditar ? "Confirmar Cambios" : "Añadir actor/actriz"%>">
     </div>
-    <jsp:include page="../Componentes/botonCancelar.jsp" />
+
+    <!-- Botón de cancelar -->
+    <jsp:include page="../Componentes/botonCancelar.jsp">
+        <jsp:param name="activePage" value="actor"/>
+    </jsp:include>
+
 </form>
+
 </body>
 </html>

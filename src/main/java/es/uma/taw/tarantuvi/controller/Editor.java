@@ -34,6 +34,10 @@ public class Editor {
     private PaisRodajeRepository paisRodajeRepository;
     @Autowired
     private DepartamentoRepository departamentoRepository;
+    @Autowired
+    private GeneroPersonaRepository generoPersonaRepository;
+    @Autowired
+    private NacionalidadRepository nacionalidadRepository;
 
     @GetMapping("/")
     public String vistaEditor() {
@@ -230,6 +234,67 @@ public class Editor {
         model.addAttribute("generos", generos);
 
         return "Editor/actor";
+    }
+
+    @PostMapping("/actores/confirmarCambios")
+    public String doConfirmarCambiosActores(
+            @RequestParam(value = "id", defaultValue = "-1") Integer id,
+            @RequestParam("url") String url,
+            @RequestParam("nombre") String nombre,
+            @RequestParam("genero") String genero,
+            @RequestParam("nacionalidad") String nacionalidad,
+            @RequestParam("peliculas") List<Integer> peliculas,
+            @RequestParam("personajes") List<Integer> personajes,
+            @RequestParam("generos") List<Integer> generos,
+            Model model){
+
+            PersonaEntity persona = personaRepository.findById(id).orElse(new PersonaEntity());
+            GeneroPersonaEntity generoPersona = this.generoPersonaRepository.findByNombre(genero.trim());
+            NacionalidadEntity nacionalidadPersona = this.nacionalidadRepository.findByNombre(nacionalidad.trim());
+
+            persona.setUrlfoto(url);
+            persona.setNombre(nombre);
+            persona.setGeneropersonaid(generoPersona);
+            persona.setNacionalidadid(nacionalidadPersona);
+
+            for(Integer p : peliculas){
+                PeliculaEntity pelicula = this.peliculaRepository.findById(p).orElse(null);
+                for(ActuacionEntity act : persona.getActuacionList()){
+                    if(act.getPeliculaid().equals(pelicula.getId())){
+                        act.setPersonaId(null);
+                        act.setPeliculaId(null);
+                    }
+                }
+            }
+            
+            persona.setActuacionList(new ArrayList<>());
+
+            if(peliculas != null){
+                for(Integer peliculaId : peliculas){
+                    PeliculaEntity pelicula = peliculaRepository.findById(peliculaId).orElse(null);
+                    if(pelicula != null){
+                        for(ActuacionEntity act : pelicula.getActuacionList()){
+                            act.setPersonaId(persona);
+
+                            persona.getActuacionList().add(act);
+                        }
+                    }
+                }
+            }
+
+        this.personaRepository.save(persona);
+        return "redirect:/actores";
+    }
+
+    @PostMapping("actores/borrar")
+    public String doBorrarActor(@RequestParam("id") Integer id){
+        for(ActuacionEntity a : this.actuacionRepository.findAll()){
+            if(a.getPersonaid().getId() == id){
+                this.actuacionRepository.delete(a);
+            }
+        }
+        this.personaRepository.deleteById(id);
+        return "redirect:/actores";
     }
 
 }

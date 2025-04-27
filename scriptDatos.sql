@@ -127,7 +127,10 @@ INSERT INTO PELICULA (
        'Los héroes se unen', 'https://i.postimg.cc/VvD4Gs5T/s-l1200.jpg', 1200000, 8.1, 91.2),
       ('Titanic', 2, 200000000, '1997-12-19', 195, 2200000000,
        'Estrenada', 'https://paramount.com/titanic', 'Una historia de amor en un desastre histórico.',
-       'Nunca dejaré ir', 'https://i.postimg.cc/J7qT4xKq/91z-Gp74-Qc4-L.jpg', 1800000, 7.8, 85.7);
+       'Nunca dejaré ir', 'https://i.postimg.cc/J7qT4xKq/91z-Gp74-Qc4-L.jpg', 1800000, 7.8, 85.7),
+      ('SpiderMan 2', 2, 200000000, '1997-12-19', 195, 2200000000,
+       'Estrenada', 'https://paramount.com/titanic', 'Una historia de amor en un desastre histórico.',
+       'Nunca dejaré ir', 'https://i.postimg.cc/NMvjhWS6/Spider-Man-2.webp', 1800000, 7.8, 85.7);
 
 -- Insertar relación película-género
 INSERT INTO PELICULAGENEROPELICULA (GENEROPELICULAID, PELICULAID) VALUES

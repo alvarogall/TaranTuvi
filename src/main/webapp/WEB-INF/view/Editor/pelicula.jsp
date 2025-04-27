@@ -189,7 +189,13 @@
   <div class="submit-btn-container">
     <input type="submit" class="submit-btn" value="<%= esEditar ? "Confirmar Cambios" : "Añadir película"%>">
   </div>
-  <jsp:include page="../Componentes/botonCancelar.jsp" />
+
+  <!-- Botón de cancelar -->
+  <jsp:include page="../Componentes/botonCancelar.jsp">
+    <jsp:param name="activePage" value="pelicula"/>
+  </jsp:include>
+
 </form>
+
 </body>
 </html>
