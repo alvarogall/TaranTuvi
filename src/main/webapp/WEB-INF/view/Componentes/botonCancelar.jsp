@@ -1,7 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String activePage = request.getParameter("activePage");
-    String cancelarUrl = "actor".equals(activePage) ? "/actores" : "/peliculas";
+    String cancelarUrl = "";
+    if ("actor".equals(activePage)) cancelarUrl = "/actores";
+    if ("pelicula".equals(activePage)) cancelarUrl = "/peliculas";
+    if ("genero".equals(activePage)) cancelarUrl = "/generos";
+    if ("productora".equals(activePage)) cancelarUrl = "/productoras";
 %>
 <html>
 <head>

@@ -23,7 +23,7 @@
         <div class="search-bar">
             <input type="text" placeholder="Buscar..." onkeyup="searchByTitle(this.value)">
             <div class="actions">
-                <form method="post" action="/administrador/generos/editar">
+                <form method="post" action="/administrador/productoras/editar">
                     <input type="submit" value="➕ Añadir" class="add-btn"/>
                 </form>
             </div>
@@ -48,11 +48,11 @@
                 <tr class="movie-row">
                     <td><%= (productora.getProductoranombre() != null) ? productora.getProductoranombre() : ""%></td>
                     <td>
-                        <form method="post" action="/peliculas/editar" style="display:inline;">
+                        <form method="post" action="/administrador/productoras/editar" style="display:inline;">
                             <input type="hidden" name="id" value="<%= productora.getId() %>"/>
                             <input type="submit" value="✏️ Editar" class="edit-btn"/>
                         </form>
-                        <form method="post" action="/peliculas/borrar" style="display:inline;"
+                        <form method="post" action="/administrador/productoras/borrar" style="display:inline;"
                               onsubmit="return confirm('¿Está seguro de que quiere borrar la película <%= productora.getProductoranombre() %>?');">
                             <input type="hidden" name="id" value="<%= productora.getId() %>"/>
                             <input type="submit" value="🗑️ Borrar" class="delete-btn"/>

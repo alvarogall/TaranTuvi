@@ -48,11 +48,11 @@
                 <tr class="movie-row">
                     <td><%= (genero.getGeneronombre() != null) ? genero.getGeneronombre() : ""%></td>
                     <td>
-                        <form method="post" action="/peliculas/editar" style="display:inline;">
+                        <form method="post" action="/administrador/generos/editar" style="display:inline;">
                             <input type="hidden" name="id" value="<%= genero.getId() %>"/>
                             <input type="submit" value="✏️ Editar" class="edit-btn"/>
                         </form>
-                        <form method="post" action="/peliculas/borrar" style="display:inline;"
+                        <form method="post" action="/administrador/generos/borrar" style="display:inline;"
                               onsubmit="return confirm('¿Está seguro de que quiere borrar la película <%= genero.getGeneronombre() %>?');">
                             <input type="hidden" name="id" value="<%= genero.getId() %>"/>
                             <input type="submit" value="🗑️ Borrar" class="delete-btn"/>
