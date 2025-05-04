@@ -4,8 +4,8 @@
     String cancelarUrl = "";
     if ("actor".equals(activePage)) cancelarUrl = "/actores";
     if ("pelicula".equals(activePage)) cancelarUrl = "/peliculas";
-    if ("genero".equals(activePage)) cancelarUrl = "/generos";
-    if ("productora".equals(activePage)) cancelarUrl = "/productoras";
+    if ("genero".equals(activePage)) cancelarUrl = "/administrador/generos";
+    if ("productora".equals(activePage)) cancelarUrl = "/administrador/productoras";
 %>
 <html>
 <head>
