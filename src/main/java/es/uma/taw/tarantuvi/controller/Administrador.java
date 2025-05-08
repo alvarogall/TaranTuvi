@@ -49,13 +49,13 @@ public class Administrador {
         GeneroPeliculaEntity genero = this.generoPeliculaRepository.findById(id).orElse(new GeneroPeliculaEntity());
         genero.setGeneronombre(nombre);
         this.generoPeliculaRepository.save(genero);
-        return "redirect:/generos";
+        return "redirect:/administrador/generos";
     }
 
     @PostMapping("/generos/borrar")
     public String doBorrarGenero(@RequestParam("id") Integer id) {
         this.generoPeliculaRepository.deleteById(id);
-        return "redirect:/generos";
+        return "redirect:/administrador/generos";
     }
 
     @GetMapping("/productoras")
@@ -79,12 +79,12 @@ public class Administrador {
         ProductoraEntity productora = this.productoraRepository.findById(id).orElse(new ProductoraEntity());
         productora.setProductoranombre(nombre);
         this.productoraRepository.save(productora);
-        return "redirect:/productoras";
+        return "redirect:/administrador/productoras";
     }
 
     @PostMapping("/productoras/borrar")
     public  String vistaGeneros(@RequestParam("id") Integer id) {
         this.productoraRepository.deleteById(id);
-        return "redirect:/productoras";
+        return "redirect:/administrador/productoras";
     }
 }

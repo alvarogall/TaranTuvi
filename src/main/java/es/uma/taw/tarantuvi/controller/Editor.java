@@ -212,14 +212,14 @@ public class Editor {
         */
 
         this.peliculaRepository.save(pelicula);
-        return "redirect:/peliculas";
+        return "redirect:/editor/peliculas";
     }
 
 
     @PostMapping("peliculas/borrar")
     public String doBorrarPelicula(@RequestParam("id") Integer id){
         this.peliculaRepository.deleteById(id);
-        return "redirect:/peliculas";
+        return "redirect:/editor/peliculas";
     }
 
     @PostMapping("/actores/editar")
@@ -285,7 +285,7 @@ public class Editor {
             }
 
         this.personaRepository.save(persona);
-        return "redirect:/actores";
+        return "redirect:/editor/actores";
     }
 
     @PostMapping("actores/borrar")
@@ -296,7 +296,7 @@ public class Editor {
             }
         }
         this.personaRepository.deleteById(id);
-        return "redirect:/actores";
+        return "redirect:/editor/actores";
     }
 
 }

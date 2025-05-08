@@ -26,8 +26,8 @@
   <div class="nav-right">
     <ul class="nav-links">
       <li><a href="/" class="nav-link <%= "inicio".equals(activePage) ? "active" : "" %>">Inicio</a></li>
-      <li><a href="/peliculas" class="nav-link <%= "peliculas".equals(activePage) ? "active" : "" %>">Películas</a></li>
-      <li><a href="/actores" class="nav-link <%= "actores".equals(activePage) ? "active" : "" %>">Actores</a></li>
+      <li><a href="/editor/peliculas" class="nav-link <%= "peliculas".equals(activePage) ? "active" : "" %>">Películas</a></li>
+      <li><a href="/editor/actores" class="nav-link <%= "actores".equals(activePage) ? "active" : "" %>">Actores</a></li>
     </ul>
     <div class="profile">
       <img src="/img/imagenPerfil.png" alt="Perfil" onerror="this.onerror=null; this.src='https://via.placeholder.com/40';">
