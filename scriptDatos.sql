@@ -1,45 +1,21 @@
 USE TaranTuvi;
 
-SET FOREIGN_KEY_CHECKS = 0;
+INSERT INTO ROL (ROLNOMBRE) 
+VALUES
+('analista'),
+('administrador'),
+('editor'),
+('usuario'),
+('usuarioPremium');
 
-TRUNCATE TABLE PELICULALISTAPELICULA;
-TRUNCATE TABLE VALORACION;
-TRUNCATE TABLE LISTAPELICULA;
-TRUNCATE TABLE ACTUACION;
-TRUNCATE TABLE TRABAJO;
-TRUNCATE TABLE PELICULAPAISRODAJE;
-TRUNCATE TABLE PELICULAPRODUCTORA;
-TRUNCATE TABLE PELICULAIDIOMAHABLADO;
-TRUNCATE TABLE PELICULAPALABRACLAVE;
-TRUNCATE TABLE PELICULAGENEROPELICULA;
 
-TRUNCATE TABLE PERSONA;
-TRUNCATE TABLE USUARIO;
-TRUNCATE TABLE PELICULA;
-TRUNCATE TABLE IDIOMAHABLADO;
-TRUNCATE TABLE PALABRACLAVE;
-TRUNCATE TABLE GENEROPELICULA;
-TRUNCATE TABLE GENEROPERSONA;
-TRUNCATE TABLE ROL;
-TRUNCATE TABLE PRODUCTORA;
-TRUNCATE TABLE PAISRODAJE;
-TRUNCATE TABLE DEPARTAMENTO;
-TRUNCATE TABLE NACIONALIDAD;
-
-SET FOREIGN_KEY_CHECKS = 1;
-
--- Insertar roles
-INSERT INTO ROL (ROLNOMBRE) VALUES
-                                ('Administrador'),
-                                ('Usuario'),
-                                ('Moderador');
-
--- Insertar usuarios
-INSERT INTO USUARIO (NOMBRE, ROLID, PASSWORDHASH, SALT) VALUES
-                                                            ('Juan Pérez', 1, 'hashedpass1', 'salt1'),
-                                                            ('Ana Gómez', 2, 'hashedpass2', 'salt2'),
-                                                            ('Carlos Sánchez', 3, 'hashedpass3', 'salt3'),
-                                                            ('María López', 2, 'hashedpass4', 'salt4');
+INSERT INTO USUARIO (USUARIO, PASSWORD, ROLID)
+VALUES
+('analista', 'analista', 1),
+('administrador', 'administrador', 2),
+('editor', 'editor', 3),
+('usuario', 'usuario', 4),
+('usuarioPremium', 'usuarioPremium', 5);
 
 -- Insertar géneros de película
 INSERT INTO GENEROPELICULA (GENERONOMBRE) VALUES
