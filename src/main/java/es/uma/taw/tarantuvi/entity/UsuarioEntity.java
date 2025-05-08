@@ -1,5 +1,6 @@
 package es.uma.taw.tarantuvi.entity;
 
+import es.uma.taw.tarantuvi.dto.Usuario;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,24 +17,29 @@ public class UsuarioEntity {
     @Column(name = "USUARIOID", nullable = false)
     private Integer id;
 
-    @Column(name = "NOMBRE")
-    private String nombre;
+    @Column(name = "USUARIO")
+    private String usuario;
+
+    @Column(name = "PASSWORD")
+    private String password;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ROLID")
     private RolEntity rolid;
-
-    @Lob
-    @Column(name = "PASSWORDHASH", nullable = false)
-    private String passwordhash;
-
-    @Lob
-    @Column(name = "SALT", nullable = false)
-    private String salt;
 
     @OneToMany(mappedBy = "usuarioid")
     private List<ListaPeliculaEntity> listaPeliculaList;
 
     @OneToMany(mappedBy = "usuarioid")
     private List<ValoracionEntity> valoracionList;
+
+    public Usuario toDto() {
+        Usuario usuario = new Usuario();
+
+        usuario.setUsuario(this.usuario);
+        usuario.setPassword(this.password);
+        usuario.setRol(this.rolid.getRolnombre());
+
+        return usuario;
+    }
 }

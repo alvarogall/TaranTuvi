@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/analista")
 public class Analista {
 
     @Autowired
@@ -20,13 +22,13 @@ public class Analista {
     @Autowired
     private ActuacionRepository actuacionRepository;
 
-    @GetMapping("/analista")
+    @GetMapping("/")
     public String vistaAnalista(Model model) {
         model.addAttribute("paginaActual", "inicio");
         return "Analista/inicioAnalista";
     }
 
-    @GetMapping("/analista/ranking")
+    @GetMapping("/ranking")
     public String rankingAnalista(Model model) {
         model.addAttribute("paginaActual", "peliculas");
 
@@ -36,7 +38,7 @@ public class Analista {
         return "Analista/vistaRankingAnalista";
     }
 
-    @GetMapping("/analista/actores")
+    @GetMapping("/actores")
     public String actoresAnalista(Model model) {
         model.addAttribute("paginaActual", "actores");
 
