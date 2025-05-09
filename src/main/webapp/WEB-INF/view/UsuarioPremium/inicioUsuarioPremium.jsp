@@ -8,6 +8,7 @@
 <%
 
 List<PeliculaEntity> peliculas = (List<PeliculaEntity>) request.getAttribute("peliculas");
+List<PeliculaEntity> novedades = (List<PeliculaEntity>) request.getAttribute("novedades");
 Collections.shuffle(peliculas);
 
 String img1 = peliculas.get(0).getUrlcaratula();
@@ -22,11 +23,11 @@ String img3 = peliculas.get(2).getUrlcaratula();
 
 <head>
     <title>Usuario Recomendador</title>
-    <link rel="stylesheet" type="text/css" href="css/inicioUsuarioPremium.css">
+    <link rel="stylesheet" type="text/css" href="/css/usuarioPremium/inicioUsuarioPremium.css">
 </head>
 <body>
 
-<jsp:include page="navBarNormal.jsp">
+<jsp:include page="../Componentes/navBarNormal.jsp">
     <jsp:param name="activePage" value="inicio"/>
 </jsp:include>
 
@@ -55,18 +56,18 @@ String img3 = peliculas.get(2).getUrlcaratula();
         <aside class="novedades">
             <h2>Novedades</h2>
             <div class="novedad">
-                <div class="novedad-img"></div>
+                <img class="novedad-img" src="<%= novedades.get(0).getUrlcaratula() != null ? novedades.get(0).getUrlcaratula() : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>" alt="Carátula">
                 <div class="novedad-info">
-                    <strong>Película uno</strong>
-                    <p>Descripción uno</p>
+                    <strong><%=novedades.get(0) != null ? novedades.get(0).getTitulooriginal() : "Fallo"%></strong>
+                    <p><%=novedades.get(0) != null ? novedades.get(0).getFechaestreno().getYear() : "Fallo"%></p>
                     <button>▶️</button>
                 </div>
             </div>
             <div class="novedad">
-                <div class="novedad-img"></div>
+                <img class="novedad-img" src="<%= novedades.get(1).getUrlcaratula() != null ? novedades.get(1).getUrlcaratula() : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>" alt="Carátula">
                 <div class="novedad-info">
-                    <strong>Película dos</strong>
-                    <p>Descripción dos</p>
+                    <strong><%=novedades.get(1) != null ? novedades.get(1).getTitulooriginal() : "Fallo"%></strong>
+                    <p><%=novedades.get(1) != null ? novedades.get(1).getFechaestreno().getYear() : "Fallo"%></p>
                     <button>▶️</button>
                 </div>
             </div>

@@ -107,10 +107,12 @@ body {
 
 .novedad-img {
     width: 60px;
-    height: 60px;
-    background-color: #ccc;
-    border-radius: 8px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
 }
+
 
 .novedad-info {
     flex: 1;

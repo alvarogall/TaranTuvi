@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping("/editor")
 public class Editor {
     @Autowired
     protected PeliculaRepository peliculaRepository;
@@ -210,14 +212,14 @@ public class Editor {
         */
 
         this.peliculaRepository.save(pelicula);
-        return "redirect:/peliculas";
+        return "redirect:/editor/peliculas";
     }
 
 
     @PostMapping("peliculas/borrar")
     public String doBorrarPelicula(@RequestParam("id") Integer id){
         this.peliculaRepository.deleteById(id);
-        return "redirect:/peliculas";
+        return "redirect:/editor/peliculas";
     }
 
     @PostMapping("/actores/editar")
@@ -283,7 +285,7 @@ public class Editor {
             }
 
         this.personaRepository.save(persona);
-        return "redirect:/actores";
+        return "redirect:/editor/actores";
     }
 
     @PostMapping("actores/borrar")
@@ -294,6 +296,6 @@ public class Editor {
             }
         }
         this.personaRepository.deleteById(id);
-        return "redirect:/actores";
+        return "redirect:/editor/actores";
     }
 }

@@ -12,7 +12,6 @@
     <link rel="stylesheet" type="text/css" href="/css/Editor/inicioEditor.css">
 </head>
 <body>
-<body>
 <jsp:include page="../Componentes/navBarNormal.jsp">
     <jsp:param name="activePage" value="inicio"/>
 </jsp:include>
