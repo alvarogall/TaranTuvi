@@ -85,7 +85,7 @@
         <h3>Actores por País</h3>
         <table>
             <tr>
-                <th>País</th>
+                <th>Nacionalidad</th>
                 <th>Cantidad</th>
                 <th>Porcentaje</th>
             </tr>

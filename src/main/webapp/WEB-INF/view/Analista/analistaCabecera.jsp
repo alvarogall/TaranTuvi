@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>Cabecera</title>
-    <link rel="stylesheet" type="text/css" href="/css/inicioAnalista.css">
+  <link rel="stylesheet" type="text/css" href="/css/Analista/inicioAnalista.css">
 </head>
 <body>
 <%
@@ -22,7 +22,7 @@
   </div>
   <div class="nav-right">
     <ul class="nav-links">
-      <li><a href="/analista" class="<%= "inicio".equals(paginaActual) ? "active" : "" %>">Inicio</a></li>
+      <li><a href="/analista/" class="<%= "inicio".equals(paginaActual) ? "active" : "" %>">Inicio</a></li>
       <li><a href="/analista/ranking" class="<%= "peliculas".equals(paginaActual) ? "active" : "" %>">Películas</a></li>
       <li><a href="/analista/actores" class="<%= "actores".equals(paginaActual) ? "active" : "" %>">Actores</a></li>
     </ul>
