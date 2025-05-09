@@ -296,5 +296,4 @@ public class Editor {
         this.personaRepository.deleteById(id);
         return "redirect:/actores";
     }
-
 }
