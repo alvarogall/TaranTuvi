@@ -22,7 +22,7 @@
   <div class="movie-header-container">
     <!-- Imagen -->
     <div class="movie-poster">
-      <img src="<%= pelicula.getUrlCaratula() != null ? pelicula.getUrlCaratula() : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>" alt="Portada">
+      <img src="<%= pelicula.getUrlcaratula() != null ? pelicula.getUrlcaratula() : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>" alt="Portada">
     </div>
 
     <!-- Campos a la derecha -->
@@ -30,13 +30,13 @@
       <!-- URL -->
       <div class="movie-field-row">
         <label>URL de la portada:</label>
-        <form:input path="urlCaratula" />
+        <form:input path="urlcaratula" />
       </div>
 
       <!-- Nombre -->
       <div class="movie-field-row">
         <label>Película:</label>
-        <form:input path="nombre" />
+        <form:input path="titulooriginal" />
       </div>
 
       <!-- Fecha -->
@@ -105,10 +105,7 @@
   <!-- Botón de enviar -->
   <div class="submit-btn-container">
     <form:button class="submit-btn">
-      <c:choose>
-        <c:when test="${esEditar}">Confirmar Cambios</c:when>
-        <c:otherwise>Añadir película</c:otherwise>
-      </c:choose>
+      <%= (esEditar ? "Confirmar Cambios" : "Añadir película") %>
     </form:button>
   </div>
 

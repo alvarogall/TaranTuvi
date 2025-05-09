@@ -10,8 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Pelicula {
     protected Integer id;
-    protected String urlCaratula;
-    protected String nombre;
+    protected String urlcaratula;
+    protected String titulooriginal;
     protected String fecha;
     protected String duracion;
     protected String descripcion;

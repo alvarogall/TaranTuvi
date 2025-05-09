@@ -40,4 +40,9 @@ public class ActuacionEntity {
         this.peliculaid = pelicula;
     }
 
+    @Transient
+    public String getLabel() {
+        return this.personaid.getNombre() + " – " + this.personaje;
+    }
+
 }

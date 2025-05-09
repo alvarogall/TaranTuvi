@@ -2,11 +2,14 @@ package es.uma.taw.tarantuvi.entity;
 
 import es.uma.taw.tarantuvi.dto.Pelicula;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -124,6 +127,68 @@ public class PeliculaEntity {
     public Pelicula toDto(){
         Pelicula pelicula = new Pelicula();
 
-        pelicula.setTit
+        pelicula.setId(this.id);
+        pelicula.setTitulooriginal(this.titulooriginal);
+        pelicula.setUrlcaratula(this.urlcaratula);
+        pelicula.setFecha(new String(String.valueOf(this.fechaestreno)));
+        pelicula.setDuracion(new String(String.valueOf(this.duracion)));
+        pelicula.setDescripcion(this.descripcion);
+        pelicula.setPaginaweb(this.paginaweb);
+        pelicula.setPresupuesto(new String(String.valueOf(this.presupuesto)));
+        pelicula.setRecaudacion(new String(String.valueOf(this.recaudacion)));
+        pelicula.setEslogan(this.eslogan);
+        pelicula.setEstado(this.estado);
+
+        if(this.actuacionList != null
+                && this.trabajoList != null
+                && this.productoraList != null
+                && this.paisRodajeList != null
+                && this.idiomaHabladoList != null
+                && this.generoPeliculaList != null){
+            List<Integer> idsCast = new ArrayList<Integer>();
+            for(ActuacionEntity a : this.actuacionList){
+                idsCast.add(a.getId());
+            }
+            pelicula.setCast(idsCast);
+
+            List<Integer> idsCrew = new ArrayList<Integer>();
+            for(TrabajoEntity t : this.trabajoList){
+                idsCrew.add(t.getId());
+            }
+            pelicula.setCrew(idsCrew);
+
+            List<Integer> idsProductoras = new ArrayList<Integer>();
+            for(ProductoraEntity p : this.productoraList){
+                idsProductoras.add(p.getId());
+            }
+            pelicula.setProductoras(idsProductoras);
+
+            List<Integer> idsPaisesRodaje = new ArrayList<Integer>();
+            for(PaisRodajeEntity p : this.paisRodajeList){
+                idsPaisesRodaje.add(p.getId());
+            }
+            pelicula.setPaisesRodaje(idsPaisesRodaje);
+
+            List<Integer> idsIdiomas = new ArrayList<Integer>();
+            for(IdiomaHabladoEntity h : this.idiomaHabladoList){
+                idsIdiomas.add(h.getId());
+            }
+            pelicula.setIdiomas(idsIdiomas);
+
+            List<Integer> idsGeneros = new ArrayList<Integer>();
+            for(GeneroPeliculaEntity g : this.generoPeliculaList){
+                idsGeneros.add(g.getId());
+            }
+            pelicula.setGeneros(idsGeneros);
+        }else{
+            pelicula.setCast(new ArrayList<Integer>());
+            pelicula.setCrew(new ArrayList<Integer>());
+            pelicula.setProductoras(new ArrayList<Integer>());
+            pelicula.setPaisesRodaje(new ArrayList<Integer>());
+            pelicula.setIdiomas(new ArrayList<Integer>());
+            pelicula.setGeneros(new ArrayList<Integer>());
+        }
+
+        return pelicula;
     }
 }

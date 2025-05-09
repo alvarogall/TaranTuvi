@@ -2,8 +2,8 @@
 <%
     String activePage = request.getParameter("activePage");
     String cancelarUrl = "";
-    if ("actor".equals(activePage)) cancelarUrl = "/actores";
-    if ("pelicula".equals(activePage)) cancelarUrl = "/peliculas";
+    if ("actor".equals(activePage)) cancelarUrl = "/editor/actores";
+    if ("pelicula".equals(activePage)) cancelarUrl = "/editor/peliculas";
     if ("genero".equals(activePage)) cancelarUrl = "/administrador/generos";
     if ("productora".equals(activePage)) cancelarUrl = "/administrador/productoras";
 %>

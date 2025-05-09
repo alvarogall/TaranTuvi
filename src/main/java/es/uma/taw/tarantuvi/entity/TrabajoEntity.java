@@ -36,4 +36,9 @@ public class TrabajoEntity {
     public void setPeliculaId(PeliculaEntity pelicula) {
         this.peliculaid = pelicula;
     }
+
+    @Transient
+    public String getLabel() {
+        return this.personaid.getNombre() + " – " + this.getTrabajonombre();
+    }
 }
