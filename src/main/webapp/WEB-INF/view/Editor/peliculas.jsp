@@ -15,7 +15,9 @@
     <div class="search-bar">
         <input type="text" placeholder="Buscar..." onkeyup="searchByTitle(this.value)">
         <div class="actions">
-            <form method="post" action="/peliculas/editar">
+            <!-- Forma para 'Añadir' debe apuntar a /editor/peliculas/editar -->
+            <form method="post" action="/editor/peliculas/editar" style="display:inline;">
+                <!-- Sin id, se tomará defaultValue=-1 en el controlador -->
                 <input type="submit" value="➕ Añadir" class="add-btn"/>
             </form>
         </div>
@@ -51,12 +53,15 @@
             <tr class="movie-row">
                 <td>
                     <div class="movie-poster">
-                        <img src="<%= pelicula.getUrlcaratula() != null ? pelicula.getUrlcaratula() : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>" alt="Portada">
+                        <img src="<%= pelicula.getUrlcaratula() != null
+                                    ? pelicula.getUrlcaratula()
+                                    : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>"
+                             alt="Portada">
                     </div>
                 </td>
-                <td><%= (pelicula.getTitulooriginal() != null) ? pelicula.getTitulooriginal() : ""%></td>
-                <td><%= pelicula.getDuracion() != null ? pelicula.getDuracion() : ""%></td>
-                <td><%= (pelicula.getFechaestreno() != null) ? pelicula.getFechaestreno() : "" %></td>
+                <td><%= pelicula.getTitulooriginal() != null ? pelicula.getTitulooriginal() : "" %></td>
+                <td><%= pelicula.getDuracion() != null ? pelicula.getDuracion() : "" %></td>
+                <td><%= pelicula.getFechaestreno() != null ? pelicula.getFechaestreno() : "" %></td>
                 <td>
                     <%
                         if (pelicula.getActuacionList() != null) {
@@ -108,16 +113,17 @@
                         }
                     %>
                 </td>
-                <td><%= pelicula.getPresupuesto() != null ? pelicula.getPresupuesto() : ""%></td>
-                <td><%= pelicula.getRecaudacion() != null ? pelicula.getRecaudacion() : ""%></td>
-                <td><%= pelicula.getEslogan() != null ? pelicula.getEslogan() : ""%></td>
+                <td><%= pelicula.getPresupuesto() != null ? pelicula.getPresupuesto() : "" %></td>
+                <td><%= pelicula.getRecaudacion() != null ? pelicula.getRecaudacion() : "" %></td>
+                <td><%= pelicula.getEslogan() != null ? pelicula.getEslogan() : "" %></td>
                 <td>
-                    <form method="post" action="/peliculas/editar" style="display:inline;">
+                    <form method="post" action="/editor/peliculas/editar" style="display:inline;">
                         <input type="hidden" name="id" value="<%= pelicula.getId() %>"/>
                         <input type="submit" value="✏️ Editar" class="edit-btn"/>
                     </form>
-                    <form method="post" action="/peliculas/borrar" style="display:inline;"
-                          onsubmit="return confirm('¿Está seguro de que quiere borrar la película <%= pelicula.getTitulooriginal() %>?');">
+                    <form method="post" action="/editor/peliculas/borrar" style="display:inline;"
+                          onsubmit="return confirm('¿Está seguro de que quiere borrar la película '
+                                  + '<%= pelicula.getTitulooriginal() %>?');">
                         <input type="hidden" name="id" value="<%= pelicula.getId() %>"/>
                         <input type="submit" value="🗑️ Borrar" class="delete-btn"/>
                     </form>
@@ -132,18 +138,16 @@
 
     <div class="footer">
         <div class="letters">
-            <!-- Letras A-Z generadas con JS -->
+            <!-- Letras A–Z generadas con JS -->
         </div>
     </div>
 </div>
 
 <script>
-    // Al cargar la página
     document.addEventListener('DOMContentLoaded', function() {
         const lettersContainer = document.querySelector(".letters");
         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-        // Crear botón TODAS primero y activarlo
         const allButton = document.createElement("button");
         allButton.id = "allButton";
         allButton.textContent = "TODAS";
@@ -151,7 +155,6 @@
         allButton.onclick = () => selectLetter('ALL');
         lettersContainer.appendChild(allButton);
 
-        // Crear botones de letras
         alphabet.forEach(letter => {
             const btn = document.createElement("button");
             btn.textContent = letter;
@@ -160,43 +163,38 @@
             lettersContainer.appendChild(btn);
         });
 
-        // Mostrar todas las películas al inicio
-        filterActorsByLetter('ALL');
+        // Corregido: llama a filterMoviesByLetter en lugar de la función inexistente
+        filterMoviesByLetter('ALL');
     });
 
     function selectLetter(letter) {
-        document.querySelectorAll(".letter-btn, #allButton").forEach(btn => {
-            btn.classList.remove("active-letter");
-        });
-
+        document.querySelectorAll(".letter-btn, #allButton").forEach(btn =>
+            btn.classList.remove("active-letter")
+        );
         const activeBtn = letter === 'ALL'
             ? document.getElementById("allButton")
             : [...document.querySelectorAll(".letter-btn")].find(b => b.textContent === letter);
-
         if (activeBtn) activeBtn.classList.add("active-letter");
-
         filterMoviesByLetter(letter);
     }
 
     function filterMoviesByLetter(letter) {
         const rows = document.querySelectorAll(".movie-row");
-        const searchTerm = document.querySelector(".search-bar input[type='text']").value.trim().toUpperCase();
+        const searchTerm = document.querySelector(".search-bar input[type='text']")
+            .value.trim().toUpperCase();
 
         rows.forEach(row => {
-            const cells = row.querySelectorAll("td");
-            const title = cells[1].textContent.toUpperCase(); // Segunda celda (título)
-
+            const title = row.querySelectorAll("td")[1].textContent.toUpperCase();
             const matchesLetter = letter === 'ALL' || title.startsWith(letter);
             const matchesSearch = searchTerm === '' || title.includes(searchTerm);
-
-            row.style.display = matchesLetter && matchesSearch ? "" : "none";
+            row.style.display = (matchesLetter && matchesSearch) ? "" : "none";
         });
     }
 
     function searchByTitle(query) {
-        // Reutilizamos filterMoviesByLetter para aplicar ambos filtros
-        const activeLetterBtn = document.querySelector(".letter-btn.active-letter, #allButton.active-letter");
-        const activeLetter = activeLetterBtn?.textContent === 'TODAS' ? 'ALL' : activeLetterBtn?.textContent;
+        // Se reutiliza filterMoviesByLetter para aplicar filtros combinados
+        const activeBtn = document.querySelector(".active-letter");
+        const activeLetter = activeBtn?.textContent === 'TODAS' ? 'ALL' : activeBtn?.textContent;
         filterMoviesByLetter(activeLetter || 'ALL');
     }
 </script>

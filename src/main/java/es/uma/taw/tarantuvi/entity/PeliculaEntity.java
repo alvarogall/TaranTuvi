@@ -1,5 +1,6 @@
 package es.uma.taw.tarantuvi.entity;
 
+import es.uma.taw.tarantuvi.dto.Pelicula;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -118,5 +119,11 @@ public class PeliculaEntity {
 
     public void add(ActuacionEntity actuacion) {
         this.actuacionList.add(actuacion);
+    }
+
+    public Pelicula toDto(){
+        Pelicula pelicula = new Pelicula();
+
+        pelicula.setTit
     }
 }
