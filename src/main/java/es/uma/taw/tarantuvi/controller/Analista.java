@@ -4,11 +4,12 @@ import es.uma.taw.tarantuvi.dao.ActuacionRepository;
 import es.uma.taw.tarantuvi.dao.ValoracionRepository;
 import es.uma.taw.tarantuvi.entity.ActuacionEntity;
 import es.uma.taw.tarantuvi.entity.PeliculaEntity;
-import es.uma.taw.tarantuvi.ui.Analista.AnalistaPeliculasForm;
+import es.uma.taw.tarantuvi.dto.Analista.AnalistaFiltroAnios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -29,12 +30,14 @@ public class Analista {
     }
 
     @GetMapping("/ranking")
-    public String rankingAnalista(Model model) {
+    public String rankingAnalista(Model model, @ModelAttribute("filtro") AnalistaFiltroAnios filtro) {
         model.addAttribute("paginaActual", "peliculas");
 
-        List<Object[]> listaPeliculas = this.valoracionRepository.getPeliculasConNota();
+        int anios = (filtro.getAnios() != null) ? filtro.getAnios() : 25;
+
+        List<Object[]> listaPeliculas = this.valoracionRepository.getPeliculaConMayorNotaMedia();
         model.addAttribute("peliculas", listaPeliculas);
-        model.addAttribute("filtro", new AnalistaPeliculasForm());
+        model.addAttribute("anios", anios);
         return "Analista/vistaRankingAnalista";
     }
 

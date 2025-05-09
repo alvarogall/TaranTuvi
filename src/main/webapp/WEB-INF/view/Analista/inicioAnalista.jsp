@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>Analista</title>
-    <link rel="stylesheet" type="text/css" href="/css/inicioAnalista.css">
+    <link rel="stylesheet" type="text/css" href="/css/Analista/inicioAnalista.css">
 </head>
 <body>
 
@@ -21,7 +21,7 @@
     <p>Como analista, tienes acceso a las siguientes funciones:</p>
 
     <ul class="features-list">
-        <li>🎥 Acceder a un ranking de películas.</li>
+        <li>🎥 Acceder a estadísticas y rankings de películas.</li>
         <li>🧑‍🤝‍🧑 Analizar los datos de los actores.</li>
         <li>🎬 Comparar la producción de las películas.</li>
         <li>🌐 Visionar las valoraciones de los usuarios.</li>
