@@ -31,7 +31,7 @@
     <div class="search-bar">
         <input type="text" placeholder="Buscar..." onkeyup="searchByName(this.value)">
         <div class="actions">
-            <form method="post" action="/actores/editar">
+            <form method="post" action="/editor/actores/editar">
                 <input type="submit" value="➕ Añadir" class="add-btn"/>
             </form>
         </div>
@@ -118,11 +118,11 @@
             </td>
 
             <td>
-                <form method="post" action="/actores/editar" style="display:inline;">
+                <form method="post" action="/editor/actores/editar" style="display:inline;">
                     <input type="hidden" name="id" value="<%= persona.getId() %>"/>
                     <input type="submit" value="✏️ Editar" class="edit-btn"/>
                 </form>
-                <form method="post" action="/actores/borrar" style="display:inline;"
+                <form method="post" action="/editor/actores/borrar" style="display:inline;"
                       onsubmit="return confirm('¿Está seguro de que quiere borrar al actor/actriz <%= persona.getNombre() %>?');">
                     <input type="hidden" name="id" value="<%= persona.getId() %>"/>
                     <input type="submit" value="🗑️ Borrar" class="delete-btn"/>
@@ -153,7 +153,7 @@
         // Crear botón TODAS primero y activarlo
         const allButton = document.createElement("button");
         allButton.id = "allButton";
-        allButton.textContent = "TODAS";
+        allButton.textContent = "TODOS";
         allButton.classList.add("active-letter");
         allButton.onclick = () => selectLetter('ALL');
         lettersContainer.appendChild(allButton);

@@ -1,6 +1,7 @@
 package es.uma.taw.tarantuvi.controller;
 
 import es.uma.taw.tarantuvi.dao.*;
+import es.uma.taw.tarantuvi.dto.Actor;
 import es.uma.taw.tarantuvi.entity.*;
 import es.uma.taw.tarantuvi.dto.Pelicula;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +68,12 @@ public class Editor {
     @PostMapping("/peliculas/editar")
     public String doEditarPelicula(@RequestParam(value = "id", defaultValue = "-1") Integer id,
                                    Model model) {
-        // 1. Obtener la entidad y convertir a DTO
+
         PeliculaEntity entidad = peliculaRepository.findById(id)
                 .orElse(new PeliculaEntity());
         Pelicula dtoPelicula = entidad.toDto();
         dtoPelicula.setId(entidad.getId());
 
-        // 2. Preparar la lista de actuaciones: arrancar con las ya asignadas
         List<ActuacionEntity> actuacionesFiltradas = new ArrayList<>();
         if (entidad.getActuacionList() != null) {
             actuacionesFiltradas.addAll(entidad.getActuacionList());
@@ -91,7 +91,6 @@ public class Editor {
             }
         }
 
-        // 3. Preparar la lista de crew: igual, empezando por los ya asignados
         List<TrabajoEntity> crewFiltrado = new ArrayList<>();
         if (entidad.getTrabajoList() != null) {
             crewFiltrado.addAll(entidad.getTrabajoList());
@@ -107,13 +106,11 @@ public class Editor {
             }
         }
 
-        // 4. Otras colecciones sin cambios
         List<ProductoraEntity>     productoras  = productoraRepository.findAll();
         List<IdiomaHabladoEntity>  idiomas      = idiomaHabladoRepository.findAll();
         List<GeneroPeliculaEntity> generos      = generoPeliculaRepository.findAll();
         List<PaisRodajeEntity>     paisesRodaje = paisRodajeRepository.findAll();
 
-        // 5. Enviar al modelo
         model.addAttribute("pelicula",     dtoPelicula);
         model.addAttribute("actuaciones",  actuacionesFiltradas);
         model.addAttribute("crewList",     crewFiltrado);
@@ -131,7 +128,6 @@ public class Editor {
         PeliculaEntity pelicula = peliculaRepository.findById(id)
                 .orElse(new PeliculaEntity());
 
-        // Asignar valores simples
         pelicula.setTitulooriginal(dtoPelicula.getTitulooriginal());
         pelicula.setFechaestreno(LocalDate.parse(dtoPelicula.getFecha()));
         pelicula.setDuracion(Integer.parseInt(dtoPelicula.getDuracion().trim()));
@@ -145,13 +141,11 @@ public class Editor {
         pelicula.setPaginaweb(dtoPelicula.getPaginaweb());
         pelicula.setEslogan(dtoPelicula.getEslogan());
 
-        // Otros listados: vacío (volveré a poblarlos íntegros)
         pelicula.setGeneroPeliculaList(new ArrayList<>());
         pelicula.setProductoraList(new ArrayList<>());
         pelicula.setPaisRodajeList(new ArrayList<>());
         pelicula.setIdiomaHabladoList(new ArrayList<>());
 
-        // ——————————————
         // CAST: sólo CLONA si no existe ya persona+personaje
         List<ActuacionEntity> actuales = pelicula.getActuacionList();
         if (actuales == null) {
@@ -182,8 +176,7 @@ public class Editor {
             }
         }
 
-        // ——————————————
-        // CREW: idem, sólo CLONA si no existe persona+trabajonombre
+        // CREW: sólo CLONA si no existe persona+trabajonombre
         List<TrabajoEntity> crewActual = pelicula.getTrabajoList();
         if (crewActual == null) {
             crewActual = new ArrayList<>();
@@ -212,8 +205,6 @@ public class Editor {
             }
         }
 
-        // ——————————————
-        // Resto de relaciones (idiomas, productoras, paises, géneros)
         if (dtoPelicula.getIdiomas() != null) {
             for (Integer idiomaId : dtoPelicula.getIdiomas()) {
                 idiomaHabladoRepository.findById(idiomaId)
@@ -239,7 +230,6 @@ public class Editor {
             }
         }
 
-        // Guardar la película con sus relaciones actualizadas
         peliculaRepository.save(pelicula);
         return "redirect:/editor/peliculas";
     }
@@ -251,20 +241,21 @@ public class Editor {
     }
 
     @PostMapping("/actores/editar")
-    public String doEditarActor(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model){
-        PersonaEntity persona = personaRepository.findById(id).orElse(null);
+    public String doEditarActor(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model) {
+        PersonaEntity persona = personaRepository.findById(id).orElse(new PersonaEntity());
+        Actor dtoActor = persona.toDto();
+        dtoActor.setId(persona.getId());
 
-        List<PeliculaEntity> peliculas = peliculaRepository.findAll();
-        List<ActuacionEntity> actuaciones = actuacionRepository.findAll();
-        List<GeneroPeliculaEntity> generos = generoPeliculaRepository.findAll();
-
-        model.addAttribute("persona", persona);
-        model.addAttribute("peliculas", peliculas);
-        model.addAttribute("actuaciones", actuaciones);
-        model.addAttribute("generos", generos);
+        model.addAttribute("actor", dtoActor);
+        model.addAttribute("peliculas", peliculaRepository.findAll());
+        model.addAttribute("actuaciones", actuacionRepository.findAll());
+        model.addAttribute("generosPeliculas", generoPeliculaRepository.findAll());
+        model.addAttribute("generosPersona", generoPersonaRepository.findAll());
+        model.addAttribute("nacionalidades", nacionalidadRepository.findAll());
 
         return "Editor/actor";
     }
+
 
     @PostMapping("/actores/confirmarCambios")
     public String doConfirmarCambiosActores(
