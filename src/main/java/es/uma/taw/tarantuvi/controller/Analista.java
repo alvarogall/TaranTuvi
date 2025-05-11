@@ -1,9 +1,7 @@
 package es.uma.taw.tarantuvi.controller;
 
-import es.uma.taw.tarantuvi.dao.ActuacionRepository;
-import es.uma.taw.tarantuvi.dao.ValoracionRepository;
-import es.uma.taw.tarantuvi.entity.ActuacionEntity;
-import es.uma.taw.tarantuvi.entity.PeliculaEntity;
+import es.uma.taw.tarantuvi.dao.*;
+import es.uma.taw.tarantuvi.entity.*;
 import es.uma.taw.tarantuvi.dto.Analista.AnalistaFiltroAnios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -22,6 +21,20 @@ public class Analista {
     private ValoracionRepository valoracionRepository;
     @Autowired
     private ActuacionRepository actuacionRepository;
+    @Autowired
+    private PeliculaRepository peliculaRepository;
+    @Autowired
+    IdiomaHabladoRepository idiomaHabladoRepository;
+    @Autowired
+    GeneroPeliculaRepository generoPeliculaRepository;
+    @Autowired
+    ProductoraRepository productoraRepository;
+    @Autowired
+    PaisRodajeRepository  paisRodajeRepository;
+    @Autowired
+    DepartamentoRepository departamentoRepository;
+    @Autowired
+    TrabajoRepository trabajoRepository;
 
     @GetMapping("/")
     public String vistaAnalista(Model model) {
@@ -29,16 +42,42 @@ public class Analista {
         return "Analista/inicioAnalista";
     }
 
-    @GetMapping("/ranking")
+    @GetMapping("/peliculas")
     public String rankingAnalista(Model model, @ModelAttribute("filtro") AnalistaFiltroAnios filtro) {
         model.addAttribute("paginaActual", "peliculas");
 
+        List<PeliculaEntity> listaPeliculasFiltradas = this.peliculaRepository.findPeliculasByFiltros(filtro.getGenero(), filtro.getIdioma());;
+
+        if (filtro.getOrdenCampo() != null && filtro.getOrdenTipo() != null) {
+            Comparator<PeliculaEntity> comparator = switch (filtro.getOrdenCampo()) {
+                case "fecha" -> Comparator.comparing(PeliculaEntity::getFechaestreno);
+                case "duracion" -> Comparator.comparing(PeliculaEntity::getDuracion);
+                default -> null;
+            };
+
+            if (comparator != null) {
+                if ("DESC".equalsIgnoreCase(filtro.getOrdenTipo())) {
+                    comparator = comparator.reversed();
+                }
+                listaPeliculasFiltradas.sort(comparator);
+            }
+        }
+        model.addAttribute("peliculasFiltradas", listaPeliculasFiltradas);
+
         int anios = (filtro.getAnios() != null) ? filtro.getAnios() : 25;
 
-        List<Object[]> listaPeliculas = this.valoracionRepository.getPeliculaConMayorNotaMedia();
+        List<Object[]> notas = this.valoracionRepository.getPeliculaConMayorNotaMedia() ;
+        List<PeliculaEntity> listaPeliculas = this.peliculaRepository.findAll();
         model.addAttribute("peliculas", listaPeliculas);
+        model.addAttribute("notas", notas);
         model.addAttribute("anios", anios);
-        return "Analista/vistaRankingAnalista";
+
+        List<IdiomaHabladoEntity> idiomas = this.idiomaHabladoRepository.findAll();
+        List<GeneroPeliculaEntity> generos = this.generoPeliculaRepository.findAll();
+        model.addAttribute("idiomas", idiomas);
+        model.addAttribute("generos", generos);
+
+        return "Analista/vistaPeliculasAnalista";
     }
 
     @GetMapping("/actores")
@@ -68,6 +107,38 @@ public class Analista {
 
 
         return "Analista/vistaActoresAnalista";
+    }
+
+    @GetMapping("/productoras")
+    public String productorasAnalista(Model model) {
+        model.addAttribute("paginaActual", "productoras");
+
+
+        List<Object[]> productorasNotaMedia = this.productoraRepository.getProductorasConNotaMedia();
+        int totalPeliculas = this.productoraRepository.countPeliculasAsociadasProductora();
+        model.addAttribute("productorasNotaMedia", productorasNotaMedia);
+        model.addAttribute("totalPeliculas", totalPeliculas);
+
+        List<PaisRodajeEntity> paisesRodaje = this.paisRodajeRepository.findAll();
+        int totalPaisesRodaje = this.paisRodajeRepository.countPeliculasAsociadasPaisRodaje();
+        model.addAttribute("paisesRodaje", paisesRodaje);
+        model.addAttribute("totalPaisesRodaje", totalPaisesRodaje);
+
+        List<DepartamentoEntity> departamentos = this.departamentoRepository.findAll();
+        int totalTrabajadores = this.trabajoRepository.findAll().size();
+        model.addAttribute("departamentos", departamentos);
+        model.addAttribute("totalTrabajadores", totalTrabajadores);
+        return "Analista/vistaProductorasAnalista";
+    }
+
+    @GetMapping("/valoraciones")
+    public String valoracionesAnalista(Model model) {
+        model.addAttribute("paginaActual", "valoraciones");
+
+        List<Object[]> generosNotaMedia = this.generoPeliculaRepository.findNotaMediaPorGenero();
+        model.addAttribute("generosNotaMedia", generosNotaMedia);
+
+        return "Analista/vistaValoracionesAnalista";
     }
 
 

@@ -17,6 +17,35 @@
     <!-- IZQUIERDA: TABLA DE PELÍCULAS -->
     <div class="left-panel card-table">
         <h3>Datos Generales</h3>
+
+        <form:form method="get" modelAttribute="filtro" action="/analista/peliculas" cssClass="filtro-formulario">
+            <label for="filtro-idioma">Idioma</label>
+            <form:select path="idioma" id="filtro-idioma">
+                <form:option value="">Todos los idiomas</form:option>
+                <form:options items="${idiomas}" itemValue="id" itemLabel="idiomahabladonombre" />
+            </form:select>
+
+            <label for="filtro-genero">Género</label>
+            <form:select path="genero" id="filtro-genero">
+                <form:option value="">Todos los géneros</form:option>
+                <form:options items="${generos}" itemValue="id" itemLabel="generonombre" />
+            </form:select>
+
+            <label for="orden-campo">Ordenar por</label>
+            <form:select path="ordenCampo" id="orden-campo">
+                <form:option value="">-- Seleccionar --</form:option>
+                <form:option value="fecha">Fecha de Estreno</form:option>
+                <form:option value="duracion">Duración</form:option>
+            </form:select>
+
+            <label for="orden-tipo">Tipo de orden</label>
+            <form:select path="ordenTipo" id="orden-tipo">
+                <form:option value="ASC">Ascendente</form:option>
+                <form:option value="DESC">Descendente</form:option>
+            </form:select>
+
+            <button type="submit">Aplicar Filtros</button>
+        </form:form>
         <table>
             <thead>
             <tr>
@@ -24,23 +53,39 @@
                 <th>Idioma</th>
                 <th>Fecha</th>
                 <th>Duración</th>
-                <th>Nota</th>
+                <th>Nota Media</th>
                 <th>Web</th>
                 <th>Géneros</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             <%
-                List<Object[]> peliculasLista = (List<Object[]>) request.getAttribute("peliculas");
-                for (Object[] peliculaObjeto : peliculasLista) {
-                    PeliculaEntity pelicula = (PeliculaEntity) peliculaObjeto[0];
+                List<PeliculaEntity> peliculasListaFiltradas =(List<PeliculaEntity>) request.getAttribute("peliculasFiltradas");
+                List<PeliculaEntity> peliculasLista = (List<PeliculaEntity>) request.getAttribute("peliculas");
+                List<Object[]> notasLista = (List<Object[]>) request.getAttribute("notas");
+                for (PeliculaEntity pelicula : peliculasListaFiltradas) {
             %>
             <tr>
                 <td><%=pelicula.getTitulooriginal()%></td>
                 <td><%=pelicula.getIdiomaoriginalhabladoid().getIdiomahabladonombre()%></td>
                 <td><%=pelicula.getFechaestreno()%></td>
                 <td><%=pelicula.getDuracion()%></td>
-                <td><%=peliculaObjeto[1]%></td>
+                <td>
+                    <%
+                        boolean encontrada = false;
+                        for(Object[] nota : notasLista){
+                            PeliculaEntity p = (PeliculaEntity) nota[0];
+                            if(p != null && p.getId().equals(pelicula.getId())){
+                            encontrada = true;
+                                    %>
+                                    <%=nota[1]%>
+                                    <%
+                                }
+                            }
+                        if(!encontrada){%>No Valorada<%}
+                    %>
+                </td>
                 <td><a href="<%=pelicula.getPaginaweb()%>">Link</a></td>
                 <td>
                     <%
@@ -61,10 +106,10 @@
     <!-- DERECHA: FORMULARIO Y GRÁFICAS -->
     <div class="right-panel">
         <!-- Gráfico 1: Películas por Año -->
-        <div class="card-table">
-        <form:form method="get" modelAttribute="filtro" action="/analista/ranking" class = "card-table h3 " >
+        <div class="card-table" style="text-align: center" >
+        <form:form method="get" modelAttribute="filtro" action="/analista/peliculas" class = "card-table h3 " cssStyle="background-color: rgba(250,250,250,0.92) " >
             Mostrar los últimos
-            <form:input path="anios" type="number" min="1" max="50" style="width: 40px;"/>
+            <form:input path="anios" type="number" min="1" max="50" />
             años
             <button type="submit">Actualizar</button>
         </form:form>
@@ -85,8 +130,7 @@
 
 <!-- TABLAS OCULTAS PARA JS -->
 <table id="tablaPeliculas" style="display:none;">
-    <% for (Object[] peliculaObjeto : peliculasLista) {
-        PeliculaEntity pelicula = (PeliculaEntity) peliculaObjeto[0];
+    <% for (PeliculaEntity pelicula : peliculasLista) {
         int anio = pelicula.getFechaestreno().getYear();
     %>
     <tr><td><%=anio%></td></tr>
@@ -94,16 +138,14 @@
 </table>
 
 <table id="tablaDuraciones" style="display:none;">
-    <% for (Object[] peliculaObjeto : peliculasLista) {
-        PeliculaEntity pelicula = (PeliculaEntity) peliculaObjeto[0];
+    <% for (PeliculaEntity pelicula : peliculasLista) {
     %>
     <tr><td><%=pelicula.getDuracion()%></td></tr>
     <% } %>
 </table>
 
 <table id="tablaGeneros" style="display:none;">
-    <% for (Object[] peliculaObjeto : peliculasLista) {
-        PeliculaEntity pelicula = (PeliculaEntity) peliculaObjeto[0];
+    <% for (PeliculaEntity pelicula : peliculasLista) {
         for (int i = 0; i < pelicula.getGeneroPeliculaList().size(); i++) {
             String genero = pelicula.getGeneroPeliculaList().get(i).getGeneronombre();
     %>
@@ -120,7 +162,7 @@
         });
     });
 
-    const aniosPeliculaFiltro = "${anios}";
+    const aniosPeliculaFiltro =  ${anios};
 
     // === Gráfico 1: Películas por Año ===
     const filasAnio = document.querySelectorAll("#tablaPeliculas tr");
@@ -300,7 +342,7 @@
         data: {
             labels: labelsGenero,
             datasets: [{
-                label: 'Distribución por Género',
+                label: 'Películas por Género',
                 data: dataGenero,
                 backgroundColor: backgroundColors
             }]

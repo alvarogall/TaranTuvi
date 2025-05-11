@@ -11,10 +11,10 @@
     <title>Analista</title>
     <link rel="stylesheet" type="text/css" href="/css/Analista/inicioAnalista.css">
 </head>
-<body>
+<body style="background: #f3f3f3;">
 
 <jsp:include page ="analistaCabecera.jsp"/>
-
+<div class="navbar-container">
 <div class="welcome-container">
     <h1>Bienvenido, Analista 👋</h1>
     <p>Desde esta plataforma puedes gestionar los datos de TaranTuvi.</p>
@@ -27,7 +27,7 @@
         <li>🌐 Visionar las valoraciones de los usuarios.</li>
     </ul>
 </div>
-
+</div>
 
 
 </body>
