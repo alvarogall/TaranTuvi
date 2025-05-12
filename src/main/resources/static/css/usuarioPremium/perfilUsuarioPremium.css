@@ -77,3 +77,47 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+
+.formulario-lista {
+    position: absolute;
+    top: 100px; /* ajusta según necesidad */
+    right: 40px; /* ajusta según necesidad */
+    width: 300px;
+    padding: 20px;
+    background-color: #f8f9fa; /* gris muy claro */
+    border: 1px solid #dee2e6; /* gris más oscuro */
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.formulario-lista label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #333;
+}
+
+.formulario-lista input[type="text"],
+.formulario-lista input[type="submit"],
+.formulario-lista button {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.formulario-lista button {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.formulario-lista button:hover {
+    background-color: #0056b3;
+}
+

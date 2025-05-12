@@ -2,6 +2,7 @@
 <%@ page import="es.uma.taw.tarantuvi.dto.*" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.ListaPeliculaEntity" %>
 <%@ page import="java.util.List" %>
+<%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -47,11 +48,29 @@
                 <div class="seccion">
                     <h3><%=lista.getListapeliculanombre()%></h3>
                     <div class="grid-caratulas">
-                        <div class="caratula"></div>
-                        <div class="caratula"></div>
-                        <div class="caratula"></div>
-                        <div class="caratula"></div>
+                        <%
+                            if(lista.getPeliculaList().isEmpty()){
+                        %>
+                            
+                            <p>La lista está vacía</p>
+                            <br>
+                        <%
+                            }else{
+                        
+                                for(PeliculaEntity pelicula : lista.getPeliculaList()){
+                        %>
+                        <div>
+                            <img class="caratula" src="<%=pelicula.getUrlcaratula()%>" alt="">
+                        </div>
+                            
+                        <%
+                                }
+                            }
+                        %>
+                        
+
                     </div>
+                    <br>
 
 
 
@@ -60,25 +79,25 @@
             }
         %>
 
-        <div class="seccion">
-            <h3>MIS LISTAS</h3>
-            <div class="grid-caratulas">
-                <div class="caratula"></div>
-                <div class="caratula"></div>
-                <div class="caratula"></div>
-                <div class="caratula"></div>
-            </div>
-        </div>
-        <div class="seccion">
-            <h3>PELÍCULAS VISTAS</h3>
-            <div class="grid-caratulas">
-                <div class="caratula"></div>
-                <div class="caratula"></div>
-                <div class="caratula"></div>
-                <div class="caratula"></div>
-            </div>
-        </div>
+
+
     </section>
+
+    <div class="formulario-lista">
+        <h2>Crear nueva lista</h2>
+        <br>
+        <form:form method="POST" action="/usuarioPremium/crearLista" modelAttribute="listaPelicula">
+            <!-- Campo oculto para usuario -->
+            <form:hidden path="usuarioId" value="<%=user.getUsuarioId()%>"/>
+
+            <!-- Campo para el nombre de la lista -->
+            <label for="listaPeliculaNombre">Nombre de la lista:</label>
+            <form:input path="listaPeliculaNombre" id="listaPeliculaNombre" required="true"/>
+
+            <br/><br/>
+            <button type="submit">Crear Lista</button>
+        </form:form>
+    </div>
 </main>
 </body>
 </html>
