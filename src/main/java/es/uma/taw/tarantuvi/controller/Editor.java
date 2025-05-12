@@ -267,7 +267,7 @@ public class Editor {
             persona.setGeneropersonaid(generoPersonaRepository.findById(dtoActor.getGenero()).orElse(null));
             persona.setNacionalidadid(nacionalidadRepository.findById(dtoActor.getNacionalidad()).orElse(null));
 
-            if(dtoActor.getNombrePersonaje().trim() != ""){
+            if(dtoActor.getNombrePersonaje() != null && !dtoActor.getNombrePersonaje().trim().isEmpty()){
                 ActuacionEntity actuacion = new ActuacionEntity();
                 actuacion.setPersonaId(persona);
                 actuacion.setGeneropersonaid(persona.getGeneropersonaid());
@@ -275,8 +275,8 @@ public class Editor {
                 this.actuacionRepository.save(actuacion);
             }
 
-            if( != null){
-                for(Integer peliculaId : peliculas){
+            if(dtoActor.getActuaciones() != null){
+                for(Integer peliculaId : dtoActor.getActuaciones()){
                     PeliculaEntity pelicula = peliculaRepository.findById(peliculaId).orElse(null);
                     if(pelicula != null){
                         for(ActuacionEntity act : pelicula.getActuacionList()){
