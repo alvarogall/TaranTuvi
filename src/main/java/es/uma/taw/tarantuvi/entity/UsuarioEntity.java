@@ -36,6 +36,7 @@ public class UsuarioEntity {
     public Usuario toDto() {
         Usuario usuario = new Usuario();
 
+        usuario.setUsuarioId(this.id);
         usuario.setUsuario(this.usuario);
         usuario.setPassword(this.password);
         usuario.setRol(this.rolid.getRolnombre());

@@ -1,7 +1,11 @@
 package es.uma.taw.tarantuvi.controller;
 
+import es.uma.taw.tarantuvi.dao.ListaPeliculaRepository;
 import es.uma.taw.tarantuvi.dao.PeliculaRepository;
+import es.uma.taw.tarantuvi.dto.Usuario;
+import es.uma.taw.tarantuvi.entity.ListaPeliculaEntity;
 import es.uma.taw.tarantuvi.entity.PeliculaEntity;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -19,6 +23,9 @@ public class UsuarioPremium {
     @Autowired
     protected PeliculaRepository peliculaRepository;
 
+    @Autowired
+    protected ListaPeliculaRepository listaPeliculaRepository;
+
     @GetMapping("/")
     public String usuarioPlus(Model model) {
         List<PeliculaEntity> peliculas = peliculaRepository.findAll();
@@ -27,6 +34,18 @@ public class UsuarioPremium {
         model.addAttribute("novedades", novedades);
 
         return "UsuarioPremium/inicioUsuarioPremium";
+    }
+
+    @GetMapping("/perfil")
+    public String doPerfil(Model model, HttpSession session) {
+
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        Integer idUsuario = usuario.getUsuarioId();
+
+        List<ListaPeliculaEntity> listasPeliculas = listaPeliculaRepository.findListasByUsuarioid(idUsuario);
+        model.addAttribute("listasPeliculas", listasPeliculas);
+
+        return "UsuarioPremium/perfilUsuarioPremium";
     }
 
 

@@ -1,0 +1,79 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    color: #000;
+}
+
+
+
+
+
+/* Layout principal */
+.perfil-container {
+    display: flex;
+    padding: 20px;
+}
+
+/* Panel lateral izquierdo */
+.perfil-usuario {
+    width: 250px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+}
+
+.icono-usuario {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
+
+.perfil-usuario h2 {
+    margin-bottom: 10px;
+}
+
+.logout-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: 1px solid #000;
+    background-color: transparent;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Contenido principal */
+.perfil-contenido {
+    flex-grow: 1;
+    padding-left: 40px;
+}
+
+.seccion {
+    margin-bottom: 40px;
+}
+
+.seccion h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.grid-caratulas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.caratula {
+    width: 100px;
+    height: 150px;
+    background-color: #ccc;
+    border: 1px solid #999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

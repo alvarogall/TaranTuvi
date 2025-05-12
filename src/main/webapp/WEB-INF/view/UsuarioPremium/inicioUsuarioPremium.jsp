@@ -27,7 +27,7 @@ String img3 = peliculas.get(2).getUrlcaratula();
 </head>
 <body>
 
-<jsp:include page="../Componentes/navBarNormal.jsp">
+<jsp:include page="../Componentes/navBarEnlacePerfil.jsp">
     <jsp:param name="activePage" value="inicio"/>
 </jsp:include>
 
@@ -74,30 +74,16 @@ String img3 = peliculas.get(2).getUrlcaratula();
         </aside>
     </section>
 
-    <!-- Actores destacados -->
-    <section class="actores-destacados">
-        <h2>Actores destacados</h2>
-        <div class="actores">
-            <div class="actor">
+    <!-- Peliculas recomendads -->
+    <section class="peliculas-destacados">
+        <h2>Peliculas recomendadas</h2>
+        <div class="peliculas">
+            <div class="pelicula">
                 <div class="actor-img">👤</div>
-                <p>Actor</p>
+                <p></p>
             </div>
-            <div class="actor">
-                <div class="actor-img">👤</div>
-                <p>Actor</p>
-            </div>
-            <div class="actor">
-                <div class="actor-img">👤</div>
-                <p>Actor</p>
-            </div>
-            <div class="actor">
-                <div class="actor-img">👤</div>
-                <p>Actor</p>
-            </div>
-            <div class="actor">
-                <div class="actor-img">👤</div>
-                <p>Actor</p>
-            </div>
+
+
         </div>
     </section>
 </main>
