@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface GeneroPersonaRepository extends JpaRepository<GeneroPersonaEntity, Integer> {
-    @Query("Select g from GeneroPersonaEntity g where g.generopersonanombre = :trim")
-    GeneroPersonaEntity findByNombre(String trim);
+    //@Query("Select g from GeneroPersonaEntity g where g.generopersonanombre = :trim")
+    //GeneroPersonaEntity findByNombre(String trim);
 }

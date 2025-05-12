@@ -16,6 +16,7 @@ public class Actor {
     protected String urlfoto;
     protected String nombre;
     protected Integer genero;
+    protected String nombrePersonaje;
     protected Integer nacionalidad;
     protected List<Integer> peliculas;
     protected List<Integer> actuaciones;

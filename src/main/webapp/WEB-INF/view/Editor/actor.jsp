@@ -43,7 +43,7 @@
             </div>
 
             <label class="select-label">Género:</label>
-            <form:select path="genero" items="${generosPersona}" itemValue="id" itemLabel="generopersonanombre" multiple="true" cssClass="multi-select" />
+            <form:select path="genero" items="${generosPersona}" itemValue="id" itemLabel="generopersonanombre" multiple="false" cssClass="multi-select-genero" />
 
         </div>
     </div>
@@ -57,6 +57,9 @@
 
             <label class="select-label">Personajes:</label>
             <form:select path="actuaciones" items="${actuaciones}" itemValue="id" itemLabel="personaje" multiple="true" cssClass="multi-select" />
+
+            <label class="select-label">Personaje nuevo (Si lo deseas):</label>
+            <form:input path="nombrePersonaje"/>
         </div>
 
         <!-- Columna 2 -->

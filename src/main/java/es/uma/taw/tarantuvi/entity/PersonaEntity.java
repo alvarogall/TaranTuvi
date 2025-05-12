@@ -67,7 +67,7 @@ public class PersonaEntity {
             List<Integer> idsGeneros = new ArrayList<Integer>();
             for(ActuacionEntity a : this.actuacionList){
                 for(GeneroPeliculaEntity g : a.getPeliculaid().getGeneroPeliculaList()){
-                    if(idsGeneros.contains(g.getId())){
+                    if(!idsGeneros.contains(g.getId())){
                         idsGeneros.add(g.getId());
                     }
                 }
