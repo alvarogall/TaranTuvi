@@ -18,7 +18,7 @@
 
 <jsp:include page ="analistaCabecera.jsp"/>
 
-<div class="stats-container">
+<div class="stats-container" >
     <div class="card-table">
         <h3>Género Global</h3>
         <table>
@@ -85,7 +85,7 @@
         <h3>Actores por País</h3>
         <table>
             <tr>
-                <th>País</th>
+                <th>Nacionalidad</th>
                 <th>Cantidad</th>
                 <th>Porcentaje</th>
             </tr>
@@ -115,11 +115,11 @@
         <table>
             <tr>
                 <td><strong>Nombre:</strong></td>
-                <td><input style = "text-decoration-color: #7700ff" type="text" disabled value="<%=pelicula.getTitulooriginal()%>"></td>
+                <td style = "text-align: right"><input style = "text-decoration-color: #7700ff" type="text" disabled value="<%=pelicula.getTitulooriginal()%>"></td>
             </tr>
             <tr>
                 <td><strong>Nota Media:</strong></td>
-                <td><input type="text" disabled value="<%=mejorPelicula[1]%>"></td>
+                <td style = "text-align: right"><input type="text" disabled value="<%=mejorPelicula[1]%>"></td>
             </tr>
         </table>
         <br/>

@@ -11,7 +11,4 @@ public interface PeliculaRepository extends JpaRepository<PeliculaEntity, Intege
     @Query("SELECT p FROM PeliculaEntity p ORDER BY p.fechaestreno DESC")
     List<PeliculaEntity> findPeliculasMasRecientes(Pageable pageable);
 
-    @Query("select p from PeliculaEntity p order by p.fechaestreno desc limit 2")
-    List<PeliculaEntity> obtenerNovedades();
-
 }

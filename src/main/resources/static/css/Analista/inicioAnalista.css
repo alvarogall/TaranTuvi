@@ -88,15 +88,17 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    z-index: -1; /* Asegura que el fondo esté detrás de los otros elementos */
+
 }
 
 .welcome-container {
     max-width: 800px;
-    margin: 40px auto;
+    margin: 60px auto;
     padding: 30px;
     background-color: #ffffff;
     border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     text-align: center;
 }
 

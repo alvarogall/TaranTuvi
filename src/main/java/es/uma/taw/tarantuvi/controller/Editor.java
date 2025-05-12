@@ -1,19 +1,18 @@
 package es.uma.taw.tarantuvi.controller;
 
 import es.uma.taw.tarantuvi.dao.*;
+import es.uma.taw.tarantuvi.dto.Actor;
 import es.uma.taw.tarantuvi.entity.*;
+import es.uma.taw.tarantuvi.dto.Pelicula;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/editor")
@@ -67,154 +66,173 @@ public class Editor {
     }
 
     @PostMapping("/peliculas/editar")
-    public String doEditarPelicula(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model) {
-        PeliculaEntity pelicula = this.peliculaRepository.findById(id).orElse(new PeliculaEntity());
+    public String doEditarPelicula(@RequestParam(value = "id", defaultValue = "-1") Integer id,
+                                   Model model) {
 
-        List<ActuacionEntity> actuaciones = this.actuacionRepository.findAll();
-        List<PersonaEntity> personas = this.personaRepository.findAll();
-        List<ProductoraEntity> productoras = this.productoraRepository.findAll();
-        List<IdiomaHabladoEntity> idiomas = this.idiomaHabladoRepository.findAll();
-        List<GeneroPeliculaEntity> generos = this.generoPeliculaRepository.findAll();
-        List<DepartamentoEntity> departamentos = this.departamentoRepository.findAll();
-        List<PaisRodajeEntity> paisesRodaje = this.paisRodajeRepository.findAll();
-        List<TrabajoEntity> trabajos = this.trabajoRepository.findAll();
+        PeliculaEntity entidad = peliculaRepository.findById(id)
+                .orElse(new PeliculaEntity());
+        Pelicula dtoPelicula = entidad.toDto();
+        dtoPelicula.setId(entidad.getId());
 
-        model.addAttribute("pelicula", pelicula);
-        model.addAttribute("actuaciones", actuaciones);
-        model.addAttribute("personas", personas);
-        model.addAttribute("productoras", productoras);
-        model.addAttribute("idiomas", idiomas);
-        model.addAttribute("generos", generos);
-        model.addAttribute("departamentos", departamentos);
+        List<ActuacionEntity> actuacionesFiltradas = new ArrayList<>();
+        if (entidad.getActuacionList() != null) {
+            actuacionesFiltradas.addAll(entidad.getActuacionList());
+        }
+        // Construir conjunto de claves de las ya añadidas
+        Set<String> clavesAct = actuacionesFiltradas.stream()
+                .map(a -> a.getPersonaid().getId() + "|" + a.getPersonaje())
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+        // Añadir luego las que falten
+        for (ActuacionEntity a : actuacionRepository.findAll()) {
+            String clave = a.getPersonaid().getId() + "|" + a.getPersonaje();
+            if (!clavesAct.contains(clave)) {
+                clavesAct.add(clave);
+                actuacionesFiltradas.add(a);
+            }
+        }
+
+        List<TrabajoEntity> crewFiltrado = new ArrayList<>();
+        if (entidad.getTrabajoList() != null) {
+            crewFiltrado.addAll(entidad.getTrabajoList());
+        }
+        Set<String> clavesTrab = crewFiltrado.stream()
+                .map(t -> t.getPersonaid().getId() + "|" + t.getTrabajonombre())
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+        for (TrabajoEntity t : trabajoRepository.findAll()) {
+            String clave = t.getPersonaid().getId() + "|" + t.getTrabajonombre();
+            if (!clavesTrab.contains(clave)) {
+                clavesTrab.add(clave);
+                crewFiltrado.add(t);
+            }
+        }
+
+        List<ProductoraEntity>     productoras  = productoraRepository.findAll();
+        List<IdiomaHabladoEntity>  idiomas      = idiomaHabladoRepository.findAll();
+        List<GeneroPeliculaEntity> generos      = generoPeliculaRepository.findAll();
+        List<PaisRodajeEntity>     paisesRodaje = paisRodajeRepository.findAll();
+
+        model.addAttribute("pelicula",     dtoPelicula);
+        model.addAttribute("actuaciones",  actuacionesFiltradas);
+        model.addAttribute("crewList",     crewFiltrado);
+        model.addAttribute("productoras",  productoras);
+        model.addAttribute("idiomas",      idiomas);
+        model.addAttribute("generos",      generos);
         model.addAttribute("paisesRodaje", paisesRodaje);
-        model.addAttribute("trabajos", trabajos);
 
         return "Editor/pelicula";
     }
 
     @PostMapping("/peliculas/confirmarCambios")
-    public String doConfirmarCambiosPelicula(
-            @RequestParam(value = "id", defaultValue = "-1") Integer id,
-            @RequestParam("nombre") String nombre,
-            @RequestParam("fecha") String fecha,
-            @RequestParam("duracion") String duracion,
-            @RequestParam("descripcion") String descripcion,
-            @RequestParam(value = "crew", required = false) List<Integer> crew,
-            @RequestParam(value = "cast", required = false) List<Integer> cast,
-            @RequestParam(value = "productoras", required = false) List<Integer> productoras,
-            @RequestParam(value = "paisesRodaje", required = false) List<Integer> paisesRodaje,
-            @RequestParam(value = "idiomas", required = false) List<Integer> idiomas,
-            @RequestParam(value = "generos", required = false) List<Integer> generos,
-            @RequestParam("recaudacion") String recaudacion,
-            @RequestParam("estado") String estado,
-            @RequestParam("presupuesto") String presupuesto,
-            @RequestParam("url") String url,
-            @RequestParam("paginaweb") String paginaweb,
-            @RequestParam("eslogan") String eslogan,
-            Model model) {
+    public String doConfirmarCambiosPelicula(@ModelAttribute Pelicula dtoPelicula, Model model) {
+        Integer id = dtoPelicula.getId();
+        PeliculaEntity pelicula = peliculaRepository.findById(id)
+                .orElse(new PeliculaEntity());
 
-        PeliculaEntity pelicula = peliculaRepository.findById(id).orElse(new PeliculaEntity());
+        pelicula.setTitulooriginal(dtoPelicula.getTitulooriginal());
+        pelicula.setFechaestreno(LocalDate.parse(dtoPelicula.getFecha()));
+        pelicula.setDuracion(Integer.parseInt(dtoPelicula.getDuracion().trim()));
+        pelicula.setDescripcion(dtoPelicula.getDescripcion());
+        pelicula.setRecaudacion(BigDecimal.valueOf(
+                Long.parseLong(dtoPelicula.getRecaudacion().trim())));
+        pelicula.setEstado(dtoPelicula.getEstado());
+        pelicula.setPresupuesto(BigDecimal.valueOf(
+                Long.parseLong(dtoPelicula.getPresupuesto().trim())));
+        pelicula.setUrlcaratula(dtoPelicula.getUrlcaratula());
+        pelicula.setPaginaweb(dtoPelicula.getPaginaweb());
+        pelicula.setEslogan(dtoPelicula.getEslogan());
 
-        // Asignar valores simples
-        pelicula.setTitulooriginal(nombre);
-        pelicula.setFechaestreno(LocalDate.parse(fecha));
-        pelicula.setDuracion(Integer.parseInt(duracion.trim()));
-        pelicula.setDescripcion(descripcion);
-        pelicula.setRecaudacion(BigDecimal.valueOf(Long.parseLong(recaudacion.trim())));
-        pelicula.setEstado(estado);
-        pelicula.setPresupuesto(BigDecimal.valueOf(Long.parseLong(presupuesto.trim())));
-        pelicula.setUrlcaratula(url);
-        pelicula.setPaginaweb(paginaweb);
-        pelicula.setEslogan(eslogan);
-
-        // Limpiar listas relacionadas
-
-        if(id != -1){
-            for(ActuacionEntity a : pelicula.getActuacionList()){
-                a.setPeliculaId(null);
-            }
-
-            for(TrabajoEntity t : pelicula.getTrabajoList()){
-                t.setPeliculaId(null);
-            }
-        }
-        pelicula.setActuacionList(new ArrayList<>());
-        pelicula.setTrabajoList(new ArrayList<>());
         pelicula.setGeneroPeliculaList(new ArrayList<>());
         pelicula.setProductoraList(new ArrayList<>());
         pelicula.setPaisRodajeList(new ArrayList<>());
         pelicula.setIdiomaHabladoList(new ArrayList<>());
 
-        // Cast
-        if (cast != null && !cast.isEmpty()) {
-            for (Integer castId : cast) {
-                ActuacionEntity a = actuacionRepository.findById(castId).orElse(null);
-                if (a != null) {
-                    a.setPeliculaId(pelicula);
-                    pelicula.getActuacionList().add(a);
-                }
+        // CAST: sólo CLONA si no existe ya persona+personaje
+        List<ActuacionEntity> actuales = pelicula.getActuacionList();
+        if (actuales == null) {
+            actuales = new ArrayList<>();
+            pelicula.setActuacionList(actuales);
+        }
+        if (dtoPelicula.getCast() != null) {
+            for (Integer castId : dtoPelicula.getCast()) {
+                ActuacionEntity original = actuacionRepository.findById(castId)
+                        .orElse(null);
+                if (original == null) continue;
+
+                boolean yaExiste = actuales.stream().anyMatch(a ->
+                        a.getPersonaid().getId().equals(original.getPersonaid().getId())
+                                && a.getPersonaje().equals(original.getPersonaje())
+                );
+                if (yaExiste) continue;
+
+                ActuacionEntity copia = new ActuacionEntity();
+                copia.setPersonaId(original.getPersonaid());
+                copia.setGeneropersonaid(original.getGeneropersonaid());
+                copia.setPersonaje(original.getPersonaje());
+                copia.setOrden(original.getOrden());
+                copia.setPeliculaId(pelicula);
+
+                actuacionRepository.save(copia);
+                actuales.add(copia);
             }
         }
 
-        // Crew
-        if (crew != null && !crew.isEmpty()) {
-            for (Integer crewId : crew) {
-                TrabajoEntity trabajo = this.trabajoRepository.findById(crewId).orElse(null);
-                if (trabajo != null) {
-                    trabajo.setPeliculaId(pelicula);
-                    pelicula.getTrabajoList().add(trabajo);
-                }
+        // CREW: sólo CLONA si no existe persona+trabajonombre
+        List<TrabajoEntity> crewActual = pelicula.getTrabajoList();
+        if (crewActual == null) {
+            crewActual = new ArrayList<>();
+            pelicula.setTrabajoList(crewActual);
+        }
+        if (dtoPelicula.getCrew() != null) {
+            for (Integer crewId : dtoPelicula.getCrew()) {
+                TrabajoEntity original = trabajoRepository.findById(crewId)
+                        .orElse(null);
+                if (original == null) continue;
+
+                boolean yaExiste = crewActual.stream().anyMatch(t ->
+                        t.getPersonaid().getId().equals(original.getPersonaid().getId())
+                                && t.getTrabajonombre().equals(original.getTrabajonombre())
+                );
+                if (yaExiste) continue;
+
+                TrabajoEntity copia = new TrabajoEntity();
+                copia.setPersonaId(original.getPersonaid());
+                copia.setTrabajonombre(original.getTrabajonombre());
+                copia.setDepartamentoid(original.getDepartamentoid());
+                copia.setPeliculaId(pelicula);
+
+                trabajoRepository.save(copia);
+                crewActual.add(copia);
             }
         }
 
-        // Idiomas
-        if (idiomas != null && !idiomas.isEmpty()) {
-            for (Integer idiomaId : idiomas) {
-                idiomaHabladoRepository.findById(idiomaId).ifPresent(i -> pelicula.getIdiomaHabladoList().add(i));
+        if (dtoPelicula.getIdiomas() != null) {
+            for (Integer idiomaId : dtoPelicula.getIdiomas()) {
+                idiomaHabladoRepository.findById(idiomaId)
+                        .ifPresent(i -> pelicula.getIdiomaHabladoList().add(i));
+            }
+        }
+        if (dtoPelicula.getProductoras() != null) {
+            for (Integer pid : dtoPelicula.getProductoras()) {
+                productoraRepository.findById(pid)
+                        .ifPresent(p -> pelicula.getProductoraList().add(p));
+            }
+        }
+        if (dtoPelicula.getPaisesRodaje() != null) {
+            for (Integer pid : dtoPelicula.getPaisesRodaje()) {
+                paisRodajeRepository.findById(pid)
+                        .ifPresent(p -> pelicula.getPaisRodajeList().add(p));
+            }
+        }
+        if (dtoPelicula.getGeneros() != null) {
+            for (Integer gid : dtoPelicula.getGeneros()) {
+                generoPeliculaRepository.findById(gid)
+                        .ifPresent(g -> pelicula.getGeneroPeliculaList().add(g));
             }
         }
 
-        /*
-        System.out.println("Idiomas recibidos: " + idiomas);
-        System.out.println("Cast recibido: " + cast);
-        System.out.println("Crew recibido: " + crew);
-        */
-
-        // Productoras
-        if (productoras != null) {
-            for (Integer productoraId : productoras) {
-                productoraRepository.findById(productoraId).ifPresent(p -> pelicula.getProductoraList().add(p));
-            }
-        }
-
-        // Países de rodaje
-        if (paisesRodaje != null) {
-            for (Integer paisId : paisesRodaje) {
-                paisRodajeRepository.findById(paisId).ifPresent(p -> pelicula.getPaisRodajeList().add(p));
-            }
-        }
-
-        // Géneros
-        if (generos != null) {
-            for (Integer generoId : generos) {
-                generoPeliculaRepository.findById(generoId).ifPresent(g -> pelicula.getGeneroPeliculaList().add(g));
-            }
-        }
-
-        /*
-        for(ActuacionEntity a : pelicula.getActuacionList()){
-            System.out.println(a.getPersonaid().getNombre() + " - " + a.getPersonaje());
-        }
-        this.peliculaRepository.save(pelicula);
-        for(ActuacionEntity a : pelicula.getActuacionList()){
-            System.out.println(a.getPersonaid().getNombre() + " - " + a.getPersonaje());
-        }
-        */
-
-        this.peliculaRepository.save(pelicula);
+        peliculaRepository.save(pelicula);
         return "redirect:/editor/peliculas";
     }
-
 
     @PostMapping("peliculas/borrar")
     public String doBorrarPelicula(@RequestParam("id") Integer id){
@@ -223,20 +241,21 @@ public class Editor {
     }
 
     @PostMapping("/actores/editar")
-    public String doEditarActor(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model){
-        PersonaEntity persona = personaRepository.findById(id).orElse(null);
+    public String doEditarActor(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model) {
+        PersonaEntity persona = personaRepository.findById(id).orElse(new PersonaEntity());
+        Actor dtoActor = persona.toDto();
+        dtoActor.setId(persona.getId());
 
-        List<PeliculaEntity> peliculas = peliculaRepository.findAll();
-        List<ActuacionEntity> actuaciones = actuacionRepository.findAll();
-        List<GeneroPeliculaEntity> generos = generoPeliculaRepository.findAll();
-
-        model.addAttribute("persona", persona);
-        model.addAttribute("peliculas", peliculas);
-        model.addAttribute("actuaciones", actuaciones);
-        model.addAttribute("generos", generos);
+        model.addAttribute("actor", dtoActor);
+        model.addAttribute("peliculas", peliculaRepository.findAll());
+        model.addAttribute("actuaciones", actuacionRepository.findAll());
+        model.addAttribute("generosPeliculas", generoPeliculaRepository.findAll());
+        model.addAttribute("generosPersona", generoPersonaRepository.findAll());
+        model.addAttribute("nacionalidades", nacionalidadRepository.findAll());
 
         return "Editor/actor";
     }
+
 
     @PostMapping("/actores/confirmarCambios")
     public String doConfirmarCambiosActores(
@@ -298,5 +317,4 @@ public class Editor {
         this.personaRepository.deleteById(id);
         return "redirect:/editor/actores";
     }
-
 }

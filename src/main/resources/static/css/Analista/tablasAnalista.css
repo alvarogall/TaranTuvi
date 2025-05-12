@@ -1,17 +1,20 @@
 .stats-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 35px;
     justify-content: center;
-    margin: 20px;
+    padding: 60px;
 }
 
 .card-table {
     background-color: #fdfdfd;
-    padding: 20px;
+    padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    min-width: 350px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .card-table h3 {
@@ -40,7 +43,6 @@ input[disabled] {
     border-color: #afafaf;
     padding: 5px;
 }
-
-body{
+body {
     background: #f3f3f3;
 }

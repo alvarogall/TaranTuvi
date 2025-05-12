@@ -23,7 +23,7 @@ String img3 = peliculas.get(2).getUrlcaratula();
 
 <head>
     <title>Usuario Recomendador</title>
-    <link rel="stylesheet" type="text/css" href="css/inicioUsuarioPremium.css">
+    <link rel="stylesheet" type="text/css" href="/css/usuarioPremium/inicioUsuarioPremium.css">
 </head>
 <body>
 

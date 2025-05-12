@@ -1,11 +1,15 @@
 package es.uma.taw.tarantuvi.entity;
 
+import es.uma.taw.tarantuvi.dto.Pelicula;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -118,47 +122,5 @@ public class PeliculaEntity {
 
     public void add(ActuacionEntity actuacion) {
         this.actuacionList.add(actuacion);
-    }
-
-    public String toStringIdiomaHablado() {
-        StringBuilder sb = new StringBuilder();
-
-        for(int i = 0; i < this.getIdiomaHabladoList().size(); i++) {
-            sb.append(this.getIdiomaHabladoList().get(i).getIdiomahabladonombre());
-
-            if(i < this.getIdiomaHabladoList().size() - 1) {
-                sb.append(", ");
-            }
-        }
-
-        return sb.toString();
-    }
-
-    public String toStringProductora() {
-        StringBuilder sb = new StringBuilder();
-
-        for(int i = 0; i < this.getProductoraList().size(); i++) {
-            sb.append(this.getProductoraList().get(i).getProductoranombre());
-
-            if(i < this.getProductoraList().size() - 1) {
-                sb.append(", ");
-            }
-        }
-
-        return sb.toString();
-    }
-
-    public String toStringPaisRodaje() {
-        StringBuilder sb = new StringBuilder();
-
-        for(int i = 0; i < this.getPaisRodajeList().size(); i++) {
-            sb.append(this.getPaisRodajeList().get(i).getPaisrodajenombre());
-
-            if(i < this.getPaisRodajeList().size() - 1) {
-                sb.append(", ");
-            }
-        }
-
-        return sb.toString();
     }
 }

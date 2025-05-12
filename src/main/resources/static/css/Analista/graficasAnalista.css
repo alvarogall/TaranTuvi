@@ -1,0 +1,96 @@
+.filtro-formulario {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.filtro-formulario select,
+.filtro-formulario input{
+    padding: 3px;
+    min-width: 150px;
+}
+
+.main-container {
+    display: flex;
+    padding: 60px;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.left-panel {
+    flex-grow: 1;
+}
+
+.right-panel {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.card-table {
+    background-color: #fdfdfd;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card-table h3 {
+    margin-top: 0;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+form input {
+    background-color: #f8f8f8;
+    border-color: #afafaf;
+    padding: 5px 2px;
+    width: 50px;
+}
+
+button {
+    padding: 9px 20px;
+    background-color: #007afd;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1c8cff;
+}
+
+canvas {
+    max-width: 100%;
+}
+
+body {
+    background: #f3f3f3;
+    background-image: url('/img/fondoAnalista.png');
+    background-size: 696px 444px;
+    background-position-x: 320px;
+    background-position-y: 470px;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0;
+
+}
