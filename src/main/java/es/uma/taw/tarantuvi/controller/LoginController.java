@@ -12,13 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class LoginController {
+public class LoginController extends BaseController {
     @Autowired
     protected UsuarioRepository usuarioRepository;
-
-    protected boolean estaAutenticado(HttpSession session) {
-        return session.getAttribute("usuario") != null;
-    }
 
     @GetMapping("/")
     public String doInit(HttpSession session,
@@ -35,7 +31,7 @@ public class LoginController {
             return sb.toString();
         } else {
             model.addAttribute("usuario", new Usuario());
-            return "Login/login";
+            return "login/login";
         }
     }
 
@@ -58,7 +54,7 @@ public class LoginController {
             return sb.toString();
         } else {
             model.addAttribute("error", "Te has equivocado");
-            return "Login/login";
+            return "login/login";
         }
     }
 

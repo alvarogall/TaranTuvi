@@ -172,6 +172,13 @@ form {
     min-height: 100px;
     margin-bottom: 15px;
 }
+
+.multi-select-genero {
+    width: 50%;
+    min-height: 50px;
+    margin-bottom: 15px;
+}
+
 .select-label {
     display: block;
     margin-bottom: 5px;

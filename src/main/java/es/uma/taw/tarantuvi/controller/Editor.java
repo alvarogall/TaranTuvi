@@ -256,41 +256,26 @@ public class Editor {
         return "Editor/actor";
     }
 
-
     @PostMapping("/actores/confirmarCambios")
-    public String doConfirmarCambiosActores(
-            @RequestParam(value = "id", defaultValue = "-1") Integer id,
-            @RequestParam("url") String url,
-            @RequestParam("nombre") String nombre,
-            @RequestParam("genero") String genero,
-            @RequestParam("nacionalidad") String nacionalidad,
-            @RequestParam("peliculas") List<Integer> peliculas,
-            @RequestParam("personajes") List<Integer> personajes,
-            @RequestParam("generos") List<Integer> generos,
-            Model model){
+    public String doConfirmarCambiosActores(@ModelAttribute Actor dtoActor, Model model){
 
+            Integer id = dtoActor.getId();
             PersonaEntity persona = personaRepository.findById(id).orElse(new PersonaEntity());
-            GeneroPersonaEntity generoPersona = this.generoPersonaRepository.findByNombre(genero.trim());
-            NacionalidadEntity nacionalidadPersona = this.nacionalidadRepository.findByNombre(nacionalidad.trim());
 
-            persona.setUrlfoto(url);
-            persona.setNombre(nombre);
-            persona.setGeneropersonaid(generoPersona);
-            persona.setNacionalidadid(nacionalidadPersona);
+            persona.setUrlfoto(dtoActor.getUrlfoto());
+            persona.setNombre(dtoActor.getNombre());
+            persona.setGeneropersonaid(generoPersonaRepository.findById(dtoActor.getGenero()).orElse(null));
+            persona.setNacionalidadid(nacionalidadRepository.findById(dtoActor.getNacionalidad()).orElse(null));
 
-            for(Integer p : peliculas){
-                PeliculaEntity pelicula = this.peliculaRepository.findById(p).orElse(null);
-                for(ActuacionEntity act : persona.getActuacionList()){
-                    if(act.getPeliculaid().equals(pelicula.getId())){
-                        act.setPersonaId(null);
-                        act.setPeliculaId(null);
-                    }
-                }
+            if(dtoActor.getNombrePersonaje().trim() != ""){
+                ActuacionEntity actuacion = new ActuacionEntity();
+                actuacion.setPersonaId(persona);
+                actuacion.setGeneropersonaid(persona.getGeneropersonaid());
+                actuacion.setPersonaje(dtoActor.getNombrePersonaje().trim());
+                this.actuacionRepository.save(actuacion);
             }
-            
-            persona.setActuacionList(new ArrayList<>());
 
-            if(peliculas != null){
+            if( != null){
                 for(Integer peliculaId : peliculas){
                     PeliculaEntity pelicula = peliculaRepository.findById(peliculaId).orElse(null);
                     if(pelicula != null){
