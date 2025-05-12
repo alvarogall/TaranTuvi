@@ -1,0 +1,167 @@
+body {
+    background: #f4f5f7;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+.detalle-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 48px 0 24px 0;
+}
+
+.detalle-card {
+    display: flex;
+    flex-direction: row;
+    background: linear-gradient(90deg, #fff 80%, #f9fafb 100%);
+    border: 1.5px solid #e0e3e8;
+    border-radius: 14px;
+    box-sizing: border-box;
+    max-width: 880px;
+    width: 100%;
+    min-height: 340px;
+    padding: 32px 32px 32px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    gap: 36px;
+}
+
+.detalle-caratula img {
+    width: 180px;
+    height: 270px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e0e3e8;
+    background: #fff;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+}
+
+.detalle-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-width: 0;
+}
+
+.detalle-titulo {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #1a1a1a;
+    line-height: 1.2;
+}
+
+.detalle-eslogan {
+    font-size: 1.1em;
+    color: #007bff;
+    margin-bottom: 8px;
+    font-style: italic;
+}
+
+.detalle-meta {
+    color: #5a5a5a;
+    font-size: 1em;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.detalle-badges {
+    margin-bottom: 12px;
+}
+.badge {
+    display: inline-block;
+    background: #e9f3ff;
+    color: #007bff;
+    font-weight: 600;
+    border-radius: 16px;
+    padding: 4px 14px;
+    font-size: 0.97em;
+    margin-right: 7px;
+    margin-bottom: 4px;
+}
+.badge-keyword {
+    background: #f3e9ff;
+    color: #8e44ad;
+}
+
+.detalle-descripcion {
+    margin-bottom: 18px;
+    color: #232323;
+    font-size: 1.07em;
+    line-height: 1.5;
+}
+
+.detalle-extra > div {
+    margin-bottom: 7px;
+    color: #444;
+    font-size: 0.99em;
+}
+
+.detalle-extra a {
+    color: #007bff;
+    text-decoration: underline;
+    word-break: break-all;
+}
+.detalle-extra a:hover {
+    color: #0056b3;
+}
+
+.pelicula-actores-container {
+    max-width: 880px;
+    margin: 0 auto 32px auto;
+    padding: 0 12px;
+}
+
+.pelicula-actores-titulo {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+    margin-top: 32px;
+    text-align: left;
+}
+
+.pelicula-actores-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.pelicula-actores-tabla th,
+.pelicula-actores-tabla td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e0e3e8;
+}
+
+.pelicula-actores-tabla th {
+    background: #f4f5f7;
+    color: #007bff;
+    font-weight: 700;
+}
+
+.pelicula-actores-tabla tr:last-child td {
+    border-bottom: none;
+}
+
+.actor-miniatura {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.actor-miniatura img {
+    width: 32px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #e0e3e8;
+    background: #fff;
+}

@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="/css/Login/login.css">
+    <link rel="stylesheet" type="text/css" href="/css/login/login.css">
 </head>
 <%
     String error = (String) request.getAttribute("error");

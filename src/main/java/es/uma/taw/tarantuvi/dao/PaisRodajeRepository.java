@@ -7,4 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface PaisRodajeRepository extends JpaRepository<PaisRodajeEntity, Integer> {
     @Query("Select p from PaisRodajeEntity p where p.paisrodajenombre = :trim")
     PaisRodajeEntity findByNombre(String trim);
+
+    @Query("SELECT COUNT(pl) FROM PaisRodajeEntity P JOIN P.peliculaList pl")
+    Integer countPeliculasAsociadasPaisRodaje();
 }

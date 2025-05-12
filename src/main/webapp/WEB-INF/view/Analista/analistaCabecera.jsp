@@ -12,25 +12,28 @@
   <link rel="stylesheet" type="text/css" href="/css/Analista/inicioAnalista.css">
 </head>
 <body>
-<%
-  String paginaActual = (String) request.getAttribute("paginaActual");
-%>
-<nav class="navbar">
-  <div class="logo">
-    <span class="logo-text">TaranTuvi</span>
-    <span class="logo-icon">🎬</span>
-  </div>
-  <div class="nav-right">
-    <ul class="nav-links">
-      <li><a href="/analista/" class="<%= "inicio".equals(paginaActual) ? "active" : "" %>">Inicio</a></li>
-      <li><a href="/analista/ranking" class="<%= "peliculas".equals(paginaActual) ? "active" : "" %>">Películas</a></li>
-      <li><a href="/analista/actores" class="<%= "actores".equals(paginaActual) ? "active" : "" %>">Actores</a></li>
-    </ul>
-    <div class="profile">
-      <img src="/img/imagenPerfilAnalista.jpg" alt="Perfil" onerror="this.onerror=null; this.src='https://via.placeholder.com/40';">
+<div class="navbar-container">
+  <%
+    String paginaActual = (String) request.getAttribute("paginaActual");
+  %>
+  <nav class="navbar">
+    <div class="logo">
+      <span class="logo-text">TaranTuvi</span>
+      <span class="logo-icon">🎬</span>
     </div>
-  </div>
-</nav>
-
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="/analista/" class="<%= "inicio".equals(paginaActual) ? "active" : "" %>">Inicio</a></li>
+        <li><a href="/analista/peliculas" class="<%= "peliculas".equals(paginaActual) ? "active" : "" %>">Películas</a></li>
+        <li><a href="/analista/actores" class="<%= "actores".equals(paginaActual) ? "active" : "" %>">Actores</a></li>
+        <li><a href="/analista/productoras" class="<%="productoras".equals(paginaActual) ? "active" : ""%>">Productoras</a></li>
+        <li><a href="/analista/valoraciones" class="<%="valoraciones".equals(paginaActual) ? "active" : ""%>">Valoraciones</a></li>
+      </ul>
+      <div class="profile">
+        <img src="/img/imagenPerfilAnalista.jpg" alt="Perfil" onerror="this.onerror=null; this.src='https://via.placeholder.com/40';">
+      </div>
+    </div>
+  </nav>
+</div>
 </body>
 </html>

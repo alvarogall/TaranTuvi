@@ -1,13 +1,21 @@
-body {
-    background: #f3f3f3;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+.filtro-formulario {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.filtro-formulario select,
+.filtro-formulario input{
+    padding: 3px;
+    min-width: 150px;
 }
 
 .main-container {
     display: flex;
-    padding: 50px;
+    padding: 60px;
     gap: 30px;
     align-items: flex-start;
 }
@@ -54,15 +62,16 @@ th {
 form input {
     background-color: #f8f8f8;
     border-color: #afafaf;
-    padding: 5px;
+    padding: 5px 2px;
+    width: 50px;
 }
 
 button {
-    padding: 5px 10px;
+    padding: 9px 20px;
     background-color: #007afd;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
 }
 
@@ -72,4 +81,16 @@ button:hover {
 
 canvas {
     max-width: 100%;
+}
+
+body {
+    background: #f3f3f3;
+    background-image: url('/img/fondoAnalista.png');
+    background-size: 696px 444px;
+    background-position-x: 320px;
+    background-position-y: 470px;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0;
+
 }
