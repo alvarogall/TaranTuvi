@@ -43,8 +43,10 @@
             </div>
 
             <label class="select-label">Género:</label>
-            <form:select path="genero" items="${generosPersona}" itemValue="id" itemLabel="generopersonanombre" multiple="false" cssClass="multi-select-genero" />
-
+            <form:select path="genero" items="${generosPersona}" itemValue="id" itemLabel="generopersonanombre" multiple="false" cssClass="multi-select-one" />
+            <br/>
+            <label class="select-label">Nacionalidad:</label>
+            <form:select path="nacionalidad" items="${nacionalidades}" itemValue="id" itemLabel="nacionalidadnombre" multiple="false" cssClass="multi-select-one" />
         </div>
     </div>
 
@@ -54,21 +56,15 @@
         <div class="column">
             <label class="select-label">Películas:</label>
             <form:select path="peliculas" items="${peliculas}" itemValue="id" itemLabel="titulooriginal" multiple="true" cssClass="multi-select" />
+        </div>
 
+        <!-- Columna 2 -->
+        <div class="column">
             <label class="select-label">Personajes:</label>
             <form:select path="actuaciones" items="${actuaciones}" itemValue="id" itemLabel="personaje" multiple="true" cssClass="multi-select" />
 
             <label class="select-label">Personaje nuevo (Si lo deseas):</label>
             <form:input path="nombrePersonaje"/>
-        </div>
-
-        <!-- Columna 2 -->
-        <div class="column">
-            <label class="select-label">Nacionalidad:</label>
-            <form:select path="nacionalidad" items="${nacionalidades}" itemValue="id" itemLabel="nacionalidadnombre" multiple="true" cssClass="multi-select" />
-
-            <label class="select-label">Géneros:</label>
-            <form:select path="generosPeliculas" items="${generosPeliculas}" itemValue="id" itemLabel="generonombre" multiple="true" cssClass="multi-select" />
         </div>
     </div>
 

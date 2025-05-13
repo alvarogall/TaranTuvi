@@ -2,7 +2,9 @@
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.PersonaEntity" %><%--
+<%@ page import="es.uma.taw.tarantuvi.entity.PersonaEntity" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="java.util.HashSet" %><%--
   Created by IntelliJ IDEA.
   User: jesus
   Date: 08/04/2025
@@ -96,7 +98,7 @@
             <td>
                 <%
                     for(ActuacionEntity act : actuaciones){
-                        if(act.getPersonaid().getId() == persona.getId()){
+                        if(act.getPersonaid().getId() == persona.getId() && act.getPersonaje() != null){
                             out.print(act.getPersonaje() + "<br/>");
                         }
                     }
@@ -105,17 +107,25 @@
 
             <td>
                 <%
-                    for(GeneroPeliculaEntity genero : generos){
-                        for(PeliculaEntity pelicula : genero.getPeliculaList()){
-                            for(ActuacionEntity act : pelicula.getActuacionList()){
-                                if(act.getPersonaid().getId() == persona.getId()){
-                                    out.print(genero.getGeneronombre() + "<br/>");
+                    Set<String> mostrados = new HashSet<>(); //Para controlar la salida de duplicados
+                                                            // (En un set solo se añade al llamar a add si no está en el set el elemento a añadir)
+
+                    for (GeneroPeliculaEntity genero : generos) {
+                        for (PeliculaEntity pelicula : genero.getPeliculaList()) {
+                            for (ActuacionEntity act : pelicula.getActuacionList()) {
+                                if (act.getPersonaid().getId() == persona.getId()) {
+                                    String nombreGen = genero.getGeneronombre();
+                                    // Sólo lo imprimimos si aún no estaba en el Set
+                                    if (mostrados.add(nombreGen)) {
+                                        out.print(nombreGen + "<br/>");
+                                    }
                                 }
                             }
                         }
                     }
                 %>
             </td>
+
 
             <td>
                 <form method="post" action="/editor/actores/editar" style="display:inline;">

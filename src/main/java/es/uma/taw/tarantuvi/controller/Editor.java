@@ -257,38 +257,92 @@ public class Editor {
     }
 
     @PostMapping("/actores/confirmarCambios")
-    public String doConfirmarCambiosActores(@ModelAttribute Actor dtoActor, Model model){
+    public String doConfirmarCambiosActores(@ModelAttribute Actor dtoActor, Model model) {
+        // 1. Cargar/crear Persona y actualizar campos básicos
+        Integer id = dtoActor.getId() == null ? -1 : dtoActor.getId();
+        PersonaEntity persona = personaRepository.findById(id).orElse(new PersonaEntity());
+        persona.setUrlfoto(dtoActor.getUrlfoto());
+        persona.setNombre(dtoActor.getNombre());
+        persona.setGeneropersonaid(generoPersonaRepository.findById(dtoActor.getGenero()).orElse(null));
+        persona.setNacionalidadid(nacionalidadRepository.findById(dtoActor.getNacionalidad()).orElse(null));
+        persona = personaRepository.save(persona);
 
-            Integer id = dtoActor.getId();
-            PersonaEntity persona = personaRepository.findById(id).orElse(new PersonaEntity());
+        List<ActuacionEntity> actuales = persona.getActuacionList() != null ? persona.getActuacionList() : new ArrayList<>();
 
-            persona.setUrlfoto(dtoActor.getUrlfoto());
-            persona.setNombre(dtoActor.getNombre());
-            persona.setGeneropersonaid(generoPersonaRepository.findById(dtoActor.getGenero()).orElse(null));
-            persona.setNacionalidadid(nacionalidadRepository.findById(dtoActor.getNacionalidad()).orElse(null));
+        List<Integer> peliculasSeleccionadas = dtoActor.getPeliculas() != null ? dtoActor.getPeliculas() : new ArrayList<>();
+        List<Integer> personajesSeleccionados = dtoActor.getActuaciones() != null ? dtoActor.getActuaciones() : new ArrayList<>();
 
-            if(dtoActor.getNombrePersonaje() != null && !dtoActor.getNombrePersonaje().trim().isEmpty()){
-                ActuacionEntity actuacion = new ActuacionEntity();
-                actuacion.setPersonaId(persona);
-                actuacion.setGeneropersonaid(persona.getGeneropersonaid());
-                actuacion.setPersonaje(dtoActor.getNombrePersonaje().trim());
-                this.actuacionRepository.save(actuacion);
+        // GESTIÓN DE PELÍCULAS
+        // Eliminar actuaciones de películas que ya no están seleccionadas
+        for (ActuacionEntity act : actuales) {
+            Integer peliId = act.getPeliculaid() != null
+                    ? act.getPeliculaid().getId()
+                    : null;
+            if (peliId != null && !peliculasSeleccionadas.contains(peliId)) {
+                actuacionRepository.delete(act);
             }
-
-            if(dtoActor.getActuaciones() != null){
-                for(Integer peliculaId : dtoActor.getActuaciones()){
-                    PeliculaEntity pelicula = peliculaRepository.findById(peliculaId).orElse(null);
-                    if(pelicula != null){
-                        for(ActuacionEntity act : pelicula.getActuacionList()){
-                            act.setPersonaId(persona);
-
-                            persona.getActuacionList().add(act);
-                        }
-                    }
+        }
+        // Crear actuaciones nuevas para cada película seleccionada si no hay ya una actuación similar agregada al actor
+        for (Integer peliculaId : peliculasSeleccionadas) {
+            boolean exists = actuales.stream()
+                    .anyMatch(a -> a.getPeliculaid() != null
+                            && a.getPeliculaid().getId().equals(peliculaId));
+            if (!exists) {
+                PeliculaEntity peli = peliculaRepository.findById(peliculaId).orElse(null);
+                if (peli != null) {
+                    ActuacionEntity nueva = new ActuacionEntity();
+                    nueva.setPersonaId(persona);
+                    nueva.setPeliculaId(peli);
+                    nueva.setGeneropersonaid(persona.getGeneropersonaid());
+                    actuacionRepository.save(nueva);
                 }
             }
+        }
 
-        this.personaRepository.save(persona);
+        // GESTIÓN DE PERSONAJES “SUELTOS”
+        // Eliminar personajes sueltos que el usuario haya desmarcado
+        for (ActuacionEntity act : actuales) {
+            Integer peliId = act.getPeliculaid() != null
+                    ? act.getPeliculaid().getId()
+                    : null;
+            Integer actId  = act.getId();
+            if (peliId == null && !personajesSeleccionados.contains(actId)) {
+                actuacionRepository.delete(act);
+            }
+        }
+        // Crear actuaciones nuevas para cada personaje seleccionado si no hay ya una actuación similar agregada al actor
+        for (Integer actSeleccionadaId : personajesSeleccionados) {
+            boolean exists = actuales.stream()
+                    .anyMatch(a -> a.getId().equals(actSeleccionadaId));
+            if (!exists) {
+                ActuacionEntity a = actuacionRepository.findById(actSeleccionadaId).orElse(null);
+                if (a != null) {
+                    ActuacionEntity nueva = new ActuacionEntity();
+                    nueva.setPersonaId(persona);
+                    nueva.setPeliculaId(null);
+                    nueva.setGeneropersonaid(persona.getGeneropersonaid());
+                    nueva.setPersonaje(a.getPersonaje());
+                    actuacionRepository.save(nueva);
+                }
+            }
+        }
+
+        // CAMPO “PERSONAJE NUEVO”
+        String personajeNuevo = dtoActor.getNombrePersonaje() != null ? dtoActor.getNombrePersonaje().trim() : "";
+        if (!personajeNuevo.isEmpty()) {
+            boolean yaExiste = actuales.stream()
+                    .filter(a -> a.getPeliculaid() == null)
+                    .anyMatch(a -> personajeNuevo.equalsIgnoreCase(a.getPersonaje()));
+            if (!yaExiste) {
+                ActuacionEntity suelto = new ActuacionEntity();
+                suelto.setPersonaId(persona);
+                suelto.setPeliculaId(null);
+                suelto.setGeneropersonaid(persona.getGeneropersonaid());
+                suelto.setPersonaje(personajeNuevo);
+                actuacionRepository.save(suelto);
+            }
+        }
+
         return "redirect:/editor/actores";
     }
 

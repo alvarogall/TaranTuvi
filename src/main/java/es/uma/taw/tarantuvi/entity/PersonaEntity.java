@@ -54,25 +54,19 @@ public class PersonaEntity {
         if(this.actuacionList != null){
             List<Integer> idsPeliculas = new ArrayList<Integer>();
             for(ActuacionEntity a : this.actuacionList){
-                idsPeliculas.add(a.getPeliculaid().getId());
+                if(a.getPeliculaid() != null){
+                    idsPeliculas.add(a.getPeliculaid().getId());
+                }
             }
             actor.setPeliculas(idsPeliculas);
 
             List<Integer> idsActuaciones = new ArrayList<Integer>();
             for(ActuacionEntity a : this.actuacionList){
-                idsActuaciones.add(a.getId());
-            }
-            actor.setActuaciones(idsActuaciones);
-
-            List<Integer> idsGeneros = new ArrayList<Integer>();
-            for(ActuacionEntity a : this.actuacionList){
-                for(GeneroPeliculaEntity g : a.getPeliculaid().getGeneroPeliculaList()){
-                    if(!idsGeneros.contains(g.getId())){
-                        idsGeneros.add(g.getId());
-                    }
+                if(a.getPersonaje() != null){
+                    idsActuaciones.add(a.getId());
                 }
             }
-            actor.setGenerosPeliculas(idsGeneros);
+            actor.setActuaciones(idsActuaciones);
         }
 
         return actor;

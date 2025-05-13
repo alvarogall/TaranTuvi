@@ -20,5 +20,4 @@ public class Actor {
     protected Integer nacionalidad;
     protected List<Integer> peliculas;
     protected List<Integer> actuaciones;
-    protected List<Integer> generosPeliculas;
 }
