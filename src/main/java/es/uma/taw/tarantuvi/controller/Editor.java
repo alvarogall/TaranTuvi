@@ -124,19 +124,16 @@ public class Editor {
 
     @PostMapping("/peliculas/confirmarCambios")
     public String doConfirmarCambiosPelicula(@ModelAttribute Pelicula dtoPelicula, Model model) {
-        Integer id = dtoPelicula.getId();
-        PeliculaEntity pelicula = peliculaRepository.findById(id)
-                .orElse(new PeliculaEntity());
+        Integer id = dtoPelicula.getId() == null ? -1 : dtoPelicula.getId();
+        PeliculaEntity pelicula = this.peliculaRepository.findById(id).orElse(new PeliculaEntity());
 
         pelicula.setTitulooriginal(dtoPelicula.getTitulooriginal());
         pelicula.setFechaestreno(LocalDate.parse(dtoPelicula.getFecha()));
         pelicula.setDuracion(Integer.parseInt(dtoPelicula.getDuracion().trim()));
         pelicula.setDescripcion(dtoPelicula.getDescripcion());
-        pelicula.setRecaudacion(BigDecimal.valueOf(
-                Long.parseLong(dtoPelicula.getRecaudacion().trim())));
+        pelicula.setRecaudacion(BigDecimal.valueOf(Long.parseLong(dtoPelicula.getRecaudacion().trim())));
         pelicula.setEstado(dtoPelicula.getEstado());
-        pelicula.setPresupuesto(BigDecimal.valueOf(
-                Long.parseLong(dtoPelicula.getPresupuesto().trim())));
+        pelicula.setPresupuesto(BigDecimal.valueOf(Long.parseLong(dtoPelicula.getPresupuesto().trim())));
         pelicula.setUrlcaratula(dtoPelicula.getUrlcaratula());
         pelicula.setPaginaweb(dtoPelicula.getPaginaweb());
         pelicula.setEslogan(dtoPelicula.getEslogan());
@@ -146,6 +143,8 @@ public class Editor {
         pelicula.setPaisRodajeList(new ArrayList<>());
         pelicula.setIdiomaHabladoList(new ArrayList<>());
 
+        this.peliculaRepository.save(pelicula);
+
         // CAST: sólo CLONA si no existe ya persona+personaje
         List<ActuacionEntity> actuales = pelicula.getActuacionList();
         if (actuales == null) {
@@ -154,7 +153,7 @@ public class Editor {
         }
         if (dtoPelicula.getCast() != null) {
             for (Integer castId : dtoPelicula.getCast()) {
-                ActuacionEntity original = actuacionRepository.findById(castId)
+                ActuacionEntity original = this.actuacionRepository.findById(castId)
                         .orElse(null);
                 if (original == null) continue;
 
@@ -171,7 +170,7 @@ public class Editor {
                 copia.setOrden(original.getOrden());
                 copia.setPeliculaId(pelicula);
 
-                actuacionRepository.save(copia);
+                this.actuacionRepository.save(copia);
                 actuales.add(copia);
             }
         }
@@ -200,42 +199,51 @@ public class Editor {
                 copia.setDepartamentoid(original.getDepartamentoid());
                 copia.setPeliculaId(pelicula);
 
-                trabajoRepository.save(copia);
+                this.trabajoRepository.save(copia);
                 crewActual.add(copia);
             }
         }
 
         if (dtoPelicula.getIdiomas() != null) {
             for (Integer idiomaId : dtoPelicula.getIdiomas()) {
-                idiomaHabladoRepository.findById(idiomaId)
+                this.idiomaHabladoRepository.findById(idiomaId)
                         .ifPresent(i -> pelicula.getIdiomaHabladoList().add(i));
             }
         }
         if (dtoPelicula.getProductoras() != null) {
             for (Integer pid : dtoPelicula.getProductoras()) {
-                productoraRepository.findById(pid)
+                this.productoraRepository.findById(pid)
                         .ifPresent(p -> pelicula.getProductoraList().add(p));
             }
         }
         if (dtoPelicula.getPaisesRodaje() != null) {
             for (Integer pid : dtoPelicula.getPaisesRodaje()) {
-                paisRodajeRepository.findById(pid)
+                this.paisRodajeRepository.findById(pid)
                         .ifPresent(p -> pelicula.getPaisRodajeList().add(p));
             }
         }
         if (dtoPelicula.getGeneros() != null) {
             for (Integer gid : dtoPelicula.getGeneros()) {
-                generoPeliculaRepository.findById(gid)
+                this.generoPeliculaRepository.findById(gid)
                         .ifPresent(g -> pelicula.getGeneroPeliculaList().add(g));
             }
         }
 
-        peliculaRepository.save(pelicula);
+        this.peliculaRepository.save(pelicula);
         return "redirect:/editor/peliculas";
     }
 
     @PostMapping("peliculas/borrar")
     public String doBorrarPelicula(@RequestParam("id") Integer id){
+        PeliculaEntity pelicula = this.peliculaRepository.findById(id).orElse(null);
+        if(pelicula != null) {
+            for(ActuacionEntity a : pelicula.getActuacionList()) {
+                this.actuacionRepository.delete(a);
+            }
+            for(TrabajoEntity t : pelicula.getTrabajoList()) {
+                this.trabajoRepository.delete(t);
+            }
+        }
         this.peliculaRepository.deleteById(id);
         return "redirect:/editor/peliculas";
     }
