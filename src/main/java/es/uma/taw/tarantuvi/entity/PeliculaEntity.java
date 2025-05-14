@@ -1,5 +1,6 @@
 package es.uma.taw.tarantuvi.entity;
 
+import es.uma.taw.tarantuvi.dto.DTO;
 import es.uma.taw.tarantuvi.dto.Pelicula;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -16,7 +17,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "PELICULA", schema = "TaranTuvi")
-public class PeliculaEntity {
+public class PeliculaEntity implements DTO<Pelicula> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PELICULAID", nullable = false)
@@ -130,12 +131,12 @@ public class PeliculaEntity {
         pelicula.setId(this.id);
         pelicula.setTitulooriginal(this.titulooriginal);
         pelicula.setUrlcaratula(this.urlcaratula);
-        pelicula.setFecha(new String(String.valueOf(this.fechaestreno)));
-        pelicula.setDuracion(new String(String.valueOf(this.duracion)));
+        pelicula.setFecha(this.fechaestreno != null ? new String(String.valueOf(this.fechaestreno)) : "");
+        pelicula.setDuracion(this.duracion != null ? new String(String.valueOf(this.duracion)) : "");
         pelicula.setDescripcion(this.descripcion);
         pelicula.setPaginaweb(this.paginaweb);
-        pelicula.setPresupuesto(new String(String.valueOf(this.presupuesto)));
-        pelicula.setRecaudacion(new String(String.valueOf(this.recaudacion)));
+        pelicula.setPresupuesto(this.presupuesto != null ? new String(String.valueOf(this.presupuesto)) : "");
+        pelicula.setRecaudacion(this.recaudacion != null ? new String(String.valueOf(this.recaudacion)) : "");
         pelicula.setEslogan(this.eslogan);
         pelicula.setEstado(this.estado);
 

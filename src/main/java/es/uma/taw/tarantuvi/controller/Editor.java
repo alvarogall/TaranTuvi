@@ -34,8 +34,6 @@ public class Editor {
     @Autowired
     private PaisRodajeRepository paisRodajeRepository;
     @Autowired
-    private DepartamentoRepository departamentoRepository;
-    @Autowired
     private GeneroPersonaRepository generoPersonaRepository;
     @Autowired
     private NacionalidadRepository nacionalidadRepository;
@@ -123,7 +121,7 @@ public class Editor {
     }
 
     @PostMapping("/peliculas/confirmarCambios")
-    public String doConfirmarCambiosPelicula(@ModelAttribute Pelicula dtoPelicula, Model model) {
+    public String doConfirmarCambiosPelicula(@ModelAttribute Pelicula dtoPelicula) {
         Integer id = dtoPelicula.getId() == null ? -1 : dtoPelicula.getId();
         PeliculaEntity pelicula = this.peliculaRepository.findById(id).orElse(new PeliculaEntity());
 
@@ -265,7 +263,7 @@ public class Editor {
     }
 
     @PostMapping("/actores/confirmarCambios")
-    public String doConfirmarCambiosActores(@ModelAttribute Actor dtoActor, Model model) {
+    public String doConfirmarCambiosActores(@ModelAttribute Actor dtoActor) {
         // 1. Cargar/crear Persona y actualizar campos básicos
         Integer id = dtoActor.getId() == null ? -1 : dtoActor.getId();
         PersonaEntity persona = personaRepository.findById(id).orElse(new PersonaEntity());
@@ -357,7 +355,7 @@ public class Editor {
     @PostMapping("actores/borrar")
     public String doBorrarActor(@RequestParam("id") Integer id){
         for(ActuacionEntity a : this.actuacionRepository.findAll()){
-            if(a.getPersonaid().getId() == id){
+            if(Objects.equals(a.getPersonaid().getId(), id)){
                 this.actuacionRepository.delete(a);
             }
         }

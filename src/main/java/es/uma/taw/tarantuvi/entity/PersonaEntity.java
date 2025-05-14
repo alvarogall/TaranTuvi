@@ -1,8 +1,8 @@
 package es.uma.taw.tarantuvi.entity;
 
 import es.uma.taw.tarantuvi.dto.Actor;
+import es.uma.taw.tarantuvi.dto.DTO;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "PERSONA", schema = "TaranTuvi")
-public class PersonaEntity {
+public class PersonaEntity implements DTO<Actor> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PERSONAID", nullable = false)

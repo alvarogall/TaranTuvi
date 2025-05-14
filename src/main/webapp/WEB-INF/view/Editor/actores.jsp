@@ -1,16 +1,18 @@
-<%@ page import="es.uma.taw.tarantuvi.entity.ActuacionEntity" %>
-<%@ page import="java.util.List" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.PersonaEntity" %>
-<%@ page import="java.util.Set" %>
-<%@ page import="java.util.HashSet" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: jesus
   Date: 08/04/2025
   Time: 17:48
   To change this template use File | Settings | File Templates.
 --%>
+
+<%@ page import="es.uma.taw.tarantuvi.entity.ActuacionEntity" %>
+<%@ page import="java.util.List" %>
+<%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
+<%@ page import="es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity" %>
+<%@ page import="es.uma.taw.tarantuvi.entity.PersonaEntity" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="java.util.HashSet" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>

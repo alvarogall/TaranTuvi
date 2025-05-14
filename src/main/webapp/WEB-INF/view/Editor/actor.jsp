@@ -1,4 +1,7 @@
-<%@ page import="es.uma.taw.tarantuvi.entity.*" %>
+<%--
+  User: jesus
+--%>
+
 <%@ page import="es.uma.taw.tarantuvi.dto.Actor" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
