@@ -238,10 +238,10 @@ public class Editor {
         PeliculaEntity pelicula = this.peliculaRepository.findById(id).orElse(null);
         if(pelicula != null) {
             for(ActuacionEntity a : pelicula.getActuacionList()) {
-                this.actuacionRepository.delete(a);
+                this.actuacionRepository.deleteById(a.getId());
             }
             for(TrabajoEntity t : pelicula.getTrabajoList()) {
-                this.trabajoRepository.delete(t);
+                this.trabajoRepository.deleteById(t.getId());
             }
         }
         this.peliculaRepository.deleteById(id);
