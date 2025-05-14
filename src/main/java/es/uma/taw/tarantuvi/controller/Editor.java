@@ -1,3 +1,7 @@
+/*
+User: jesus
+*/
+
 package es.uma.taw.tarantuvi.controller;
 
 import es.uma.taw.tarantuvi.dao.*;
@@ -67,8 +71,7 @@ public class Editor {
     public String doEditarPelicula(@RequestParam(value = "id", defaultValue = "-1") Integer id,
                                    Model model) {
 
-        PeliculaEntity entidad = peliculaRepository.findById(id)
-                .orElse(new PeliculaEntity());
+        PeliculaEntity entidad = peliculaRepository.findById(id).orElse(new PeliculaEntity());
         Pelicula dtoPelicula = entidad.toDto();
         dtoPelicula.setId(entidad.getId());
 
@@ -77,9 +80,13 @@ public class Editor {
             actuacionesFiltradas.addAll(entidad.getActuacionList());
         }
         // Construir conjunto de claves de las ya añadidas
-        Set<String> clavesAct = actuacionesFiltradas.stream()
-                .map(a -> a.getPersonaid().getId() + "|" + a.getPersonaje())
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+        List<String> clavesAct = new ArrayList<>();
+        for (ActuacionEntity a : actuacionesFiltradas) {
+            String clave = a.getPersonaid().getId() + "|" + a.getPersonaje();
+            if (!clavesAct.contains(clave)) {
+                clavesAct.add(clave);
+            }
+        }
         // Añadir luego las que falten
         for (ActuacionEntity a : actuacionRepository.findAll()) {
             String clave = a.getPersonaid().getId() + "|" + a.getPersonaje();
@@ -93,9 +100,13 @@ public class Editor {
         if (entidad.getTrabajoList() != null) {
             crewFiltrado.addAll(entidad.getTrabajoList());
         }
-        Set<String> clavesTrab = crewFiltrado.stream()
-                .map(t -> t.getPersonaid().getId() + "|" + t.getTrabajonombre())
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+        List<String> clavesTrab = new ArrayList<>();
+        for (TrabajoEntity t : crewFiltrado) {
+            String clave = t.getPersonaid().getId() + "|" + t.getTrabajonombre();
+            if (!clavesTrab.contains(clave)) {
+                clavesTrab.add(clave);
+            }
+        }
         for (TrabajoEntity t : trabajoRepository.findAll()) {
             String clave = t.getPersonaid().getId() + "|" + t.getTrabajonombre();
             if (!clavesTrab.contains(clave)) {
@@ -123,111 +134,111 @@ public class Editor {
     @PostMapping("/peliculas/confirmarCambios")
     public String doConfirmarCambiosPelicula(@ModelAttribute Pelicula dtoPelicula) {
         Integer id = dtoPelicula.getId() == null ? -1 : dtoPelicula.getId();
-        PeliculaEntity pelicula = this.peliculaRepository.findById(id).orElse(new PeliculaEntity());
+        PeliculaEntity pelicula = peliculaRepository.findById(id).orElse(new PeliculaEntity());
 
         pelicula.setTitulooriginal(dtoPelicula.getTitulooriginal());
         pelicula.setFechaestreno(LocalDate.parse(dtoPelicula.getFecha()));
         pelicula.setDuracion(Integer.parseInt(dtoPelicula.getDuracion().trim()));
         pelicula.setDescripcion(dtoPelicula.getDescripcion());
-        pelicula.setRecaudacion(BigDecimal.valueOf(Long.parseLong(dtoPelicula.getRecaudacion().trim())));
+        pelicula.setRecaudacion(new BigDecimal(dtoPelicula.getRecaudacion().trim()));
+        pelicula.setPresupuesto(new BigDecimal(dtoPelicula.getPresupuesto().trim()));
         pelicula.setEstado(dtoPelicula.getEstado());
-        pelicula.setPresupuesto(BigDecimal.valueOf(Long.parseLong(dtoPelicula.getPresupuesto().trim())));
         pelicula.setUrlcaratula(dtoPelicula.getUrlcaratula());
         pelicula.setPaginaweb(dtoPelicula.getPaginaweb());
         pelicula.setEslogan(dtoPelicula.getEslogan());
 
-        pelicula.setGeneroPeliculaList(new ArrayList<>());
-        pelicula.setProductoraList(new ArrayList<>());
-        pelicula.setPaisRodajeList(new ArrayList<>());
-        pelicula.setIdiomaHabladoList(new ArrayList<>());
+        pelicula = peliculaRepository.saveAndFlush(pelicula);
 
-        this.peliculaRepository.save(pelicula);
+        // CAST
+        List<ActuacionEntity> castActual = new ArrayList<>(pelicula.getActuacionList());
+        List<Integer> castSeleccionado = dtoPelicula.getCast() != null ? dtoPelicula.getCast() : Collections.emptyList();
 
-        // CAST: sólo CLONA si no existe ya persona+personaje
-        List<ActuacionEntity> actuales = pelicula.getActuacionList();
-        if (actuales == null) {
-            actuales = new ArrayList<>();
-            pelicula.setActuacionList(actuales);
+        // Eliminar los que ya no están marcados
+        for (ActuacionEntity act : castActual) {
+            if (!castSeleccionado.contains(act.getId())) {
+                actuacionRepository.delete(act);
+                pelicula.getActuacionList().remove(act);
+            }
         }
-        if (dtoPelicula.getCast() != null) {
-            for (Integer castId : dtoPelicula.getCast()) {
-                ActuacionEntity original = this.actuacionRepository.findById(castId)
-                        .orElse(null);
-                if (original == null) continue;
-
-                boolean yaExiste = actuales.stream().anyMatch(a ->
-                        a.getPersonaid().getId().equals(original.getPersonaid().getId())
-                                && a.getPersonaje().equals(original.getPersonaje())
-                );
-                if (yaExiste) continue;
-
-                ActuacionEntity copia = new ActuacionEntity();
-                copia.setPersonaId(original.getPersonaid());
-                copia.setGeneropersonaid(original.getGeneropersonaid());
-                copia.setPersonaje(original.getPersonaje());
-                copia.setOrden(original.getOrden());
-                copia.setPeliculaId(pelicula);
-
-                this.actuacionRepository.save(copia);
-                actuales.add(copia);
+        // Añadir nuevos seleccionados
+        for (Integer castId : castSeleccionado) {
+            boolean existe = castActual.stream().anyMatch(a -> a.getId().equals(castId));
+            if (!existe) {
+                ActuacionEntity original = actuacionRepository.findById(castId).orElse(null);
+                if (original != null) {
+                    ActuacionEntity copia = new ActuacionEntity();
+                    copia.setPersonaId(original.getPersonaid());
+                    copia.setGeneropersonaid(original.getGeneropersonaid());
+                    copia.setPersonaje(original.getPersonaje());
+                    copia.setOrden(original.getOrden());
+                    copia.setPeliculaId(pelicula);
+                    actuacionRepository.save(copia);
+                    pelicula.getActuacionList().add(copia);
+                }
             }
         }
 
-        // CREW: sólo CLONA si no existe persona+trabajonombre
-        List<TrabajoEntity> crewActual = pelicula.getTrabajoList();
-        if (crewActual == null) {
-            crewActual = new ArrayList<>();
-            pelicula.setTrabajoList(crewActual);
+        // CREW
+        List<TrabajoEntity> crewActual = new ArrayList<>(pelicula.getTrabajoList());
+        List<Integer> crewSeleccionado = dtoPelicula.getCrew() != null ? dtoPelicula.getCrew() : Collections.emptyList();
+
+        // Eliminar los no marcados
+        for (TrabajoEntity t : crewActual) {
+            if (!crewSeleccionado.contains(t.getId())) {
+                trabajoRepository.delete(t);
+                pelicula.getTrabajoList().remove(t);
+            }
         }
-        if (dtoPelicula.getCrew() != null) {
-            for (Integer crewId : dtoPelicula.getCrew()) {
-                TrabajoEntity original = trabajoRepository.findById(crewId)
-                        .orElse(null);
-                if (original == null) continue;
-
-                boolean yaExiste = crewActual.stream().anyMatch(t ->
-                        t.getPersonaid().getId().equals(original.getPersonaid().getId())
-                                && t.getTrabajonombre().equals(original.getTrabajonombre())
-                );
-                if (yaExiste) continue;
-
-                TrabajoEntity copia = new TrabajoEntity();
-                copia.setPersonaId(original.getPersonaid());
-                copia.setTrabajonombre(original.getTrabajonombre());
-                copia.setDepartamentoid(original.getDepartamentoid());
-                copia.setPeliculaId(pelicula);
-
-                this.trabajoRepository.save(copia);
-                crewActual.add(copia);
+        // Añadir nuevos
+        for (Integer crewId : crewSeleccionado) {
+            boolean existe = crewActual.stream().anyMatch(t -> t.getId().equals(crewId));
+            if (!existe) {
+                TrabajoEntity original = trabajoRepository.findById(crewId).orElse(null);
+                if (original != null) {
+                    TrabajoEntity copia = new TrabajoEntity();
+                    copia.setPersonaId(original.getPersonaid());
+                    copia.setDepartamentoid(original.getDepartamentoid());
+                    copia.setTrabajonombre(original.getTrabajonombre());
+                    copia.setPeliculaId(pelicula);
+                    trabajoRepository.save(copia);
+                    pelicula.getTrabajoList().add(copia);
+                }
             }
         }
 
+        // Idiomas
+        pelicula.getIdiomaHabladoList().clear();
         if (dtoPelicula.getIdiomas() != null) {
             for (Integer idiomaId : dtoPelicula.getIdiomas()) {
-                this.idiomaHabladoRepository.findById(idiomaId)
-                        .ifPresent(i -> pelicula.getIdiomaHabladoList().add(i));
-            }
-        }
-        if (dtoPelicula.getProductoras() != null) {
-            for (Integer pid : dtoPelicula.getProductoras()) {
-                this.productoraRepository.findById(pid)
-                        .ifPresent(p -> pelicula.getProductoraList().add(p));
-            }
-        }
-        if (dtoPelicula.getPaisesRodaje() != null) {
-            for (Integer pid : dtoPelicula.getPaisesRodaje()) {
-                this.paisRodajeRepository.findById(pid)
-                        .ifPresent(p -> pelicula.getPaisRodajeList().add(p));
-            }
-        }
-        if (dtoPelicula.getGeneros() != null) {
-            for (Integer gid : dtoPelicula.getGeneros()) {
-                this.generoPeliculaRepository.findById(gid)
-                        .ifPresent(g -> pelicula.getGeneroPeliculaList().add(g));
+                idiomaHabladoRepository.findById(idiomaId).ifPresent(pelicula.getIdiomaHabladoList()::add);
             }
         }
 
-        this.peliculaRepository.save(pelicula);
+        // Productoras
+        pelicula.getProductoraList().clear();
+        if (dtoPelicula.getProductoras() != null) {
+            for (Integer prodId : dtoPelicula.getProductoras()) {
+                productoraRepository.findById(prodId).ifPresent(pelicula.getProductoraList()::add);
+            }
+        }
+
+        // Países de rodaje
+        pelicula.getPaisRodajeList().clear();
+        if (dtoPelicula.getPaisesRodaje() != null) {
+            for (Integer paisId : dtoPelicula.getPaisesRodaje()) {
+                paisRodajeRepository.findById(paisId).ifPresent(pelicula.getPaisRodajeList()::add);
+            }
+        }
+        // Géneros
+        pelicula.getGeneroPeliculaList().clear();
+        if (dtoPelicula.getGeneros() != null) {
+            for (Integer genId : dtoPelicula.getGeneros()) {
+                generoPeliculaRepository.findById(genId).ifPresent(pelicula.getGeneroPeliculaList()::add);
+            }
+        }
+
+        peliculaRepository.save(pelicula);
+
         return "redirect:/editor/peliculas";
     }
 
