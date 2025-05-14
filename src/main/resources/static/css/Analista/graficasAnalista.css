@@ -5,6 +5,7 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 5px;
+
 }
 
 .filtro-formulario select,
@@ -58,6 +59,7 @@ th, td {
 th {
     background-color: #f2f2f2;
 }
+
 
 form input {
     background-color: #f8f8f8;

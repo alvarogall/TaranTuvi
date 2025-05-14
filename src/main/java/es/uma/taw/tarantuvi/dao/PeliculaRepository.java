@@ -11,10 +11,18 @@ public interface PeliculaRepository extends JpaRepository<PeliculaEntity, Intege
     @Query("SELECT p FROM PeliculaEntity p ORDER BY p.fechaestreno DESC")
     List<PeliculaEntity> findPeliculasMasRecientes(Pageable pageable);
 
-    @Query("SELECT p FROM PeliculaEntity p " +
+    @Query("SELECT p, AVG(V.nota) FROM PeliculaEntity p " +
+            "LEFT JOIN p.valoracionList V " +
             "JOIN p.generoPeliculaList g " +
             "WHERE (:generoId IS NULL OR g.id = :generoId) " +
-            "AND (:idiomaId IS NULL OR p.idiomaoriginalhabladoid.id = :idiomaId)")
-    List<PeliculaEntity> findPeliculasByFiltros(Integer generoId, Integer idiomaId);
+            "AND (:idiomaId IS NULL OR p.idiomaoriginalhabladoid.id = :idiomaId) " +
+            "GROUP BY p")
+    List<Object[]> findPeliculasByFiltros(Integer generoId, Integer idiomaId);
+
+    @Query("SELECT p, AVG(v.nota), COUNT(v) " +
+            "FROM PeliculaEntity p JOIN p.valoracionList v " +
+            "GROUP BY p " +
+            "ORDER BY AVG(v.nota) DESC, COUNT(v) DESC")
+    List<Object[]> findPeliculasOrdenadasPorNotaYValoraciones();
 
 }

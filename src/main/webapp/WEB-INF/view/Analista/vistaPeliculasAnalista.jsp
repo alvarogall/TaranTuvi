@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
+<%@ page import="es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -36,6 +37,7 @@
                 <form:option value="">-- Seleccionar --</form:option>
                 <form:option value="fecha">Fecha de Estreno</form:option>
                 <form:option value="duracion">Duración</form:option>
+                <form:option value="nota">Nota Media</form:option>
             </form:select>
 
             <label for="orden-tipo">Tipo de orden</label>
@@ -44,7 +46,7 @@
                 <form:option value="DESC">Descendente</form:option>
             </form:select>
 
-            <button type="submit">Aplicar Filtros</button>
+            <button type="submit">Aplicar</button>
         </form:form>
         <table>
             <thead>
@@ -54,39 +56,25 @@
                 <th>Fecha</th>
                 <th>Duración</th>
                 <th>Nota Media</th>
-                <th>Web</th>
                 <th>Géneros</th>
-                <th></th>
+                <th>Web</th>
+
             </tr>
             </thead>
             <tbody>
             <%
-                List<PeliculaEntity> peliculasListaFiltradas =(List<PeliculaEntity>) request.getAttribute("peliculasFiltradas");
+                List<Object[]> peliculasListaFiltradas =(List<Object[]>) request.getAttribute("peliculasFiltradas");
                 List<PeliculaEntity> peliculasLista = (List<PeliculaEntity>) request.getAttribute("peliculas");
-                List<Object[]> notasLista = (List<Object[]>) request.getAttribute("notas");
-                for (PeliculaEntity pelicula : peliculasListaFiltradas) {
+                for (Object[] peliculaObjeto : peliculasListaFiltradas) {
+                    PeliculaEntity pelicula = (PeliculaEntity) peliculaObjeto[0];
             %>
             <tr>
                 <td><%=pelicula.getTitulooriginal()%></td>
                 <td><%=pelicula.getIdiomaoriginalhabladoid().getIdiomahabladonombre()%></td>
                 <td><%=pelicula.getFechaestreno()%></td>
                 <td><%=pelicula.getDuracion()%></td>
-                <td>
-                    <%
-                        boolean encontrada = false;
-                        for(Object[] nota : notasLista){
-                            PeliculaEntity p = (PeliculaEntity) nota[0];
-                            if(p != null && p.getId().equals(pelicula.getId())){
-                            encontrada = true;
-                                    %>
-                                    <%=nota[1]%>
-                                    <%
-                                }
-                            }
-                        if(!encontrada){%>No Valorada<%}
-                    %>
-                </td>
-                <td><a href="<%=pelicula.getPaginaweb()%>">Link</a></td>
+                <td><%= (peliculaObjeto[1] == null) ? "No Valorada" : String.format("%.2f", peliculaObjeto[1]) %></td>
+
                 <td>
                     <%
                         for (int i = 0; i < pelicula.getGeneroPeliculaList().size(); i++) {
@@ -97,6 +85,7 @@
                         }
                     %>
                 </td>
+                <td><a href="<%=pelicula.getPaginaweb()%>">Link</a></td>
             </tr>
             <% } %>
             </tbody>
@@ -122,7 +111,7 @@
         </div>
 
         <!-- Gráfico 3: Por Género -->
-        <div class="card-table" style="min-width: 300px">
+        <div class="card-table">
             <canvas id="graficoGeneros"></canvas>
         </div>
     </div>
@@ -146,12 +135,14 @@
 
 <table id="tablaGeneros" style="display:none;">
     <% for (PeliculaEntity pelicula : peliculasLista) {
-        for (int i = 0; i < pelicula.getGeneroPeliculaList().size(); i++) {
-            String genero = pelicula.getGeneroPeliculaList().get(i).getGeneronombre();
+        for (GeneroPeliculaEntity genero : pelicula.getGeneroPeliculaList()) {
     %>
-    <tr><td><%=genero%></td></tr>
+    <tr data-genero-id="<%=genero.getId()%>">
+        <td><%=genero.getGeneronombre()%></td>
+    </tr>
     <% } } %>
 </table>
+
 
 <!-- SCRIPTS PARA LOS GRÁFICOS -->
 <script>
@@ -317,24 +308,23 @@
 
     // === Gráfico 3: Por Género ===
     const filasGenero = document.querySelectorAll("#tablaGeneros tr");
-    const contadorGeneros = {};
-
+    const contadorGeneros = {};   // { id: count }
+    const nombresGeneros = {};    // { id: nombre }
 
     filasGenero.forEach(fila => {
-        const genero = fila.children[0].innerText.trim();
-        if (genero) {
-            contadorGeneros[genero] = (contadorGeneros[genero] || 0) + 1;
+        const id = fila.dataset.generoId;
+        const nombre = fila.children[0].innerText.trim();
+
+        if (id) {
+            contadorGeneros[id] = (contadorGeneros[id] || 0) + 1;
+            nombresGeneros[id] = nombre;
         }
     });
 
-    const labelsGenero = Object.keys(contadorGeneros);
-    const dataGenero = Object.values(contadorGeneros);
-
-    const backgroundColors = [];
-    for (let i = 0; i < labelsGenero.length; i++) {
-        const hue = (i * 40) % 360;
-        backgroundColors.push(`hsl(` + hue + `, 70%, 60%)`);
-    }
+    const ids = Object.keys(contadorGeneros);
+    const dataGenero = ids.map(id => contadorGeneros[id]);
+    const labelsGenero = ids.map(id => nombresGeneros[id]);
+    const backgroundColors = ids.map(id => generoIdToColor(id));
 
     const ctxGenero = document.getElementById('graficoGeneros').getContext('2d');
     new Chart(ctxGenero, {
@@ -361,6 +351,11 @@
             },
         }
     });
+
+    function generoIdToColor(id) {
+        const hue = (parseInt(id, 10) * 80) % 360;
+        return `hsl(` + hue + `, 70%, 60%)`;
+    }
 </script>
 </body>
 </html>

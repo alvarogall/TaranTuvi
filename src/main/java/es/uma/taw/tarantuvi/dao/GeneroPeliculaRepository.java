@@ -10,6 +10,21 @@ public interface GeneroPeliculaRepository extends JpaRepository<GeneroPeliculaEn
     @Query("Select g from GeneroPeliculaEntity g where g.generonombre = :trim")
     GeneroPeliculaEntity findByNombre(String trim);
 
-    @Query("SELECT G.generonombre, AVG(V.nota) FROM GeneroPeliculaEntity G LEFT JOIN G.peliculaList P LEFT JOIN P.valoracionList V GROUP BY G.generonombre")
+    @Query("SELECT G.id, G.generonombre, AVG(V.nota) " +
+            "FROM GeneroPeliculaEntity G " +
+            "LEFT JOIN G.peliculaList P " +
+            "LEFT JOIN P.valoracionList V " +
+            "GROUP BY G.id, G.generonombre")
     List<Object[]> findNotaMediaPorGenero();
+
+    @Query("SELECT G.id, G.generonombre, COUNT(V) " +
+            "FROM GeneroPeliculaEntity G " +
+            "JOIN G.peliculaList P " +
+            "JOIN P.valoracionList V " +
+            "GROUP BY G.id, G.generonombre")
+    List<Object[]> findNumeroValoracionesPorGenero();
+
+
+
+
 }

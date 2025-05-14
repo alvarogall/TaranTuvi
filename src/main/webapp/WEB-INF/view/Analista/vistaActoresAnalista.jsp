@@ -1,7 +1,9 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.ActuacionEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
-<%@ page import="java.math.BigDecimal" %><%--
+
+<%--
   Created by IntelliJ IDEA.
   User: Alejandro Cueto
   Date: 21/04/2025
@@ -19,7 +21,7 @@
 <jsp:include page ="analistaCabecera.jsp"/>
 
 <div class="stats-container" >
-    <div class="card-table">
+    <div class="tabla-pequena-Actor">
         <h3>Género Global</h3>
         <table>
             <tr>
@@ -60,6 +62,24 @@
 
     <div class="card-table">
         <h3>Género por Película</h3>
+
+        <form:form method="get" modelAttribute="orden" action="/analista/actores" cssClass="filtro-formulario">
+            <label for="ordenCampo">Ordenar por:</label>
+            <form:select path="ordenCampo" id="ordenCampo">
+                <form:option value="">-- Seleccionar --</form:option>
+                <form:option value="titulo">Título</form:option>
+                <form:option value="actrices">% Actrices</form:option>
+                <form:option value="actores">% Actores</form:option>
+            </form:select>
+
+            <label for="ordenTipo"></label>
+            <form:select path="ordenTipo" id="ordenTipo">
+                <form:option value="ASC">Ascendente</form:option>
+                <form:option value="DESC">Descendente</form:option>
+            </form:select>
+            <button type="submit">Aplicar</button>
+        </form:form>
+
         <table>
             <tr>
                 <th>Título</th>
@@ -83,6 +103,23 @@
 
     <div class="card-table">
         <h3>Actores por País</h3>
+
+        <form:form method="get" modelAttribute="orden" action="/analista/actores" cssClass="filtro-formulario">
+            <label for="ordenCampoAuxiliar">Ordenar por</label>
+            <form:select path="ordenCampoAuxiliar" id="ordenCampoAuxiliar">
+                <form:option value="">-- Seleccionar --</form:option>
+                <form:option value="nacionalidad">Nacionalidad</form:option>
+                <form:option value="cantidad">Cantidad</form:option>
+            </form:select>
+
+            <label for="ordenTipoAuxiliar"></label>
+            <form:select path="ordenTipoAuxiliar" id="ordenTipoAuxiliar">
+                <form:option value="ASC">Ascendente</form:option>
+                <form:option value="DESC">Descendente</form:option>
+            </form:select>
+            <button type="submit">Aplicar</button>
+        </form:form>
+
         <table>
             <tr>
                 <th>Nacionalidad</th>
@@ -109,8 +146,9 @@
     <div class="card-table">
         <h3>Actores Mejor Película</h3>
         <%
-            Object[] mejorPelicula = (Object[]) request.getAttribute("pelicula");
-            PeliculaEntity pelicula = (PeliculaEntity) mejorPelicula[0];
+            List<Object[]> mejorPeliculaLista = (List<Object[]>) request.getAttribute("pelicula");
+            Object[] peliculaObjeto = (Object[]) mejorPeliculaLista.get(0);
+            PeliculaEntity pelicula = (PeliculaEntity) peliculaObjeto[0];
         %>
         <table>
             <tr>
@@ -119,7 +157,7 @@
             </tr>
             <tr>
                 <td><strong>Nota Media:</strong></td>
-                <td style = "text-align: right"><input type="text" disabled value="<%=mejorPelicula[1]%>"></td>
+                <td style = "text-align: right"><input type="text" disabled value="<%=peliculaObjeto[1]%>"></td>
             </tr>
         </table>
         <br/>

@@ -11,7 +11,7 @@
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    min-width: 320px;
+    min-width: 310px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -45,4 +45,110 @@ input[disabled] {
 }
 body {
     background: #f3f3f3;
+}
+
+form input {
+    background-color: #f8f8f8;
+    border-color: #afafaf;
+    padding: 5px 2px;
+    width: 50px;
+}
+
+button {
+    padding: 9px 20px;
+    background-color: #007afd;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1c8cff;
+}
+
+.filtro-formulario {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+
+}
+
+.filtro-formulario select,
+.filtro-formulario input{
+    padding: 3px;
+    min-width: 30px;
+}
+
+.left-panelProductoras {
+    flex-grow: 1;
+}
+
+.right-panelProductoras {
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.filtro-formulario-Productora {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    padding: 5px;
+    min-width: 50px;
+}
+
+.divisionSelect {
+    align-items: center;
+    display: flex;
+    gap: 15px;
+}
+
+.filtro-formulario-Productora select{
+    padding: 3px;
+    margin-right: 15px;
+    min-width: 30px;
+}
+
+.filtro-formulario-Productora input{
+    align-items: center;
+}
+
+.input-pequeno-Productora {
+    width: 80px;
+    padding: 3px;
+    border: 1px solid #5a5a5a;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.input-pequeno-Productora:disabled {
+    width: 80px;
+    padding: 3px;
+    background-color: #d1d1d1;
+    opacity: 1;
+}
+
+.tabla-pequena-Actor {
+    background-color: #fdfdfd;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    min-width: 220px;
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.tabla-pequena-Actor h3 {
+    margin-top: 0;
+    text-align: center;
 }
