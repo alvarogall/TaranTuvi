@@ -75,5 +75,8 @@ public class UsuarioPremium {
         model.addAttribute("listaPelicula", new ListaPelicula());
 
 
+        return "redirect:/usuarioPremium/perfil";
+    }
+
 
 }
