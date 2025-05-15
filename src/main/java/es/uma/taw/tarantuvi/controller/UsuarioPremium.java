@@ -65,6 +65,14 @@ public class UsuarioPremium {
         return "redirect:/usuarioPremium/perfil";
     }
 
+    @PostMapping("/eliminarLista")
+    public String doEliminarLista(Model model, HttpSession session,@RequestParam("idLista") Integer idLista) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        Integer idUsuario = usuario.getUsuarioId();
+        listaPeliculaRepository.deleteById(idLista);
+
+        model.addAttribute("listasPeliculas",listaPeliculaRepository.findListasByUsuarioid(idUsuario));
+        model.addAttribute("listaPelicula", new ListaPelicula());
 
 
 
