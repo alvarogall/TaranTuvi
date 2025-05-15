@@ -13,6 +13,8 @@
 <%@ page import="es.uma.taw.tarantuvi.entity.PersonaEntity" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.HashSet" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Pelicula" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Actor" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -25,9 +27,9 @@
 </jsp:include>
 
 <%
-    List<PersonaEntity> personas = (List<PersonaEntity>) request.getAttribute("personas");
+    List<Actor> personas = (List<Actor>) request.getAttribute("personas");
     List<ActuacionEntity> actuaciones = (List<ActuacionEntity>) request.getAttribute("actuaciones");
-    List<PeliculaEntity> peliculas = (List<PeliculaEntity>) request.getAttribute("peliculas");
+    List<Pelicula> peliculas = (List<Pelicula>) request.getAttribute("peliculas");
     List<GeneroPeliculaEntity> generos = (List<GeneroPeliculaEntity>) request.getAttribute("generos");
 %>
 
@@ -57,7 +59,7 @@
         <tbody id="actoresTableBody">
         <%
             boolean esActor = false;
-            for(PersonaEntity persona : personas){
+            for(Actor persona : personas){
                 esActor = false;
                 for(ActuacionEntity actuacion : actuaciones){
                     if(actuacion.getPersonaid().getId() == persona.getId()){
@@ -87,7 +89,7 @@
 
             <td>
                 <%
-                    for(PeliculaEntity pelicula : peliculas){
+                    for(Pelicula pelicula : peliculas){
                         for(ActuacionEntity act : pelicula.getActuacionList()){
                             if(act.getPersonaid().getNombre().equals(persona.getNombre())){
                                 out.print(pelicula.getTitulooriginal() + "<br/>");

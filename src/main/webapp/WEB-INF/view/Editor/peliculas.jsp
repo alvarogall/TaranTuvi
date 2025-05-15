@@ -4,6 +4,7 @@
 
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.*" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Pelicula" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -28,7 +29,7 @@
     </div>
 
     <%
-        List<PeliculaEntity> lista = (List<PeliculaEntity>) request.getAttribute("peliculas");
+        List<Pelicula> lista = (List<Pelicula>) request.getAttribute("peliculas");
     %>
 
     <div class="container">
@@ -52,7 +53,7 @@
             </thead>
             <tbody id="moviesTableBody">
             <%
-                for (PeliculaEntity pelicula : lista) {
+                for (Pelicula pelicula : lista) {
             %>
             <tr class="movie-row">
                 <td>
@@ -65,10 +66,10 @@
                 </td>
                 <td><%= pelicula.getTitulooriginal() != null ? pelicula.getTitulooriginal() : "" %></td>
                 <td><%= pelicula.getDuracion() != null ? pelicula.getDuracion() : "" %></td>
-                <td><%= pelicula.getFechaestreno() != null ? pelicula.getFechaestreno() : "" %></td>
+                <td><%= pelicula.getFecha() != null ? pelicula.getFecha() : "" %></td>
                 <td>
                     <%
-                        if (pelicula.getActuacionList() != null) {
+                        if (pelicula.getCast() != null) {
                             for (ActuacionEntity actuacion : pelicula.getActuacionList()) {
                                 PersonaEntity persona = actuacion.getPersonaid();
                                 if (persona != null) {

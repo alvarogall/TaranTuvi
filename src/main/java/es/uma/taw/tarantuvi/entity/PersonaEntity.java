@@ -49,9 +49,11 @@ public class PersonaEntity implements DTO<Actor> {
         if(this.generopersonaid != null && this.nacionalidadid != null){
             actor.setGenero(this.generopersonaid.getId());
             actor.setNacionalidad(this.nacionalidadid.getId());
+            actor.setGeneropersonaid(this.generopersonaid);
+            actor.setNacionalidadid(this.nacionalidadid);
         }
 
-        if(this.actuacionList != null){
+        if(this.actuacionList != null && this.trabajoList != null){
             List<Integer> idsPeliculas = new ArrayList<Integer>();
             for(ActuacionEntity a : this.actuacionList){
                 if(a.getPeliculaid() != null){
@@ -67,6 +69,9 @@ public class PersonaEntity implements DTO<Actor> {
                 }
             }
             actor.setActuaciones(idsActuaciones);
+
+            actor.setActuacionList(this.actuacionList);
+            actor.setTrabajoList(this.trabajoList);
         }
 
         return actor;

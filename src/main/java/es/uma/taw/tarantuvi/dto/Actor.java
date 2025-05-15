@@ -4,6 +4,10 @@ User: jesus
 
 package es.uma.taw.tarantuvi.dto;
 
+import es.uma.taw.tarantuvi.entity.ActuacionEntity;
+import es.uma.taw.tarantuvi.entity.GeneroPersonaEntity;
+import es.uma.taw.tarantuvi.entity.NacionalidadEntity;
+import es.uma.taw.tarantuvi.entity.TrabajoEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +24,9 @@ public class Actor {
     protected Integer nacionalidad;
     protected List<Integer> peliculas;
     protected List<Integer> actuaciones;
+
+    protected GeneroPersonaEntity generopersonaid;
+    protected NacionalidadEntity nacionalidadid;
+    protected List<ActuacionEntity> actuacionList;
+    protected List<TrabajoEntity> trabajoList;
 }

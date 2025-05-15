@@ -140,7 +140,11 @@ public class PeliculaEntity implements DTO<Pelicula> {
         pelicula.setEslogan(this.eslogan);
         pelicula.setEstado(this.estado);
 
-        if(this.actuacionList != null
+        if(this.generoPeliculaList != null
+                && this.palabraClaveList != null
+                && this.listaPeliculaList != null
+                && this.valoracionList != null
+                && this.actuacionList != null
                 && this.trabajoList != null
                 && this.productoraList != null
                 && this.paisRodajeList != null
@@ -181,13 +185,32 @@ public class PeliculaEntity implements DTO<Pelicula> {
                 idsGeneros.add(g.getId());
             }
             pelicula.setGeneros(idsGeneros);
+
+            pelicula.setGeneroPeliculaList(this.generoPeliculaList);
+            pelicula.setPalabraClaveList(this.palabraClaveList);
+            pelicula.setIdiomaHabladoList(this.idiomaHabladoList);
+            pelicula.setPaisRodajeList(this.paisRodajeList);
+            pelicula.setProductoraList(this.productoraList);
+            pelicula.setListaPeliculaList(this.listaPeliculaList);
+            pelicula.setActuacionList(this.actuacionList);
+            pelicula.setTrabajoList(this.trabajoList);
+            pelicula.setValoracionList(this.valoracionList);
         }else{
-            pelicula.setCast(new ArrayList<Integer>());
-            pelicula.setCrew(new ArrayList<Integer>());
-            pelicula.setProductoras(new ArrayList<Integer>());
-            pelicula.setPaisesRodaje(new ArrayList<Integer>());
-            pelicula.setIdiomas(new ArrayList<Integer>());
-            pelicula.setGeneros(new ArrayList<Integer>());
+            pelicula.setCast(new ArrayList<>());
+            pelicula.setCrew(new ArrayList<>());
+            pelicula.setProductoras(new ArrayList<>());
+            pelicula.setPaisesRodaje(new ArrayList<>());
+            pelicula.setIdiomas(new ArrayList<>());
+            pelicula.setGeneros(new ArrayList<>());
+            pelicula.setGeneroPeliculaList(new ArrayList<>());
+            pelicula.setPalabraClaveList(new ArrayList<>());
+            pelicula.setIdiomaHabladoList(new ArrayList<>());
+            pelicula.setPaisRodajeList(new ArrayList<>());
+            pelicula.setProductoraList(new ArrayList<>());
+            pelicula.setListaPeliculaList(new ArrayList<>());
+            pelicula.setActuacionList(new ArrayList<>());
+            pelicula.setTrabajoList(new ArrayList<>());
+            pelicula.setValoracionList(new ArrayList<>());
         }
 
         return pelicula;
