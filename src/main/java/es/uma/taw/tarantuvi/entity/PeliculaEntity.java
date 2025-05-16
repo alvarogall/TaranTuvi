@@ -7,6 +7,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "PELICULA", schema = "TaranTuvi")
-public class PeliculaEntity implements DTO<Pelicula> {
+public class PeliculaEntity implements Serializable, DTO<Pelicula> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PELICULAID", nullable = false)

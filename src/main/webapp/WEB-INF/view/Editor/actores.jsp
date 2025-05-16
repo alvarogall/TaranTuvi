@@ -10,11 +10,12 @@
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.PersonaEntity" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.HashSet" %>
 <%@ page import="es.uma.taw.tarantuvi.dto.Pelicula" %>
 <%@ page import="es.uma.taw.tarantuvi.dto.Actor" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Actuacion" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.GeneroPelicula" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -28,9 +29,9 @@
 
 <%
     List<Actor> personas = (List<Actor>) request.getAttribute("personas");
-    List<ActuacionEntity> actuaciones = (List<ActuacionEntity>) request.getAttribute("actuaciones");
+    List<Actuacion> actuaciones = (List<Actuacion>) request.getAttribute("actuaciones");
     List<Pelicula> peliculas = (List<Pelicula>) request.getAttribute("peliculas");
-    List<GeneroPeliculaEntity> generos = (List<GeneroPeliculaEntity>) request.getAttribute("generos");
+    List<GeneroPelicula> generos = (List<GeneroPelicula>) request.getAttribute("generos");
 %>
 
 <div class="container">
@@ -61,7 +62,7 @@
             boolean esActor = false;
             for(Actor persona : personas){
                 esActor = false;
-                for(ActuacionEntity actuacion : actuaciones){
+                for(Actuacion actuacion : actuaciones){
                     if(actuacion.getPersonaid().getId() == persona.getId()){
                         esActor = true;
                     }
@@ -80,11 +81,11 @@
             </td>
 
             <td>
-                <%= persona.getGeneropersonaid().getGeneropersonanombre() != null ? persona.getGeneropersonaid().getGeneropersonanombre() : ""%>
+                <%= persona.getNombreGenero()!= null ? persona.getNombreGenero() : ""%>
             </td>
 
             <td>
-                <%= persona.getNacionalidadid().getNacionalidadnombre() != null ? persona.getNacionalidadid().getNacionalidadnombre() : ""%>
+                <%= persona.getNombreNacionalidad() != null ? persona.getNombreNacionalidad() : ""%>
             </td>
 
             <td>
@@ -101,7 +102,7 @@
 
             <td>
                 <%
-                    for(ActuacionEntity act : actuaciones){
+                    for(Actuacion act : actuaciones){
                         if(act.getPersonaid().getId() == persona.getId() && act.getPersonaje() != null){
                             out.print(act.getPersonaje() + "<br/>");
                         }
@@ -114,7 +115,7 @@
                     Set<String> mostrados = new HashSet<>(); //Para controlar la salida de duplicados
                                                             // (En un set solo se añade al llamar a add si no está en el set el elemento a añadir)
 
-                    for (GeneroPeliculaEntity genero : generos) {
+                    for (GeneroPelicula genero : generos) {
                         for (PeliculaEntity pelicula : genero.getPeliculaList()) {
                             for (ActuacionEntity act : pelicula.getActuacionList()) {
                                 if (act.getPersonaid().getId() == persona.getId()) {

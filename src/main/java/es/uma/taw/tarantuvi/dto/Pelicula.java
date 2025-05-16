@@ -39,10 +39,10 @@ public class Pelicula {
     protected List<GeneroPeliculaEntity> generoPeliculaList;
     protected List<PalabraClaveEntity> palabraClaveList;
     protected List<IdiomaHabladoEntity> idiomaHabladoList;
-    private List<PaisRodajeEntity> paisRodajeList;
-    private List<ProductoraEntity> productoraList;
-    private List<ListaPeliculaEntity> listaPeliculaList;
-    private List<ActuacionEntity> actuacionList;
-    private List<TrabajoEntity> trabajoList;
-    private List<ValoracionEntity> valoracionList;
+    protected List<PaisRodajeEntity> paisRodajeList;
+    protected List<ProductoraEntity> productoraList;
+    protected List<ListaPeliculaEntity> listaPeliculaList;
+    protected List<ActuacionEntity> actuacionList;
+    protected List<TrabajoEntity> trabajoList;
+    protected List<ValoracionEntity> valoracionList;
 }

@@ -1,16 +1,19 @@
 package es.uma.taw.tarantuvi.entity;
 
+import es.uma.taw.tarantuvi.dto.DTO;
+import es.uma.taw.tarantuvi.dto.GeneroPelicula;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "GENEROPELICULA", schema = "TaranTuvi")
-public class GeneroPeliculaEntity {
+public class GeneroPeliculaEntity implements Serializable, DTO<GeneroPelicula> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "GENEROPELICULAID", nullable = false)
@@ -22,11 +25,13 @@ public class GeneroPeliculaEntity {
     @ManyToMany(mappedBy = "generoPeliculaList")
     private List<PeliculaEntity> peliculaList;
 
-    public void addPeliculaId(PeliculaEntity pelicula) {
-        this.peliculaList.add(pelicula);
-    }
+    public GeneroPelicula toDto(){
+        GeneroPelicula generoPelicula = new GeneroPelicula();
 
-    public void setGeneroPeliculaId(GeneroPeliculaEntity genero) {
-        this.id = genero.getId();
+        generoPelicula.setId(id);
+        generoPelicula.setGeneronombre(generonombre);
+        generoPelicula.setPeliculaList(peliculaList);
+
+        return generoPelicula;
     }
 }

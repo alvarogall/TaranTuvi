@@ -1,11 +1,13 @@
+/*
+User: jesus
+*/
+
 package es.uma.taw.tarantuvi.service;
 
 import es.uma.taw.tarantuvi.dao.*;
-import es.uma.taw.tarantuvi.dto.Actor;
 import es.uma.taw.tarantuvi.dto.Pelicula;
 import es.uma.taw.tarantuvi.entity.ActuacionEntity;
 import es.uma.taw.tarantuvi.entity.PeliculaEntity;
-import es.uma.taw.tarantuvi.entity.PersonaEntity;
 import es.uma.taw.tarantuvi.entity.TrabajoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

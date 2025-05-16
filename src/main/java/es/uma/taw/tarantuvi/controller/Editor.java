@@ -5,43 +5,39 @@ User: jesus
 package es.uma.taw.tarantuvi.controller;
 
 import es.uma.taw.tarantuvi.dao.*;
-import es.uma.taw.tarantuvi.dto.Actor;
+import es.uma.taw.tarantuvi.dto.*;
 import es.uma.taw.tarantuvi.entity.*;
-import es.uma.taw.tarantuvi.dto.Pelicula;
-import es.uma.taw.tarantuvi.service.PeliculaService;
-import es.uma.taw.tarantuvi.service.PersonaService;
+import es.uma.taw.tarantuvi.service.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.*;
 
 @Controller
 @RequestMapping("/editor")
-public class Editor {
+public class Editor extends BaseController {
     @Autowired
     protected PeliculaService peliculaService;
     @Autowired
-    private ActuacionRepository actuacionRepository;
+    protected ActuacionService actuacionService;
     @Autowired
-    private PersonaService personaService;
+    protected PersonaService personaService;
     @Autowired
-    private ProductoraRepository productoraRepository;
+    protected ProductoraService productoraService;
     @Autowired
-    private IdiomaHabladoRepository idiomaHabladoRepository;
+    protected IdiomaHabladoService idiomaHabladoService;
     @Autowired
-    private GeneroPeliculaRepository generoPeliculaRepository;
+    protected GeneroPeliculaService generoPeliculaService;
     @Autowired
-    private TrabajoRepository trabajoRepository;
+    protected TrabajoService trabajoService;
     @Autowired
-    private PaisRodajeRepository paisRodajeRepository;
+    protected PaisRodajeService paisRodajeService;
     @Autowired
-    private GeneroPersonaRepository generoPersonaRepository;
+    protected GeneroPersonaService generoPersonaService;
     @Autowired
-    private NacionalidadRepository nacionalidadRepository;
+    protected NacionalidadService nacionalidadService;
 
     @GetMapping("/")
     public String vistaEditor() {
@@ -49,23 +45,31 @@ public class Editor {
     }
 
     @GetMapping("/peliculas")
-    public String vistaPeliculas(Model model) {
-        List<Pelicula> peliculas = this.peliculaService.listarPeliculas();
-        model.addAttribute("peliculas", peliculas);
-        return "Editor/peliculas";
+    public String vistaPeliculas(Model model, HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        }else{
+            List<Pelicula> peliculas = this.peliculaService.listarPeliculas();
+            model.addAttribute("peliculas", peliculas);
+            return "Editor/peliculas";
+        }
     }
 
     @GetMapping("/actores")
-    public String vistaActores(Model model) {
-        List<Actor> personas = this.personaService.listarPersonas();
-        List<ActuacionEntity> actuaciones = actuacionRepository.findAll();
-        List<Pelicula> peliculas = this.peliculaService.listarPeliculas();
-        List<GeneroPeliculaEntity> generos = generoPeliculaRepository.findAll();
-        model.addAttribute("personas", personas);
-        model.addAttribute("generos", generos);
-        model.addAttribute("peliculas", peliculas);
-        model.addAttribute("actuaciones", actuaciones);
-        return "Editor/actores";
+    public String vistaActores(Model model, HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        }else{
+            List<Actor> personas = this.personaService.listarPersonas();
+            List<Actuacion> actuaciones = this.actuacionService.listarActuaciones();
+            List<Pelicula> peliculas = this.peliculaService.listarPeliculas();
+            List<GeneroPelicula> generos = this.generoPeliculaService.listarGenerosPeliculas();
+            model.addAttribute("personas", personas);
+            model.addAttribute("generos", generos);
+            model.addAttribute("peliculas", peliculas);
+            model.addAttribute("actuaciones", actuaciones);
+            return "Editor/actores";
+        }
     }
 
     @PostMapping("/peliculas/editar")
@@ -74,20 +78,22 @@ public class Editor {
 
         Pelicula entidad = this.peliculaService.buscarPelicula(id);
 
-        List<ActuacionEntity> actuacionesFiltradas = new ArrayList<>();
+        List<Actuacion> actuacionesFiltradas = new ArrayList<>();
         if (entidad.getActuacionList() != null) {
-            actuacionesFiltradas.addAll(entidad.getActuacionList());
+            for(ActuacionEntity a : entidad.getActuacionList()) {
+                actuacionesFiltradas.add(a.toDto());
+            }
         }
         // Construir conjunto de claves de las ya añadidas
         List<String> clavesAct = new ArrayList<>();
-        for (ActuacionEntity a : actuacionesFiltradas) {
+        for (Actuacion a : actuacionesFiltradas) {
             String clave = a.getPersonaid().getId() + "|" + a.getPersonaje();
             if (!clavesAct.contains(clave)) {
                 clavesAct.add(clave);
             }
         }
         // Añadir luego las que falten
-        for (ActuacionEntity a : actuacionRepository.findAll()) {
+        for (Actuacion a : this.actuacionService.listarActuaciones()) {
             String clave = a.getPersonaid().getId() + "|" + a.getPersonaje();
             if (!clavesAct.contains(clave)) {
                 clavesAct.add(clave);
@@ -95,18 +101,20 @@ public class Editor {
             }
         }
 
-        List<TrabajoEntity> crewFiltrado = new ArrayList<>();
+        List<Trabajo> crewFiltrado = new ArrayList<>();
         if (entidad.getTrabajoList() != null) {
-            crewFiltrado.addAll(entidad.getTrabajoList());
+            for(TrabajoEntity a : entidad.getTrabajoList()) {
+                crewFiltrado.add(a.toDto());
+            }
         }
         List<String> clavesTrab = new ArrayList<>();
-        for (TrabajoEntity t : crewFiltrado) {
+        for (Trabajo t : crewFiltrado) {
             String clave = t.getPersonaid().getId() + "|" + t.getTrabajonombre();
             if (!clavesTrab.contains(clave)) {
                 clavesTrab.add(clave);
             }
         }
-        for (TrabajoEntity t : trabajoRepository.findAll()) {
+        for (Trabajo t : this.trabajoService.listarTrabajos()) {
             String clave = t.getPersonaid().getId() + "|" + t.getTrabajonombre();
             if (!clavesTrab.contains(clave)) {
                 clavesTrab.add(clave);
@@ -114,10 +122,10 @@ public class Editor {
             }
         }
 
-        List<ProductoraEntity>     productoras  = productoraRepository.findAll();
-        List<IdiomaHabladoEntity>  idiomas      = idiomaHabladoRepository.findAll();
-        List<GeneroPeliculaEntity> generos      = generoPeliculaRepository.findAll();
-        List<PaisRodajeEntity>     paisesRodaje = paisRodajeRepository.findAll();
+        List<Productora> productoras  = this.productoraService.listarProductoras();
+        List<IdiomaHablado> idiomas      = this.idiomaHabladoService.listarIdiomasHablados();
+        List<GeneroPelicula> generos      = this.generoPeliculaService.listarGenerosPeliculas();
+        List<PaisRodaje> paisesRodaje = this.paisRodajeService.listarPaisesRodaje();
 
         model.addAttribute("pelicula",     entidad);
         model.addAttribute("actuaciones",  actuacionesFiltradas);
@@ -142,10 +150,10 @@ public class Editor {
         Pelicula pelicula = this.peliculaService.buscarPelicula(id);
         if(pelicula != null) {
             for(ActuacionEntity a : pelicula.getActuacionList()) {
-                this.actuacionRepository.deleteById(a.getId());
+                this.actuacionService.borrarActuacion(a.getId());
             }
             for(TrabajoEntity t : pelicula.getTrabajoList()) {
-                this.trabajoRepository.deleteById(t.getId());
+                this.trabajoService.borrarTrabajo(t.getId());
             }
         }
         this.peliculaService.borrarPelicula(id);
@@ -158,10 +166,9 @@ public class Editor {
 
         model.addAttribute("actor", persona);
         model.addAttribute("peliculas", this.peliculaService.listarPeliculas());
-        model.addAttribute("actuaciones", actuacionRepository.findAll());
-        model.addAttribute("generosPeliculas", generoPeliculaRepository.findAll());
-        model.addAttribute("generosPersona", generoPersonaRepository.findAll());
-        model.addAttribute("nacionalidades", nacionalidadRepository.findAll());
+        model.addAttribute("actuaciones", this.actuacionService.listarActuaciones());
+        model.addAttribute("generosPersona", this.generoPersonaService.listarGenerosPersonas());
+        model.addAttribute("nacionalidades", this.nacionalidadService.listarNacionalidades());
 
         return "Editor/actor";
     }
@@ -169,15 +176,14 @@ public class Editor {
     @PostMapping("/actores/confirmarCambios")
     public String doConfirmarCambiosActores(@ModelAttribute Actor dtoActor) {
         this.personaService.guardarActor(dtoActor);
-
         return "redirect:/editor/actores";
     }
 
     @PostMapping("actores/borrar")
     public String doBorrarActor(@RequestParam("id") Integer id){
-        for(ActuacionEntity a : this.actuacionRepository.findAll()){
+        for(Actuacion a : this.actuacionService.listarActuaciones()){
             if(Objects.equals(a.getPersonaid().getId(), id)){
-                this.actuacionRepository.delete(a);
+                this.actuacionService.borrarActuacion(a.getId());
             }
         }
         this.personaService.borrarPersona(id);
