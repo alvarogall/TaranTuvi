@@ -66,7 +66,12 @@
                                 for(PeliculaEntity pelicula : lista.getPeliculaList()){
                         %>
                         <div>
-                            <img class="caratula" src="<%=pelicula.getUrlcaratula()%>" alt="">
+                            <div class="pelicula-item">
+                                <img class="caratula" src="<%=pelicula.getUrlcaratula()%>" alt="">
+                                <p class="titulo-pelicula"><%=pelicula.getTitulooriginal()%></p>
+                                <a id="botonEliminarPelicula" href="/usuarioPremium/eliminarPeliculaLista?idLista=<%=lista.getId()%>&idPelicula=<%=pelicula.getId()%>" class="cerrar-sesion">Eliminar película</a>
+                            </div>
+
                         </div>
                             
                         <%

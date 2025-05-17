@@ -10,6 +10,7 @@ import es.uma.taw.tarantuvi.dto.Usuario;
 import es.uma.taw.tarantuvi.entity.ListaPeliculaEntity;
 import es.uma.taw.tarantuvi.entity.PeliculaEntity;
 import es.uma.taw.tarantuvi.entity.PeliculaListaPeliculaEntity;
+import es.uma.taw.tarantuvi.entity.PeliculaListaPeliculaId;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -113,5 +114,15 @@ public class UsuarioPremium {
         return "redirect:/usuarioPremium/perfil";
     }
 
+    @GetMapping("/eliminarPeliculaLista")
+    public String doEliminarPeliculaLista(Model model, HttpSession session,@RequestParam("idLista") Integer idLista,
+                                          @RequestParam("idPelicula") Integer idPelicula) {
+
+        PeliculaListaPeliculaId id = new PeliculaListaPeliculaId(idPelicula, idLista);
+
+        peliculaListaPeliculaRepository.deleteById(id);
+
+        return "redirect:/usuarioPremium/perfil";
+    }
 
 }

@@ -5,17 +5,16 @@ User: jesus
 package es.uma.taw.tarantuvi.controller;
 
 import es.uma.taw.tarantuvi.dao.*;
-<<<<<<< Updated upstream
+
 import es.uma.taw.tarantuvi.dto.*;
 import es.uma.taw.tarantuvi.entity.*;
 import es.uma.taw.tarantuvi.service.*;
-=======
 import es.uma.taw.tarantuvi.dto.Actor;
 import es.uma.taw.tarantuvi.dto.ListaPelicula;
 import es.uma.taw.tarantuvi.dto.Usuario;
 import es.uma.taw.tarantuvi.entity.*;
 import es.uma.taw.tarantuvi.dto.Pelicula;
->>>>>>> Stashed changes
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,13 +26,13 @@ import java.util.*;
 @RequestMapping("/editor")
 public class Editor extends BaseController {
     @Autowired
-<<<<<<< Updated upstream
+
     protected PeliculaService peliculaService;
-=======
+
     protected ListaPeliculaRepository listaPeliculaRepository;
     @Autowired
     protected PeliculaRepository peliculaRepository;
->>>>>>> Stashed changes
+
     @Autowired
     protected ActuacionService actuacionService;
     @Autowired
