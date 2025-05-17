@@ -1,14 +1,19 @@
 package es.uma.taw.tarantuvi.entity;
 
+import es.uma.taw.tarantuvi.dto.Actuacion;
+import es.uma.taw.tarantuvi.dto.DTO;
+import es.uma.taw.tarantuvi.dto.Pelicula;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "ACTUACION", schema = "TaranTuvi")
-public class ActuacionEntity {
+public class ActuacionEntity implements Serializable, DTO<Actuacion> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ACTUACIONID", nullable = false)
@@ -45,5 +50,18 @@ public class ActuacionEntity {
         return this.personaid.getNombre() + " – " + this.personaje;
     }
 
+    public Actuacion toDto() {
+        Actuacion actuacion = new Actuacion();
 
+        actuacion.setId(this.id);
+        actuacion.setPersonaid(this.personaid);
+        actuacion.setPeliculaid(this.peliculaid);
+        actuacion.setGeneropersonaid(this.generopersonaid);
+        actuacion.setOrden(this.orden);
+        actuacion.setPersonaje(this.personaje);
+
+        actuacion.setLabel(this.personaid.getNombre() + " – " + this.personaje);
+
+        return actuacion;
+    }
 }

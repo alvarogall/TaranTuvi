@@ -4,6 +4,7 @@ User: jesus
 
 package es.uma.taw.tarantuvi.dto;
 
+import es.uma.taw.tarantuvi.entity.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -35,5 +36,13 @@ public class Pelicula {
     protected String eslogan;
     protected String estado;
 
-
+    protected List<GeneroPeliculaEntity> generoPeliculaList;
+    protected List<PalabraClaveEntity> palabraClaveList;
+    protected List<IdiomaHabladoEntity> idiomaHabladoList;
+    protected List<PaisRodajeEntity> paisRodajeList;
+    protected List<ProductoraEntity> productoraList;
+    protected List<ListaPeliculaEntity> listaPeliculaList;
+    protected List<ActuacionEntity> actuacionList;
+    protected List<TrabajoEntity> trabajoList;
+    protected List<ValoracionEntity> valoracionList;
 }

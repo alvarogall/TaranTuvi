@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "PERSONA", schema = "TaranTuvi")
-public class PersonaEntity implements DTO<Actor> {
+public class PersonaEntity implements Serializable, DTO<Actor> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PERSONAID", nullable = false)
@@ -49,9 +50,11 @@ public class PersonaEntity implements DTO<Actor> {
         if(this.generopersonaid != null && this.nacionalidadid != null){
             actor.setGenero(this.generopersonaid.getId());
             actor.setNacionalidad(this.nacionalidadid.getId());
+            actor.setNombreGenero(this.generopersonaid.getGeneropersonanombre());
+            actor.setNombreNacionalidad(this.nacionalidadid.getNacionalidadnombre());
         }
 
-        if(this.actuacionList != null){
+        if(this.actuacionList != null && this.trabajoList != null){
             List<Integer> idsPeliculas = new ArrayList<Integer>();
             for(ActuacionEntity a : this.actuacionList){
                 if(a.getPeliculaid() != null){
