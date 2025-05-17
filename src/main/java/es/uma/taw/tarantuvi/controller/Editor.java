@@ -5,9 +5,17 @@ User: jesus
 package es.uma.taw.tarantuvi.controller;
 
 import es.uma.taw.tarantuvi.dao.*;
+<<<<<<< Updated upstream
 import es.uma.taw.tarantuvi.dto.*;
 import es.uma.taw.tarantuvi.entity.*;
 import es.uma.taw.tarantuvi.service.*;
+=======
+import es.uma.taw.tarantuvi.dto.Actor;
+import es.uma.taw.tarantuvi.dto.ListaPelicula;
+import es.uma.taw.tarantuvi.dto.Usuario;
+import es.uma.taw.tarantuvi.entity.*;
+import es.uma.taw.tarantuvi.dto.Pelicula;
+>>>>>>> Stashed changes
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +27,13 @@ import java.util.*;
 @RequestMapping("/editor")
 public class Editor extends BaseController {
     @Autowired
+<<<<<<< Updated upstream
     protected PeliculaService peliculaService;
+=======
+    protected ListaPeliculaRepository listaPeliculaRepository;
+    @Autowired
+    protected PeliculaRepository peliculaRepository;
+>>>>>>> Stashed changes
     @Autowired
     protected ActuacionService actuacionService;
     @Autowired
@@ -188,5 +202,19 @@ public class Editor extends BaseController {
         }
         this.personaService.borrarPersona(id);
         return "redirect:/editor/actores";
+    }
+
+    @GetMapping("/perfil")
+    public String doPerfil(Model model, HttpSession session) {
+
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        Integer idUsuario = usuario.getUsuarioId();
+
+        List<ListaPeliculaEntity> listasPeliculas = listaPeliculaRepository.findListasByUsuarioid(idUsuario);
+        model.addAttribute("listasPeliculas", listasPeliculas);
+        model.addAttribute("listaPelicula", new ListaPelicula());
+        model.addAttribute("peliculas",peliculaRepository.findAll());
+
+        return "UsuarioPremium/perfilUsuarioPremium";
     }
 }

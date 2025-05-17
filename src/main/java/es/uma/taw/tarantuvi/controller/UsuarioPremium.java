@@ -1,12 +1,15 @@
 package es.uma.taw.tarantuvi.controller;
 
 import es.uma.taw.tarantuvi.dao.ListaPeliculaRepository;
+import es.uma.taw.tarantuvi.dao.PeliculaListaPeliculaRepository;
 import es.uma.taw.tarantuvi.dao.PeliculaRepository;
 import es.uma.taw.tarantuvi.dao.UsuarioRepository;
 import es.uma.taw.tarantuvi.dto.ListaPelicula;
+import es.uma.taw.tarantuvi.dto.SeleccionPeliculasDto;
 import es.uma.taw.tarantuvi.dto.Usuario;
 import es.uma.taw.tarantuvi.entity.ListaPeliculaEntity;
 import es.uma.taw.tarantuvi.entity.PeliculaEntity;
+import es.uma.taw.tarantuvi.entity.PeliculaListaPeliculaEntity;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +24,10 @@ import java.util.List;
 @RequestMapping("/usuarioPremium")
 public class UsuarioPremium {
 
+
+
+    @Autowired
+    protected PeliculaListaPeliculaRepository peliculaListaPeliculaRepository;
 
     @Autowired
     protected PeliculaRepository peliculaRepository;
@@ -49,6 +56,7 @@ public class UsuarioPremium {
         List<ListaPeliculaEntity> listasPeliculas = listaPeliculaRepository.findListasByUsuarioid(idUsuario);
         model.addAttribute("listasPeliculas", listasPeliculas);
         model.addAttribute("listaPelicula", new ListaPelicula());
+        model.addAttribute("peliculas",peliculaRepository.findAll());
 
         return "UsuarioPremium/perfilUsuarioPremium";
     }
@@ -65,7 +73,7 @@ public class UsuarioPremium {
         return "redirect:/usuarioPremium/perfil";
     }
 
-    @PostMapping("/eliminarLista")
+    @GetMapping("/eliminarLista")
     public String doEliminarLista(Model model, HttpSession session,@RequestParam("idLista") Integer idLista) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         Integer idUsuario = usuario.getUsuarioId();
@@ -74,6 +82,33 @@ public class UsuarioPremium {
         model.addAttribute("listasPeliculas",listaPeliculaRepository.findListasByUsuarioid(idUsuario));
         model.addAttribute("listaPelicula", new ListaPelicula());
 
+
+        return "redirect:/usuarioPremium/perfil";
+    }
+
+    @GetMapping("/anyadirPelicula")
+    public String doAnyadirPelicula(Model model, HttpSession session,@RequestParam("idLista") Integer listaId) {
+        SeleccionPeliculasDto seleccionPeliculas = new SeleccionPeliculasDto();
+        seleccionPeliculas.setListaId(listaId);
+        model.addAttribute("seleccionPeliculas", seleccionPeliculas);
+        model.addAttribute("peliculas", peliculaRepository.findAll());
+        model.addAttribute("listaPelicula", listaPeliculaRepository.findById(listaId).get());
+        return "UsuarioPremium/seleccionarPeliculas";
+    }
+
+    @PostMapping("/guardarPeliculasSeleccionadas")
+    public String doGuardarPeliculasSeleccionadas(Model model,@ModelAttribute("seleccionPeliculas") SeleccionPeliculasDto seleccionPeliculas,HttpSession session) {
+        Integer idLista = seleccionPeliculas.getListaId();
+        List<Integer> peliculasIds = seleccionPeliculas.getPeliculaIds();
+        if(peliculasIds!=null && !peliculasIds.isEmpty()){
+            for(Integer peliculaId : peliculasIds){
+                PeliculaListaPeliculaEntity nuevaPelicula = new PeliculaListaPeliculaEntity();
+                nuevaPelicula.setPelicula(peliculaRepository.findById(peliculaId).get());
+                nuevaPelicula.setListaPelicula(listaPeliculaRepository.findById(idLista).get());
+                peliculaListaPeliculaRepository.save(nuevaPelicula);
+
+            }
+        }
 
         return "redirect:/usuarioPremium/perfil";
     }

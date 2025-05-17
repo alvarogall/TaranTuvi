@@ -16,6 +16,9 @@
     List<ListaPeliculaEntity> listasPeliculas = (List<ListaPeliculaEntity>) request.getAttribute("listasPeliculas");
 %>
 
+
+
+
 <body>
 
 <jsp:include page="../Componentes/navBarEnlacePerfil.jsp">
@@ -46,7 +49,10 @@
 
         %>
                 <div class="seccion">
-                    <h3><%=lista.getListapeliculanombre()%></h3>
+                    <h3><%=lista.getListapeliculanombre()%>    <a id="enlaceEliminarLista" class="cerrar-sesion" href="/usuarioPremium/eliminarLista?idLista=<%=lista.getId()%>">Eliminar Lista</a>
+                    <a id="enlaceAnyadirPelicula" class="anyadir-pelicula" href="/usuarioPremium/anyadirPelicula?idLista=<%=lista.getId()%>">Añadir película</a></h3>
+
+
                     <div class="grid-caratulas">
                         <%
                             if(lista.getPeliculaList().isEmpty()){
@@ -99,5 +105,13 @@
         </form:form>
     </div>
 </main>
+
+
+
+
+
+
+
+
 </body>
 </html>

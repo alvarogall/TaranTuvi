@@ -1,0 +1,72 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    color: #000;
+}
+
+.selector-contenedor {
+    padding: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.selector-contenedor h2 {
+    margin-bottom: 30px;
+    font-size: 24px;
+    color: #333;
+}
+
+.grid-peliculas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 20px;
+    justify-items: center;
+}
+
+.pelicula-card {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    transition: box-shadow 0.3s;
+}
+
+.pelicula-card:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.pelicula-card img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+.pelicula-card p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #444;
+}
+
+.pelicula-card input[type="checkbox"] {
+    margin-top: 8px;
+}
+
+.boton-guardar {
+    margin-top: 30px;
+}
+
+.boton-guardar button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.boton-guardar button:hover {
+    background-color: #45a049;
+}
+
+
