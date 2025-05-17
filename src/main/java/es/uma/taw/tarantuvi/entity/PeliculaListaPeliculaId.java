@@ -2,7 +2,6 @@ package es.uma.taw.tarantuvi.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-
 public class PeliculaListaPeliculaId implements Serializable {
 
     private Integer pelicula;

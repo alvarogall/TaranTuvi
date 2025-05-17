@@ -24,7 +24,6 @@ body {
 /* Panel lateral izquierdo */
 .perfil-usuario {
     width: 250px;
-    height: 300px;
     border: 1px solid #ccc;
     padding: 20px;
     text-align: center;
@@ -185,61 +184,3 @@ body {
     background-color: #2980b9;
 }
 
-.pelicula-item {
-    text-align: center;
-    margin: 10px;
-    width: 150px;
-}
-
-.pelicula-item .caratula {
-    width: 100%;
-    border-radius: 6px;
-    transition: transform 0.3s ease;
-}
-
-.pelicula-item .caratula:hover {
-    transform: scale(1.05);
-}
-
-.titulo-pelicula {
-    font-size: 0.9em;
-    margin: 8px 0 4px;
-    color: #333;
-}
-
-.enlace-ver {
-    font-size: 0.75em;
-    color: #2980b9;
-    text-decoration: none;
-}
-
-.enlace-ver:hover {
-    text-decoration: underline;
-}
-
-#botonEliminarPelicula {
-    display: inline-block;
-    padding: 4px 8px;
-    font-size: 0.8rem;
-    color: white;
-    background-color: #c0392b; /* mismo rojo que cerrar-sesion */
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    margin-top: 5px;
-    transition: background-color 0.2s ease-in-out;
-}
-
-#botonEliminarPelicula:hover {
-    background-color: #e74c3c;
-}
-
-.caratula {
-    width: 110px;
-    height: 230px;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    display: block;
-    margin: 0 auto;
-}
