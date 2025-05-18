@@ -38,11 +38,29 @@ public class UsuarioPremium {
     private UsuarioRepository usuarioRepository;
 
     @GetMapping("/")
-    public String usuarioPlus(Model model) {
+    public String usuarioPlus(Model model, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        Integer idUsuario = usuario.getUsuarioId();
+        List<PeliculaEntity> peliculasQueMeGustan = new ArrayList<>();
+        List<ListaPeliculaEntity> listasPeliculas = listaPeliculaRepository.findListasByUsuarioid(idUsuario);
+        for(ListaPeliculaEntity playlist : listasPeliculas) {
+            peliculasQueMeGustan.addAll(peliculaListaPeliculaRepository.findByListaId(playlist));
+
+        }
+
+        int contador = 0;
+        for(PeliculaEntity pelicula : peliculasQueMeGustan) {
+            contador++;
+
+        }
+
+
+
         List<PeliculaEntity> peliculas = peliculaRepository.findAll();
         List<PeliculaEntity> novedades = peliculaRepository.findPeliculasMasRecientes(PageRequest.of(0, 2));
         model.addAttribute("peliculas", peliculas);
         model.addAttribute("novedades", novedades);
+        model.addAttribute("peliculasQueMeGustan", peliculasQueMeGustan);
 
         return "UsuarioPremium/inicioUsuarioPremium";
     }
@@ -52,8 +70,15 @@ public class UsuarioPremium {
 
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         Integer idUsuario = usuario.getUsuarioId();
+        List<PeliculaEntity> peliculasQueMeGustan = new ArrayList<>();
+
 
         List<ListaPeliculaEntity> listasPeliculas = listaPeliculaRepository.findListasByUsuarioid(idUsuario);
+        for(ListaPeliculaEntity playlist : listasPeliculas) {
+            peliculasQueMeGustan.addAll(peliculaListaPeliculaRepository.findByListaId(playlist));
+
+        }
+        model.addAttribute("peliculasQueMeGustan", peliculasQueMeGustan);
         model.addAttribute("listasPeliculas", listasPeliculas);
         model.addAttribute("listaPelicula", new ListaPelicula());
         model.addAttribute("peliculas",peliculaRepository.findAll());

@@ -12,6 +12,7 @@
 </head>
 
 <%
+    List<PeliculaEntity> peliculasQueMeGustan = (List<PeliculaEntity>) request.getAttribute("peliculasQueMeGustan");
     Usuario user = (Usuario) session.getAttribute("usuario");
     List<ListaPeliculaEntity> listasPeliculas = (List<ListaPeliculaEntity>) request.getAttribute("listasPeliculas");
 %>

@@ -15,6 +15,7 @@ String img1 = peliculas.get(0).getUrlcaratula();
 String img2 = peliculas.get(1).getUrlcaratula();
 String img3 = peliculas.get(2).getUrlcaratula();
 
+List<PeliculaEntity> peliculasQueMeGustan = (List<PeliculaEntity>) request.getAttribute("peliculasQueMeGustan");
 
 
 %>
@@ -74,18 +75,21 @@ String img3 = peliculas.get(2).getUrlcaratula();
         </aside>
     </section>
 
-    <!-- Peliculas recomendads -->
+    <!-- Peliculas recomendadas -->
     <section class="peliculas-destacados">
-        <h2>Peliculas recomendadas</h2>
-        <div class="peliculas">
-            <div class="pelicula">
-                <div class="actor-img">👤</div>
-                <p></p>
+        <h2>Películas recomendadas</h2>
+        <div class="peliculas-recomendadas">
+            <%-- Repite esto para 4 películas que tú elijas desde el controlador y pases como atributo --%>
+            <% for (PeliculaEntity peli : peliculasQueMeGustan) { %>
+            <div class="pelicula-recomendada">
+                <img src="<%= peli.getUrlcaratula() != null ? peli.getUrlcaratula() : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>" alt="Carátula">
+                <h4><%= peli.getTitulooriginal() %></h4>
+                <p><%= peli.getFechaestreno().getYear() %></p>
             </div>
-
-
+            <% } %>
         </div>
     </section>
+
 </main>
 
 <script>
