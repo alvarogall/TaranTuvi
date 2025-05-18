@@ -1,6 +1,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Pelicula" %>
+<%@ page import="java.time.LocalDate" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -64,7 +66,7 @@
             <tbody>
             <%
                 List<Object[]> peliculasListaFiltradas =(List<Object[]>) request.getAttribute("peliculasFiltradas");
-                List<PeliculaEntity> peliculasLista = (List<PeliculaEntity>) request.getAttribute("peliculas");
+                List<Pelicula> peliculasLista = (List<Pelicula>) request.getAttribute("peliculas");
                 for (Object[] peliculaObjeto : peliculasListaFiltradas) {
                     PeliculaEntity pelicula = (PeliculaEntity) peliculaObjeto[0];
             %>
@@ -119,22 +121,22 @@
 
 <!-- TABLAS OCULTAS PARA JS -->
 <table id="tablaPeliculas" style="display:none;">
-    <% for (PeliculaEntity pelicula : peliculasLista) {
-        int anio = pelicula.getFechaestreno().getYear();
+    <% for (Pelicula pelicula : peliculasLista) {
+        int anio = LocalDate.parse(pelicula.getFecha()).getYear();
     %>
     <tr><td><%=anio%></td></tr>
     <% } %>
 </table>
 
 <table id="tablaDuraciones" style="display:none;">
-    <% for (PeliculaEntity pelicula : peliculasLista) {
+    <% for (Pelicula pelicula: peliculasLista) {
     %>
     <tr><td><%=pelicula.getDuracion()%></td></tr>
     <% } %>
 </table>
 
 <table id="tablaGeneros" style="display:none;">
-    <% for (PeliculaEntity pelicula : peliculasLista) {
+    <% for (Pelicula pelicula : peliculasLista) {
         for (GeneroPeliculaEntity genero : pelicula.getGeneroPeliculaList()) {
     %>
     <tr data-genero-id="<%=genero.getId()%>">

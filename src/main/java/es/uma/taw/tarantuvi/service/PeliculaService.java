@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -190,4 +191,43 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
 
         peliculaRepository.save(pelicula);
     }
+
+    public List<Object[]> buscarPeliculasPorGeneroIdioma(Integer generoID, Integer idiomaID, String ordenCampo, String ordenTipo){
+        List<Object[]> peliculas = this.peliculaRepository.findPeliculasByFiltros(generoID, idiomaID);
+
+        if (ordenCampo != null && ordenTipo != null) {
+            Comparator<Object[]> comparator = switch (ordenCampo) {
+                case "fecha" -> Comparator.comparing(a -> ((PeliculaEntity) a[0]).getFechaestreno());
+                case "duracion" -> Comparator.comparing(a -> ((PeliculaEntity) a[0]).getDuracion());
+                case "nota" -> Comparator.comparing(a -> (a[1] != null ? (Double) a[1] : 0.0));
+                default -> null;
+            };
+
+            if (comparator != null) {
+                if ("DESC".equalsIgnoreCase(ordenTipo)) {
+                    comparator = comparator.reversed();
+                }
+                peliculas.sort(comparator);
+            }
+        }
+
+        return peliculas;
+    }
+
+    public List<Object[]> obtenerMejorPelicula() {
+        return peliculaRepository.findPeliculasOrdenadasPorNotaYValoraciones()
+                .stream()
+                .limit(1)
+                .toList();
+    }
+
+    public List<Object[]> obtener10MejoresPelicula() {
+        return peliculaRepository.findPeliculasOrdenadasPorNotaYValoraciones()
+                .stream()
+                .limit(10)
+                .toList();
+    }
+
+
+
 }

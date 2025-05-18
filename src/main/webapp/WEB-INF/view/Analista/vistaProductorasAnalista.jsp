@@ -2,6 +2,7 @@
 <%@ page import="es.uma.taw.tarantuvi.entity.ProductoraEntity" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.PaisRodajeEntity" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.DepartamentoEntity" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Departamento" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
@@ -94,9 +95,9 @@
                     <th>Porcentaje</th>
                 </tr>
                 <%
-                    List<DepartamentoEntity> departamentoLista = (List<DepartamentoEntity>) request.getAttribute("departamentos");
+                    List<Departamento> departamentoLista = (List<Departamento>) request.getAttribute("departamentos");
                     int totalTrabajadores = (int) request.getAttribute("totalTrabajadores");
-                    for(DepartamentoEntity departamento: departamentoLista){
+                    for(Departamento departamento: departamentoLista){
                         Long porcentaje = (long) ((departamento.getTrabajoList().size()*100)/totalTrabajadores);
                 %>
                 <tr>

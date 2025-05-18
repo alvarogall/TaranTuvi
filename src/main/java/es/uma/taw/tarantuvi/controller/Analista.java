@@ -1,8 +1,9 @@
 package es.uma.taw.tarantuvi.controller;
 
-import es.uma.taw.tarantuvi.dao.*;
+import es.uma.taw.tarantuvi.dto.*;
 import es.uma.taw.tarantuvi.entity.*;
 import es.uma.taw.tarantuvi.dto.Analista.AnalistaFiltroAnios;
+import es.uma.taw.tarantuvi.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,32 +11,29 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.math.BigDecimal;
-import java.util.Comparator;
 import java.util.List;
 
 @Controller
 @RequestMapping("/analista")
-public class Analista {
+public class Analista extends BaseController {
 
     @Autowired
-    private ValoracionRepository valoracionRepository;
+    protected PeliculaService peliculaService;
     @Autowired
-    private ActuacionRepository actuacionRepository;
+    protected IdiomaHabladoService  idiomaHabladoService;
     @Autowired
-    private PeliculaRepository peliculaRepository;
+    protected GeneroPeliculaService generoPeliculaService;
     @Autowired
-    IdiomaHabladoRepository idiomaHabladoRepository;
+    protected ActuacionService actuacionService;
     @Autowired
-    GeneroPeliculaRepository generoPeliculaRepository;
+    protected ProductoraService productoraService;
     @Autowired
-    ProductoraRepository productoraRepository;
+    protected PaisRodajeService paisRodajeService;
     @Autowired
-    PaisRodajeRepository  paisRodajeRepository;
+    protected TrabajoService trabajoService;
     @Autowired
-    DepartamentoRepository departamentoRepository;
-    @Autowired
-    TrabajoRepository trabajoRepository;
+    protected DepartamentoService departamentoService;
+
 
     @GetMapping("/")
     public String vistaAnalista(Model model) {
@@ -47,33 +45,16 @@ public class Analista {
     public String rankingAnalista(Model model, @ModelAttribute("filtro") AnalistaFiltroAnios filtro) {
         model.addAttribute("paginaActual", "peliculas");
 
-        List<Object[]> listaPeliculasFiltradas = this.peliculaRepository.findPeliculasByFiltros(filtro.getGenero(), filtro.getIdioma());;
-
-        if (filtro.getOrdenCampo() != null && filtro.getOrdenTipo() != null) {
-            Comparator<Object[]> comparator = switch (filtro.getOrdenCampo()) {
-                case "fecha" -> Comparator.comparing(a -> ((PeliculaEntity) a[0]).getFechaestreno());
-                case "duracion" -> Comparator.comparing(a -> ((PeliculaEntity) a[0]).getDuracion());
-                case "nota" -> Comparator.comparing(a -> (a[1] != null ? (Double) a[1] : 0.0));
-                default -> null;
-            };
-
-            if (comparator != null) {
-                if ("DESC".equalsIgnoreCase(filtro.getOrdenTipo())) {
-                    comparator = comparator.reversed();
-                }
-                listaPeliculasFiltradas.sort(comparator);
-            }
-        }
+        List<Object[]> listaPeliculasFiltradas = this.peliculaService.buscarPeliculasPorGeneroIdioma(filtro.getGenero(), filtro.getIdioma(), filtro.getOrdenCampo(), filtro.getOrdenTipo());;
         model.addAttribute("peliculasFiltradas", listaPeliculasFiltradas);
 
-        int anios = (filtro.getAnios() != null) ? filtro.getAnios() : 25;
-
-        List<PeliculaEntity> listaPeliculas = this.peliculaRepository.findAll();
+        List<Pelicula> listaPeliculas = this.peliculaService.listarPeliculas();
         model.addAttribute("peliculas", listaPeliculas);
-        model.addAttribute("anios", anios);
 
-        List<IdiomaHabladoEntity> idiomas = this.idiomaHabladoRepository.findAll();
-        List<GeneroPeliculaEntity> generos = this.generoPeliculaRepository.findAll();
+        model.addAttribute("anios", filtro.getAnios() != null ? filtro.getAnios() : 25);
+
+        List<IdiomaHablado> idiomas = this.idiomaHabladoService.listarIdiomasHablados();
+        List<GeneroPelicula> generos = this.generoPeliculaService.listarGenerosPeliculas();
         model.addAttribute("idiomas", idiomas);
         model.addAttribute("generos", generos);
 
@@ -86,65 +67,26 @@ public class Analista {
 
         model.addAttribute("orden", orden);
 
-        List<Object[]> tasaFemeninaGlobal = this.actuacionRepository.getFemalePercentageGlobal();
+        List<Object[]> tasaFemeninaGlobal = this.actuacionService.obtenerTasaFemeninaGlobal();
         model.addAttribute("tasaFemeninaGlobal", tasaFemeninaGlobal);
 
-        List<Object[]> datos = actuacionRepository.getFemalePercentagePerMovie();
-
-
-            if (orden.getOrdenCampo() != null && orden.getOrdenTipo() != null) {
-                Comparator<Object[]> comparator = switch (orden.getOrdenCampo()) {
-                    case "titulo" -> Comparator.comparing(a -> (String) a[0]);
-                    case "actrices" -> Comparator.comparing(a -> (Double) a[1]);
-                    case "actores" -> Comparator.comparing(a -> (Double) a[2]);
-                    default -> null;
-                };
-
-                if (comparator != null) {
-                    if ("DESC".equalsIgnoreCase(orden.getOrdenTipo())) {
-                        comparator = comparator.reversed();
-                    }
-                    datos.sort(comparator);
-                }
-            }
+        List<Object[]> datos = actuacionService.obtenerTasaFemeninaPorPelicula(orden.getOrdenCampo(), orden.getOrdenTipo());
         model.addAttribute("tasaFemenina", datos);
 
-
-        List<Object[]> tasaNacionalidad = this.actuacionRepository.getCountryCount();
-
-            if (orden.getOrdenCampoAuxiliar() != null && orden.getOrdenTipoAuxiliar() != null) {
-                Comparator<Object[]> comparator = switch (orden.getOrdenCampoAuxiliar()) {
-                    case "nacionalidad" -> Comparator.comparing(a -> (String) a[0]);
-                    case "cantidad" -> Comparator.comparing(a -> (Long) a[1]);
-                    default -> null;
-                };
-
-                if (comparator != null) {
-                    if ("DESC".equalsIgnoreCase(orden.getOrdenTipoAuxiliar())) {
-                        comparator = comparator.reversed();
-                    }
-                    tasaNacionalidad.sort(comparator);
-                }
-            }
-
+        List<Object[]> tasaNacionalidad = this.actuacionService.obtenerTasaPorNacionalidad(orden.getOrdenCampoAuxiliar(), orden.getOrdenTipoAuxiliar());
         model.addAttribute("tasaNacionalidad", tasaNacionalidad);
 
-        List<Object[]> numeroGeneros = this.actuacionRepository.getFemaleMaleCounts();
+        List<Object[]> numeroGeneros = this.actuacionService.obtenerNumeroGeneros();
         model.addAttribute("numeroGeneros", numeroGeneros);
 
-        Long totalActores = this.actuacionRepository.getActorCount();
-
-
+        Long totalActores = this.actuacionService.obtenerTotalActores();
         model.addAttribute("totalActores", totalActores);
 
-        Object[] pelicula = this.valoracionRepository.getPeliculaConMayorNotaMedia().get(0);
-        List<Object[]> topPeliculas = peliculaRepository.findPeliculasOrdenadasPorNotaYValoraciones();
-        topPeliculas = topPeliculas.stream().limit(1).toList();
+        List<Object[]> topPeliculas = this.peliculaService.obtenerMejorPelicula();
         model.addAttribute("pelicula", topPeliculas);
 
-        Object[] peliculaObjeto = (Object[]) topPeliculas.get(0);
-        PeliculaEntity peliculaID = (PeliculaEntity) pelicula[0];
-        List<ActuacionEntity> listaActoresMejorPelicula= this.actuacionRepository.getActoresPelicula(peliculaID.getId());
+        PeliculaEntity peliculaID = (PeliculaEntity) topPeliculas.get(0)[0];
+        List<ActuacionEntity> listaActoresMejorPelicula= this.actuacionService.obtenerActoresDePelicula(peliculaID.getId());
         model.addAttribute("listaActoresMejorPelicula", listaActoresMejorPelicula);
 
 
@@ -155,83 +97,30 @@ public class Analista {
     public String productorasAnalista(@ModelAttribute("orden") AnalistaFiltroAnios orden, Model model) {
         model.addAttribute("paginaActual", "productoras");
 
-        Double presupuestoMin = null, presupuestoMax = null, recaudacionMin = null, recaudacionMax = null;
-        if(orden.getOrdenCampo() != null) {
-        switch (orden.getOrdenCampo()){
-            case "presupuesto" -> {
-                presupuestoMin = orden.getCantidadMinima(); presupuestoMax = orden.getCantidadMaxima();
-            }
-            case "recaudacion" -> {
-                recaudacionMin = orden.getCantidadMinima(); recaudacionMax = orden.getCantidadMaxima();
-            }
-            }
-        }
-        List<Object[]> productorasNotaMedia = this.productoraRepository.getProductorasConNotasMediasYFiltros(presupuestoMin, presupuestoMax, recaudacionMin, recaudacionMax);
-        int totalPeliculas = this.productoraRepository.countPeliculasAsociadasProductora();
-
-        if (orden.getOrdenCampo() != null && orden.getOrdenTipo() != null) {
-            Comparator<Object[]> comparator = switch (orden.getOrdenCampo()) {
-                case "productora" -> Comparator.comparing(a -> ((ProductoraEntity) a[0]).getProductoranombre());
-                case "peliculas" -> Comparator.comparing(a -> ((ProductoraEntity) a[0]).getPeliculaList().size());
-                case "nota" -> Comparator.comparing(a -> (a[1] != null ? (Double) a[1] : 0.0));
-                case "presupuesto" -> Comparator.comparing(a -> (a[2] != null ? (Double) a[2] : 0.0));
-                case "recaudacion" -> Comparator.comparing(a ->(a[3] != null ? (Double) a[3] : 0.0));
-                default -> null;
-            };
-
-            if (comparator != null) {
-                if ("DESC".equalsIgnoreCase(orden.getOrdenTipo())) {
-                    comparator = comparator.reversed();
-                }
-                productorasNotaMedia.sort(comparator);
-            }
-        }
-
+        List<Object[]> productorasNotaMedia = this.productoraService.obtenerProductorasConNotasMediasYFiltrosOrdenadas(orden.getCantidadMinima(), orden.getCantidadMaxima(), orden.getOrdenCampo(), orden.getOrdenTipo());
         model.addAttribute("productorasNotaMedia", productorasNotaMedia);
-        model.addAttribute("totalPeliculas", totalPeliculas);
+        model.addAttribute("totalPeliculas", this.productoraService.contarPeliculasAsociadasProductora());
 
-
-        List<PaisRodajeEntity> paisesRodaje = this.paisRodajeRepository.findAll();
-        int totalPaisesRodaje = this.paisRodajeRepository.countPeliculasAsociadasPaisRodaje();
-
-        if (orden.getOrdenCampoAuxiliar() != null && orden.getOrdenTipoAuxiliar() != null) {
-            Comparator<PaisRodajeEntity> comparator = switch (orden.getOrdenCampoAuxiliar()) {
-                case "pais" -> Comparator.comparing(PaisRodajeEntity :: getPaisrodajenombre);
-                case "peliculas" -> Comparator.comparing(p -> p.getPeliculaList().size());
-                default -> null;
-            };
-
-            if (comparator != null) {
-                if ("DESC".equalsIgnoreCase(orden.getOrdenTipoAuxiliar())) {
-                    comparator = comparator.reversed();
-                }
-                paisesRodaje.sort(comparator);
-            }
-        }
-
+        List<PaisRodajeEntity> paisesRodaje = this.paisRodajeService.listarPaisesRodajeOrdenados(orden.getOrdenCampoAuxiliar(), orden.getOrdenTipoAuxiliar());
         model.addAttribute("paisesRodaje", paisesRodaje);
-        model.addAttribute("totalPaisesRodaje", totalPaisesRodaje);
+        model.addAttribute("totalPaisesRodaje", this.paisRodajeService.contarPeliculasAsociadasPaisRodaje());
 
-        List<DepartamentoEntity> departamentos = this.departamentoRepository.findAll();
-        int totalTrabajadores = this.trabajoRepository.findAll().size();
-        model.addAttribute("departamentos", departamentos);
-        model.addAttribute("totalTrabajadores", totalTrabajadores);
+        model.addAttribute("departamentos", this.departamentoService.listarDepartamentos());
+        model.addAttribute("totalTrabajadores", this.trabajoService.listarTrabajos().size());
+
         return "Analista/vistaProductorasAnalista";
     }
+
 
     @GetMapping("/valoraciones")
     public String valoracionesAnalista(Model model) {
         model.addAttribute("paginaActual", "valoraciones");
 
-        List<Object[]> generosNotaMedia = this.generoPeliculaRepository.findNotaMediaPorGenero();
-        model.addAttribute("generosNotaMedia", generosNotaMedia);
+        model.addAttribute("generosNotaMedia", this.generoPeliculaService.obtenerNotaMediaPorGeneroPelicula());
 
-        List<Object[]> generosNumValoraciones = this.generoPeliculaRepository.findNumeroValoracionesPorGenero();
-        model.addAttribute("generosNumValoraciones", generosNumValoraciones);
+        model.addAttribute("generosNumValoraciones", this.generoPeliculaService.obtenerNumeroValoracionesPorGeneroPelicula());
 
-        List<Object[]> topPeliculas = peliculaRepository.findPeliculasOrdenadasPorNotaYValoraciones();
-        topPeliculas = topPeliculas.stream().limit(10).toList();
-        model.addAttribute("topPeliculas", topPeliculas);
+        model.addAttribute("topPeliculas", this.peliculaService.obtener10MejoresPelicula());
 
         return "Analista/vistaValoracionesAnalista";
     }

@@ -22,4 +22,12 @@ public class GeneroPeliculaService extends DTOService<GeneroPelicula, GeneroPeli
         List<GeneroPeliculaEntity> entities = this.generoPeliculaRepository.findAll();
         return this.entity2DTO(entities);
     }
+
+    public List<Object[]> obtenerNotaMediaPorGeneroPelicula() {
+        return this.generoPeliculaRepository.findNotaMediaPorGenero();
+    }
+
+    public List<Object[]> obtenerNumeroValoracionesPorGeneroPelicula() {
+        return this.generoPeliculaRepository.findNumeroValoracionesPorGenero();
+    }
 }

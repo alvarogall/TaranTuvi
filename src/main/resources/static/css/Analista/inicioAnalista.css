@@ -124,3 +124,44 @@ body {
 .features-list li {
     margin-bottom: 8px;
 }
+
+/* Menú desplegable oculto por defecto */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: #2c2c2c;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 5px 0;
+    min-width: 150px;
+    z-index: 1000;
+}
+
+/* Cuando queramos mostrarlo */
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #e74c3c;
+}
+
+
+/* El icono de tres puntos */
+.menu-toggle {
+    font-size: 24px;
+    color: white;
+    margin-left: 10px;
+    cursor: pointer;
+    user-select: none;
+}
