@@ -15,5 +15,4 @@ import java.util.List;
 public class Productora {
     protected Integer id;
     protected String productoranombre;
-    protected List<PeliculaEntity> peliculaList;
 }

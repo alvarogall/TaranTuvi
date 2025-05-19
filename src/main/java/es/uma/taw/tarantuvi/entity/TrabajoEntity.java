@@ -51,10 +51,10 @@ public class TrabajoEntity implements Serializable, DTO<Trabajo> {
         Trabajo trabajo = new Trabajo();
 
         trabajo.setId(this.id);
-        trabajo.setPersonaid(this.personaid);
-        trabajo.setPeliculaid(this.peliculaid);
+        trabajo.setPersonaid(this.personaid.toDtoPersona());
+        trabajo.setPeliculaid(this.peliculaid.getId());
         trabajo.setTrabajonombre(this.trabajonombre);
-        trabajo.setDepartamentoid(this.departamentoid);
+        trabajo.setDepartamentoid(this.departamentoid.getId());
 
         trabajo.setLabel(this.getLabel());
 

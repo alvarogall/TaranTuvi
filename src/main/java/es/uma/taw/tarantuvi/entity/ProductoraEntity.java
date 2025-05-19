@@ -1,12 +1,14 @@
 package es.uma.taw.tarantuvi.entity;
 
 import es.uma.taw.tarantuvi.dto.DTO;
+import es.uma.taw.tarantuvi.dto.Pelicula;
 import es.uma.taw.tarantuvi.dto.Productora;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -30,7 +32,6 @@ public class ProductoraEntity implements Serializable, DTO<Productora> {
 
         productora.setId(this.id);
         productora.setProductoranombre(this.productoranombre);
-        productora.setPeliculaList(this.peliculaList);
 
         return productora;
     }

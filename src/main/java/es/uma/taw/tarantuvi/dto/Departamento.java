@@ -9,5 +9,5 @@ import java.util.List;
 public class Departamento {
     protected Integer id;
     protected String departamentonombre;
-    protected List<TrabajoEntity> trabajoList;
+    protected List<Trabajo> trabajoList;
 }

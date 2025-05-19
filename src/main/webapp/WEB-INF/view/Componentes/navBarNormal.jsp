@@ -30,9 +30,7 @@
       <li><a href="/editor/actores" class="nav-link <%= "actores".equals(activePage) ? "active" : "" %>">Actores</a></li>
     </ul>
     <div class="profile">
-      <a href="/editor/perfil">
-        <img src="/img/imagenPerfil.png" alt="Perfil" onerror="this.onerror=null; this.src='https://via.placeholder.com/40';">
-      </a>
+      <img src="/img/imagenPerfil.png" alt="Perfil" onerror="this.onerror=null; this.src='https://via.placeholder.com/40';">
       <!-- Tres puntos -->
       <div class="menu-toggle" onclick="toggleDropdown(event)">⋮</div>
 

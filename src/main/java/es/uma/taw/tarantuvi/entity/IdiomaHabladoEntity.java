@@ -2,11 +2,13 @@ package es.uma.taw.tarantuvi.entity;
 
 import es.uma.taw.tarantuvi.dto.DTO;
 import es.uma.taw.tarantuvi.dto.IdiomaHablado;
+import es.uma.taw.tarantuvi.dto.Pelicula;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -30,7 +32,6 @@ public class IdiomaHabladoEntity implements Serializable, DTO<IdiomaHablado> {
 
         idiomaHablado.setId(this.id);
         idiomaHablado.setIdiomahabladonombre(this.idiomahabladonombre);
-        idiomaHablado.setPeliculaList(this.peliculaList);
 
         return idiomaHablado;
     }

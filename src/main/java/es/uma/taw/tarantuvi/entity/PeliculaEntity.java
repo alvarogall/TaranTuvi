@@ -1,8 +1,6 @@
 package es.uma.taw.tarantuvi.entity;
 
-import es.uma.taw.tarantuvi.dto.DTO;
-import es.uma.taw.tarantuvi.dto.Pelicula;
-import es.uma.taw.tarantuvi.dto.PeliculaResumen;
+import es.uma.taw.tarantuvi.dto.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -191,15 +189,45 @@ public class PeliculaEntity implements Serializable, DTO<Pelicula> {
             }
             pelicula.setGeneros(idsGeneros);
 
-            pelicula.setGeneroPeliculaList(this.generoPeliculaList);
-            pelicula.setPalabraClaveList(this.palabraClaveList);
-            pelicula.setIdiomaHabladoList(this.idiomaHabladoList);
-            pelicula.setPaisRodajeList(this.paisRodajeList);
-            pelicula.setProductoraList(this.productoraList);
-            pelicula.setListaPeliculaList(this.listaPeliculaList);
-            pelicula.setActuacionList(this.actuacionList);
-            pelicula.setTrabajoList(this.trabajoList);
-            pelicula.setValoracionList(this.valoracionList);
+            if (this.generoPeliculaList != null) {
+                List<GeneroPelicula> generos = new ArrayList<>();
+                for (GeneroPeliculaEntity genero : this.generoPeliculaList) {
+                    generos.add(genero.toDto());
+                }
+                pelicula.setGeneroPeliculaList(generos);
+            }
+
+            if (this.idiomaHabladoList != null) {
+                List<IdiomaHablado> idiomas = new ArrayList<>();
+                for (IdiomaHabladoEntity idioma : this.idiomaHabladoList) {
+                    idiomas.add(idioma.toDto());
+                }
+                pelicula.setIdiomaHabladoList(idiomas);
+            }
+
+            if (this.actuacionList != null) {
+                List<Actuacion> actuaciones = new ArrayList<>();
+                for (ActuacionEntity actuacion : this.actuacionList) {
+                    actuaciones.add(actuacion.toDto());
+                }
+                pelicula.setActuacionList(actuaciones);
+            }
+
+            if (this.trabajoList != null) {
+                List<Trabajo> trabajos = new ArrayList<>();
+                for (TrabajoEntity trabajo : this.trabajoList) {
+                    trabajos.add(trabajo.toDto());
+                }
+                pelicula.setTrabajoList(trabajos);
+            }
+
+            if (this.productoraList != null) {
+                List<Productora> productoras = new ArrayList<>();
+                for (ProductoraEntity productora : this.productoraList) {
+                    productoras.add(productora.toDto());
+                }
+                pelicula.setProductoraList(productoras);
+            }
         }else{
             pelicula.setCast(new ArrayList<>());
             pelicula.setCrew(new ArrayList<>());
@@ -208,14 +236,11 @@ public class PeliculaEntity implements Serializable, DTO<Pelicula> {
             pelicula.setIdiomas(new ArrayList<>());
             pelicula.setGeneros(new ArrayList<>());
             pelicula.setGeneroPeliculaList(new ArrayList<>());
-            pelicula.setPalabraClaveList(new ArrayList<>());
             pelicula.setIdiomaHabladoList(new ArrayList<>());
             pelicula.setPaisRodajeList(new ArrayList<>());
             pelicula.setProductoraList(new ArrayList<>());
-            pelicula.setListaPeliculaList(new ArrayList<>());
             pelicula.setActuacionList(new ArrayList<>());
             pelicula.setTrabajoList(new ArrayList<>());
-            pelicula.setValoracionList(new ArrayList<>());
         }
 
         return pelicula;

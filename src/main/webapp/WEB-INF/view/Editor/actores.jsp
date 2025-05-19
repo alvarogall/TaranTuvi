@@ -91,7 +91,7 @@
             <td>
                 <%
                     for(Pelicula pelicula : peliculas){
-                        for(ActuacionEntity act : pelicula.getActuacionList()){
+                        for(Actuacion act : pelicula.getActuacionList()){
                             if(act.getPersonaid().getNombre().equals(persona.getNombre())){
                                 out.print(pelicula.getTitulooriginal() + "<br/>");
                             }
@@ -115,12 +115,11 @@
                     Set<String> mostrados = new HashSet<>(); //Para controlar la salida de duplicados
                                                             // (En un set solo se añade al llamar a add si no está en el set el elemento a añadir)
 
-                    for (GeneroPelicula genero : generos) {
-                        for (PeliculaEntity pelicula : genero.getPeliculaList()) {
-                            for (ActuacionEntity act : pelicula.getActuacionList()) {
-                                if (act.getPersonaid().getId() == persona.getId()) {
+                    for (Pelicula pelicula : peliculas) {
+                        for (Actuacion act : pelicula.getActuacionList()) {
+                            if (act.getPersonaid().getId() == persona.getId()) {
+                                for (GeneroPelicula genero : pelicula.getGeneroPeliculaList()) {
                                     String nombreGen = genero.getGeneronombre();
-                                    // Sólo lo imprimimos si aún no estaba en el Set
                                     if (mostrados.add(nombreGen)) {
                                         out.print(nombreGen + "<br/>");
                                     }

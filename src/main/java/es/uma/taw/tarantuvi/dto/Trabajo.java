@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Trabajo {
     protected Integer id;
-    protected PersonaEntity personaid;
-    protected PeliculaEntity peliculaid;
+    protected Persona personaid;
+    protected Integer peliculaid;
     protected String trabajonombre;
-    protected DepartamentoEntity departamentoid;
+    protected Integer departamentoid;
 
     protected String label; //Campo para sacar por pantalla nombre + trabajo
 }

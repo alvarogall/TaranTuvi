@@ -1,10 +1,6 @@
 package es.uma.taw.tarantuvi.entity;
 
-import es.uma.taw.tarantuvi.dto.Actor;
-import es.uma.taw.tarantuvi.dto.ActorResumen;
-import es.uma.taw.tarantuvi.dto.ActuacionResumen;
-import es.uma.taw.tarantuvi.dto.DTO;
-import es.uma.taw.tarantuvi.dto.TrabajoResumen;
+import es.uma.taw.tarantuvi.dto.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -107,6 +103,20 @@ public class PersonaEntity implements Serializable, DTO<Actor> {
         actorResumen.setTrabajos(trabajos);
 
         return actorResumen;
+    }
+
+    public Persona toDtoPersona(){
+        Persona persona = new Persona();
+
+        persona.setId(this.id);
+        persona.setNombre(this.nombre);
+        if(this.generopersonaid != null && this.nacionalidadid != null){
+            persona.setGeneropersonaid(this.generopersonaid.toDto());
+            persona.setNacionalidadid(this.nacionalidadid.toDto());
+        }
+        persona.setUrlfoto(this.urlfoto);
+
+        return persona;
     }
 
 }

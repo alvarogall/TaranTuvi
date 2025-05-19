@@ -40,8 +40,12 @@ public class Editor extends BaseController {
     protected NacionalidadService nacionalidadService;
 
     @GetMapping("/")
-    public String vistaEditor() {
-        return "Editor/inicio";
+    public String vistaEditor(HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        }else{
+            return "Editor/inicio";
+        }
     }
 
     @GetMapping("/peliculas")
@@ -73,69 +77,67 @@ public class Editor extends BaseController {
     }
 
     @PostMapping("/peliculas/editar")
-    public String doEditarPelicula(@RequestParam(value = "id", defaultValue = "-1") Integer id,
-                                   Model model) {
+    public String doEditarPelicula(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        }else{
+            Pelicula entidad = this.peliculaService.buscarPelicula(id);
 
-        Pelicula entidad = this.peliculaService.buscarPelicula(id);
+            List<Actuacion> actuacionesFiltradas = new ArrayList<>();
+            if (entidad.getActuacionList() != null) {
+                actuacionesFiltradas.addAll(entidad.getActuacionList());
+            }
+            // Construir conjunto de claves de las ya añadidas
+            List<String> clavesAct = new ArrayList<>();
+            for (Actuacion a : actuacionesFiltradas) {
+                String clave = a.getPersonaid().getId() + "|" + a.getPersonaje();
+                if (!clavesAct.contains(clave)) {
+                    clavesAct.add(clave);
+                }
+            }
+            // Añadir luego las que falten
+            for (Actuacion a : this.actuacionService.listarActuaciones()) {
+                String clave = a.getPersonaid().getId() + "|" + a.getPersonaje();
+                if (!clavesAct.contains(clave)) {
+                    clavesAct.add(clave);
+                    actuacionesFiltradas.add(a);
+                }
+            }
 
-        List<Actuacion> actuacionesFiltradas = new ArrayList<>();
-        if (entidad.getActuacionList() != null) {
-            for(ActuacionEntity a : entidad.getActuacionList()) {
-                actuacionesFiltradas.add(a.toDto());
+            List<Trabajo> crewFiltrado = new ArrayList<>();
+            if (entidad.getTrabajoList() != null) {
+                crewFiltrado.addAll(entidad.getTrabajoList());
             }
-        }
-        // Construir conjunto de claves de las ya añadidas
-        List<String> clavesAct = new ArrayList<>();
-        for (Actuacion a : actuacionesFiltradas) {
-            String clave = a.getPersonaid().getId() + "|" + a.getPersonaje();
-            if (!clavesAct.contains(clave)) {
-                clavesAct.add(clave);
+            List<String> clavesTrab = new ArrayList<>();
+            for (Trabajo t : crewFiltrado) {
+                String clave = t.getPersonaid().getId() + "|" + t.getTrabajonombre();
+                if (!clavesTrab.contains(clave)) {
+                    clavesTrab.add(clave);
+                }
             }
-        }
-        // Añadir luego las que falten
-        for (Actuacion a : this.actuacionService.listarActuaciones()) {
-            String clave = a.getPersonaid().getId() + "|" + a.getPersonaje();
-            if (!clavesAct.contains(clave)) {
-                clavesAct.add(clave);
-                actuacionesFiltradas.add(a);
+            for (Trabajo t : this.trabajoService.listarTrabajos()) {
+                String clave = t.getPersonaid().getId() + "|" + t.getTrabajonombre();
+                if (!clavesTrab.contains(clave)) {
+                    clavesTrab.add(clave);
+                    crewFiltrado.add(t);
+                }
             }
-        }
 
-        List<Trabajo> crewFiltrado = new ArrayList<>();
-        if (entidad.getTrabajoList() != null) {
-            for(TrabajoEntity a : entidad.getTrabajoList()) {
-                crewFiltrado.add(a.toDto());
-            }
-        }
-        List<String> clavesTrab = new ArrayList<>();
-        for (Trabajo t : crewFiltrado) {
-            String clave = t.getPersonaid().getId() + "|" + t.getTrabajonombre();
-            if (!clavesTrab.contains(clave)) {
-                clavesTrab.add(clave);
-            }
-        }
-        for (Trabajo t : this.trabajoService.listarTrabajos()) {
-            String clave = t.getPersonaid().getId() + "|" + t.getTrabajonombre();
-            if (!clavesTrab.contains(clave)) {
-                clavesTrab.add(clave);
-                crewFiltrado.add(t);
-            }
-        }
+            List<Productora> productoras  = this.productoraService.listarProductoras();
+            List<IdiomaHablado> idiomas      = this.idiomaHabladoService.listarIdiomasHablados();
+            List<GeneroPelicula> generos      = this.generoPeliculaService.listarGenerosPeliculas();
+            List<PaisRodaje> paisesRodaje = this.paisRodajeService.listarPaisesRodaje();
 
-        List<Productora> productoras  = this.productoraService.listarProductoras();
-        List<IdiomaHablado> idiomas      = this.idiomaHabladoService.listarIdiomasHablados();
-        List<GeneroPelicula> generos      = this.generoPeliculaService.listarGenerosPeliculas();
-        List<PaisRodaje> paisesRodaje = this.paisRodajeService.listarPaisesRodaje();
+            model.addAttribute("pelicula",     entidad);
+            model.addAttribute("actuaciones",  actuacionesFiltradas);
+            model.addAttribute("crewList",     crewFiltrado);
+            model.addAttribute("productoras",  productoras);
+            model.addAttribute("idiomas",      idiomas);
+            model.addAttribute("generos",      generos);
+            model.addAttribute("paisesRodaje", paisesRodaje);
 
-        model.addAttribute("pelicula",     entidad);
-        model.addAttribute("actuaciones",  actuacionesFiltradas);
-        model.addAttribute("crewList",     crewFiltrado);
-        model.addAttribute("productoras",  productoras);
-        model.addAttribute("idiomas",      idiomas);
-        model.addAttribute("generos",      generos);
-        model.addAttribute("paisesRodaje", paisesRodaje);
-
-        return "Editor/pelicula";
+            return "Editor/pelicula";
+        }
     }
 
     @PostMapping("/peliculas/confirmarCambios")
@@ -149,10 +151,10 @@ public class Editor extends BaseController {
     public String doBorrarPelicula(@RequestParam("id") Integer id){
         Pelicula pelicula = this.peliculaService.buscarPelicula(id);
         if(pelicula != null) {
-            for(ActuacionEntity a : pelicula.getActuacionList()) {
+            for(Actuacion a : pelicula.getActuacionList()) {
                 this.actuacionService.borrarActuacion(a.getId());
             }
-            for(TrabajoEntity t : pelicula.getTrabajoList()) {
+            for(Trabajo t : pelicula.getTrabajoList()) {
                 this.trabajoService.borrarTrabajo(t.getId());
             }
         }
@@ -161,16 +163,20 @@ public class Editor extends BaseController {
     }
 
     @PostMapping("/actores/editar")
-    public String doEditarActor(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model) {
-        Actor persona = this.personaService.buscarPersona(id);
+    public String doEditarActor(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        }else{
+            Actor persona = this.personaService.buscarPersona(id);
 
-        model.addAttribute("actor", persona);
-        model.addAttribute("peliculas", this.peliculaService.listarPeliculas());
-        model.addAttribute("actuaciones", this.actuacionService.listarActuaciones());
-        model.addAttribute("generosPersona", this.generoPersonaService.listarGenerosPersonas());
-        model.addAttribute("nacionalidades", this.nacionalidadService.listarNacionalidades());
+            model.addAttribute("actor", persona);
+            model.addAttribute("peliculas", this.peliculaService.listarPeliculas());
+            model.addAttribute("actuaciones", this.actuacionService.listarActuaciones());
+            model.addAttribute("generosPersona", this.generoPersonaService.listarGenerosPersonas());
+            model.addAttribute("nacionalidades", this.nacionalidadService.listarNacionalidades());
 
-        return "Editor/actor";
+            return "Editor/actor";
+        }
     }
 
     @PostMapping("/actores/confirmarCambios")

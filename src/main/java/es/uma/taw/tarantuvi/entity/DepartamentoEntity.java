@@ -2,12 +2,14 @@ package es.uma.taw.tarantuvi.entity;
 
 import es.uma.taw.tarantuvi.dto.DTO;
 import es.uma.taw.tarantuvi.dto.Departamento;
+import es.uma.taw.tarantuvi.dto.Pelicula;
 import es.uma.taw.tarantuvi.dto.Trabajo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -31,8 +33,14 @@ public class DepartamentoEntity implements Serializable, DTO<Departamento> {
 
         departamento.setId(this.id);
         departamento.setDepartamentonombre(this.departamentonombre);
-        departamento.setTrabajoList(this.trabajoList);
 
+        if(this.trabajoList != null){
+            List<Trabajo> trabajos = new ArrayList<>();
+            for(TrabajoEntity trabajo : this.trabajoList){
+                trabajos.add(trabajo.toDto());
+            }
+            departamento.setTrabajoList(trabajos);
+        }
 
         return departamento;
     }

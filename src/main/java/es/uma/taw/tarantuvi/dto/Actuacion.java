@@ -4,9 +4,6 @@ User: jesus
 
 package es.uma.taw.tarantuvi.dto;
 
-import es.uma.taw.tarantuvi.entity.GeneroPersonaEntity;
-import es.uma.taw.tarantuvi.entity.PeliculaEntity;
-import es.uma.taw.tarantuvi.entity.PersonaEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Actuacion {
     protected Integer id;
-    protected PersonaEntity personaid;
-    protected PeliculaEntity peliculaid;
-    protected GeneroPersonaEntity generopersonaid;
+    protected Persona personaid;
+    protected Integer peliculaid;
+    protected GeneroPersona generopersonaid;
     protected String personaje;
     protected Integer orden;
 

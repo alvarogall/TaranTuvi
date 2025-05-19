@@ -15,5 +15,4 @@ import java.util.List;
 public class PaisRodaje {
     protected Integer id;
     protected String paisrodajenombre;
-    protected List<PeliculaEntity> peliculaList;
 }

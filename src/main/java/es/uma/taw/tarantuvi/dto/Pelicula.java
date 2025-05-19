@@ -43,13 +43,10 @@ public class Pelicula {
     protected String eslogan;
     protected String estado;
 
-    protected List<GeneroPeliculaEntity> generoPeliculaList;
-    protected List<PalabraClaveEntity> palabraClaveList;
-    protected List<IdiomaHabladoEntity> idiomaHabladoList;
-    protected List<PaisRodajeEntity> paisRodajeList;
-    protected List<ProductoraEntity> productoraList;
-    protected List<ListaPeliculaEntity> listaPeliculaList;
-    protected List<ActuacionEntity> actuacionList;
-    protected List<TrabajoEntity> trabajoList;
-    protected List<ValoracionEntity> valoracionList;
+    protected List<GeneroPelicula> generoPeliculaList;
+    protected List<IdiomaHablado> idiomaHabladoList;
+    protected List<PaisRodaje> paisRodajeList;
+    protected List<Productora> productoraList;
+    protected List<Actuacion> actuacionList;
+    protected List<Trabajo> trabajoList;
 }

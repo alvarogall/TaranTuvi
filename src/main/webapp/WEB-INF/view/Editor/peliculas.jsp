@@ -4,7 +4,7 @@
 
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.*" %>
-<%@ page import="es.uma.taw.tarantuvi.dto.Pelicula" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -70,8 +70,8 @@
                 <td>
                     <%
                         if (pelicula.getCast() != null) {
-                            for (ActuacionEntity actuacion : pelicula.getActuacionList()) {
-                                PersonaEntity persona = actuacion.getPersonaid();
+                            for (Actuacion actuacion : pelicula.getActuacionList()) {
+                                Persona persona = actuacion.getPersonaid();
                                 if (persona != null) {
                                     out.print(persona.getNombre() + " - " + actuacion.getPersonaje() + "<br/>");
                                 }
@@ -82,8 +82,8 @@
                 <td>
                     <%
                         if (pelicula.getTrabajoList() != null) {
-                            for (TrabajoEntity trabajo : pelicula.getTrabajoList()) {
-                                PersonaEntity persona = trabajo.getPersonaid();
+                            for (Trabajo trabajo : pelicula.getTrabajoList()) {
+                                Persona persona = trabajo.getPersonaid();
                                 if (persona != null) {
                                     out.print(persona.getNombre() + " - " + trabajo.getTrabajonombre() + "<br/>");
                                 }
@@ -94,7 +94,7 @@
                 <td>
                     <%
                         if (pelicula.getProductoraList() != null) {
-                            for (ProductoraEntity prod : pelicula.getProductoraList()) {
+                            for (Productora prod : pelicula.getProductoraList()) {
                                 out.print(prod.getProductoranombre() + "<br/>");
                             }
                         }
@@ -103,7 +103,7 @@
                 <td>
                     <%
                         if (pelicula.getIdiomaHabladoList() != null) {
-                            for (IdiomaHabladoEntity idioma : pelicula.getIdiomaHabladoList()) {
+                            for (IdiomaHablado idioma : pelicula.getIdiomaHabladoList()) {
                                 out.print(idioma.getIdiomahabladonombre() + "<br/>");
                             }
                         }
@@ -112,7 +112,7 @@
                 <td>
                     <%
                         if (pelicula.getGeneroPeliculaList() != null) {
-                            for (GeneroPeliculaEntity genero : pelicula.getGeneroPeliculaList()) {
+                            for (GeneroPelicula genero : pelicula.getGeneroPeliculaList()) {
                                 out.print(genero.getGeneronombre() + "<br/>");
                             }
                         }

@@ -55,9 +55,9 @@ public class ActuacionEntity implements Serializable, DTO<Actuacion> {
         Actuacion actuacion = new Actuacion();
 
         actuacion.setId(this.id);
-        actuacion.setPersonaid(this.personaid);
-        actuacion.setPeliculaid(this.peliculaid);
-        actuacion.setGeneropersonaid(this.generopersonaid);
+        actuacion.setPersonaid(this.personaid.toDtoPersona());
+        actuacion.setPeliculaid(this.peliculaid.getId());
+        actuacion.setGeneropersonaid(this.generopersonaid.toDto());
         actuacion.setOrden(this.orden);
         actuacion.setPersonaje(this.personaje);
 

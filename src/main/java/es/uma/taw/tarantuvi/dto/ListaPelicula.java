@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ListaPelicula {
-    Integer listaPeliculaId;
-    String listaPeliculaNombre;
-    Integer usuarioId;
+    protected Integer listaPeliculaId;
+    protected String listaPeliculaNombre;
+    protected Integer usuarioId;
 
 }
