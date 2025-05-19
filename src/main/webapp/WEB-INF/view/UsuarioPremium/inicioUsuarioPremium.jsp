@@ -28,7 +28,7 @@ List<PeliculaEntity> peliculasQueMeGustan = (List<PeliculaEntity>) request.getAt
 </head>
 <body>
 
-<jsp:include page="../Componentes/navBarEnlacePerfil.jsp">
+<jsp:include page="../Componentes/navBarEnlacePerfilPREMIUM.jsp">
     <jsp:param name="activePage" value="inicio"/>
 </jsp:include>
 
@@ -77,7 +77,15 @@ List<PeliculaEntity> peliculasQueMeGustan = (List<PeliculaEntity>) request.getAt
 
     <!-- Peliculas recomendadas -->
     <section class="peliculas-destacados">
-        <h2>Películas recomendadas</h2>
+        <div class="titulo-recomendadas-container">
+            <h2 class="titulo-recomendadas">
+                <span class="emoji-bounce">🍿</span>
+                <span class="titulo-texto"> Películas que te encantarán </span>
+                <span class="emoji-bounce">🍿</span>
+            </h2>
+        </div>
+
+
         <div class="peliculas-recomendadas">
             <%-- Repite esto para 4 películas que tú elijas desde el controlador y pases como atributo --%>
             <% for (PeliculaEntity peli : peliculasQueMeGustan) { %>

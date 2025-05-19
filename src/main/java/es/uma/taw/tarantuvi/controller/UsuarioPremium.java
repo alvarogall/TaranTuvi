@@ -1,15 +1,16 @@
 package es.uma.taw.tarantuvi.controller;
 
+
 import es.uma.taw.tarantuvi.dao.ListaPeliculaRepository;
 import es.uma.taw.tarantuvi.dao.PeliculaListaPeliculaRepository;
 import es.uma.taw.tarantuvi.dao.PeliculaRepository;
 import es.uma.taw.tarantuvi.dao.UsuarioRepository;
-import es.uma.taw.tarantuvi.dto.ListaPelicula;
-import es.uma.taw.tarantuvi.dto.SeleccionPeliculasDto;
-import es.uma.taw.tarantuvi.dto.Usuario;
+import es.uma.taw.tarantuvi.dto.*;
 import es.uma.taw.tarantuvi.entity.ListaPeliculaEntity;
 import es.uma.taw.tarantuvi.entity.PeliculaEntity;
 import es.uma.taw.tarantuvi.entity.PeliculaListaPeliculaEntity;
+import es.uma.taw.tarantuvi.entity.PeliculaListaPeliculaId;
+import es.uma.taw.tarantuvi.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -20,10 +21,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Controller
 @RequestMapping("/usuarioPremium")
-public class UsuarioPremium {
+public class UsuarioPremium extends BaseController {
+    @Autowired
+    protected GeneroPersonaService generoPersonaService;
 
+    @Autowired
+    protected NacionalidadService nacionalidadService;
+
+
+    @Autowired
+    protected PeliculaService peliculaService;
+
+    @Autowired
+    protected PersonaService personaService;
+
+    @Autowired
+    protected ProductoraService productoraService;
+
+    @Autowired
+    protected GeneroPeliculaService generoPeliculaService;
 
 
     @Autowired
@@ -138,5 +157,140 @@ public class UsuarioPremium {
         return "redirect:/usuarioPremium/perfil";
     }
 
+
+    @GetMapping("/eliminarPeliculaLista")
+    public String doEliminarPeliculaLista(Model model, HttpSession session,@RequestParam("idLista") Integer idLista,
+                                          @RequestParam("idPelicula") Integer idPelicula) {
+
+        PeliculaListaPeliculaId id = new PeliculaListaPeliculaId(idPelicula, idLista);
+
+        peliculaListaPeliculaRepository.deleteById(id);
+
+        return "redirect:/usuarioPremium/perfil";
+    }
+
+
+    @GetMapping("/pelicula/listar")
+    public String doListarPelicula(Model model,
+                                   HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        } else {
+            model.addAttribute("peliculas", peliculaService.listarPeliculas());
+            model.addAttribute("actores", personaService.listarActores());
+            model.addAttribute("productoras", productoraService.listarProductoras());
+            model.addAttribute("generos", generoPeliculaService.listarGenerosPeliculas());
+            model.addAttribute("filtroPelicula", new FiltroPelicula());
+
+            return "UsuarioPremium/peliculas";
+        }
+    }
+
+
+    @GetMapping("/pelicula")
+    public String doDetallesPelicula(@RequestParam("id") Integer id,
+                                     Model model,
+                                     HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        } else {
+            Pelicula peliculaDto = this.peliculaService.buscarPelicula(id);
+            Usuario usuarioDto = (Usuario) session.getAttribute("usuario");
+            Valoracion valoracionDto = this.peliculaService.obtenerValoracionUsuario(id, usuarioDto.getUsuarioId());
+            model.addAttribute("pelicula", peliculaDto);
+            model.addAttribute("valoracion", valoracionDto);
+
+            return "UsuarioPremium/pelicula";
+        }
+    }
+
+    @PostMapping("/pelicula/filtrar")
+    public String doFiltrarPeliculas(@ModelAttribute("filtroPelicula") FiltroPelicula filtro,
+                                     Model model,
+                                     HttpSession session) {
+        if (!estaAutenticado(session)) {
+            return "redirect:/";
+        } else {
+            List<Pelicula> peliculasFiltradas = peliculaService.filtrarPeliculas(filtro);
+            model.addAttribute("peliculas", peliculasFiltradas);
+
+            List<Actor> actoresDto = this.personaService.listarActores();
+            List<Productora> productorasDto = this.productoraService.listarProductoras();
+            List<GeneroPelicula> generosDto = this.generoPeliculaService.listarGenerosPeliculas();
+
+            model.addAttribute("actores", actoresDto);
+            model.addAttribute("productoras", productorasDto);
+            model.addAttribute("generos", generosDto);
+
+            model.addAttribute("filtroPelicula", filtro);
+
+            return "UsuarioPremium/peliculas";
+        }
+    }
+
+    @PostMapping("/pelicula/valorar")
+    public String doValorarPelicula(@RequestParam("id") Integer id,
+                                    @RequestParam("nota") Integer nota,
+                                    HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        } else {
+            Usuario usuarioDto = (Usuario) session.getAttribute("usuario");
+            this.peliculaService.valorarPelicula(id, usuarioDto.getUsuarioId(), nota);
+
+            return "redirect:/UsuarioPremium/pelicula?id=" + id;
+        }
+    }
+
+    @GetMapping("/actor")
+    public String doDetallesActor(@RequestParam("id") Integer id,
+                                  Model model,
+                                  HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        } else {
+            ActorResumen actorResumenDto = this.personaService.buscarActorConActuaciones(id);
+            model.addAttribute("actor", actorResumenDto);
+
+            return "UsuarioPremium/actor";
+        }
+    }
+
+    @GetMapping("/actor/listar")
+    public String doListarActor(Model model,
+                                HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        } else {
+            List<Actor> actoresDto = this.personaService.listarActores();
+            model.addAttribute("actores", actoresDto);
+
+            model.addAttribute("generos", generoPersonaService.listarGenerosPersonas());
+            model.addAttribute("nacionalidades", nacionalidadService.listarNacionalidades());
+            model.addAttribute("peliculas", peliculaService.listarPeliculas());
+            model.addAttribute("filtroActor", new FiltroActor());
+
+            return "UsuarioPremium/actores";
+        }
+    }
+
+    @PostMapping("/actor/filtrar")
+    public String doFiltrarActor(@ModelAttribute("filtroActor") FiltroActor filtro,
+                                 Model model,
+                                 HttpSession session) {
+        if (!estaAutenticado(session)) {
+            return "redirect:/";
+        } else {
+            List<Actor> actoresFiltrados = personaService.filtrarActores(filtro);
+            model.addAttribute("actores", actoresFiltrados);
+
+            model.addAttribute("generos", generoPersonaService.listarGenerosPersonas());
+            model.addAttribute("nacionalidades", nacionalidadService.listarNacionalidades());
+            model.addAttribute("peliculas", peliculaService.listarPeliculas());
+            model.addAttribute("filtroActor", filtro);
+
+            return "UsuarioPremium/actores";
+        }
+    }
 
 }

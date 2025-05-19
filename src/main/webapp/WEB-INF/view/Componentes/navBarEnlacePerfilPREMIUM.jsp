@@ -26,8 +26,8 @@
   <div class="nav-right">
     <ul class="nav-links">
       <li><a href="/" class="nav-link <%= "inicio".equals(activePage) ? "active" : "" %>">Inicio</a></li>
-      <li><a href="/usuarioPremium/peliculas" class="nav-link <%= "peliculas".equals(activePage) ? "active" : "" %>">Películas</a></li>
-      <li><a href="/usuarioPremium/actores" class="nav-link <%= "actores".equals(activePage) ? "active" : "" %>">Actores</a></li>
+      <li><a href="/usuarioPremium/pelicula/listar" class="nav-link <%= "peliculas".equals(activePage) ? "active" : "" %>">Películas</a></li>
+      <li><a href="/usuarioPremium/actor/listar" class="nav-link <%= "actores".equals(activePage) ? "active" : "" %>">Actores</a></li>
     </ul>
     <div class="profile">
       <a href="/usuarioPremium/perfil">

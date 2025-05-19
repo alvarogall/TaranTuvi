@@ -22,7 +22,7 @@
 
 <body>
 
-<jsp:include page="../Componentes/navBarEnlacePerfil.jsp">
+<jsp:include page="../Componentes/navBarEnlacePerfilPREMIUM.jsp">
     <jsp:param name="activePage" value="inicio"/>
 </jsp:include>
 
