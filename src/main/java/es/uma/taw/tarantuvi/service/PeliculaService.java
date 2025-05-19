@@ -5,10 +5,15 @@ User: jesus
 package es.uma.taw.tarantuvi.service;
 
 import es.uma.taw.tarantuvi.dao.*;
+import es.uma.taw.tarantuvi.dto.FiltroPelicula;
 import es.uma.taw.tarantuvi.dto.Pelicula;
+import es.uma.taw.tarantuvi.dto.Valoracion;
 import es.uma.taw.tarantuvi.entity.ActuacionEntity;
 import es.uma.taw.tarantuvi.entity.PeliculaEntity;
 import es.uma.taw.tarantuvi.entity.TrabajoEntity;
+import es.uma.taw.tarantuvi.entity.UsuarioEntity;
+import es.uma.taw.tarantuvi.entity.ValoracionEntity;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +47,12 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
 
     @Autowired
     private GeneroPeliculaRepository generoPeliculaRepository;
+
+    @Autowired
+    protected ValoracionRepository valoracionRepository;
+
+    @Autowired
+    protected UsuarioRepository usuarioRepository;
 
     public List<Pelicula> listarPeliculas () {
         List<PeliculaEntity> entities = this.peliculaRepository.findAll();
@@ -192,6 +203,7 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
         peliculaRepository.save(pelicula);
     }
 
+<<<<<<< Updated upstream
     public List<Object[]> buscarPeliculasPorGeneroIdioma(Integer generoID, Integer idiomaID, String ordenCampo, String ordenTipo){
         List<Object[]> peliculas = this.peliculaRepository.findPeliculasByFiltros(generoID, idiomaID);
 
@@ -230,4 +242,62 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
 
 
 
+=======
+    public void valorarPelicula(Integer peliculaId, 
+                                Integer usuarioId, 
+                                Integer nota) {
+        ValoracionEntity valoracion = valoracionRepository.obtenerValoracionUPeliculaUsuario(peliculaId, usuarioId);
+        PeliculaEntity pelicula = peliculaRepository.findById(peliculaId).orElse(null);
+
+        boolean esNuevaValoracion = false;
+
+        if (valoracion != null) {
+            valoracion.setNota(nota);
+            valoracionRepository.save(valoracion);
+        } else {
+            valoracion = new ValoracionEntity();
+            UsuarioEntity usuario = usuarioRepository.findById(usuarioId).orElse(null);
+
+            valoracion.setUsuarioid(usuario);
+            valoracion.setPeliculaid(pelicula);
+            valoracion.setNota(nota);
+
+            valoracionRepository.save(valoracion);
+            esNuevaValoracion = true;
+        }
+
+        if (esNuevaValoracion && pelicula != null) {
+            pelicula.setVotos(pelicula.getVotos() != null ? pelicula.getVotos() + 1 : 1);
+        }
+
+        Double media = valoracionRepository.calcularNotaMediaPorPelicula(peliculaId);
+        if (pelicula != null && media != null) {
+            pelicula.setNota(BigDecimal.valueOf(media));
+            peliculaRepository.save(pelicula);
+        }
+    }
+
+    public Valoracion obtenerValoracionUsuario(Integer peliculaId,
+                                               Integer usuarioId) {
+        ValoracionEntity valoracion = valoracionRepository.obtenerValoracionUPeliculaUsuario(peliculaId, usuarioId);
+
+        return valoracion != null ? valoracion.toDto() : new Valoracion();
+    }
+
+    public List<Pelicula> filtrarPeliculas(FiltroPelicula filtro) {
+        List<Integer> generos = (filtro.getGeneros() == null || filtro.getGeneros().isEmpty()) ? null : filtro.getGeneros();
+        List<Integer> productoras = (filtro.getProductoras() == null || filtro.getProductoras().isEmpty()) ? null : filtro.getProductoras();
+        List<Integer> actores = (filtro.getActores() == null || filtro.getActores().isEmpty()) ? null : filtro.getActores();
+        List<PeliculaEntity> entities = peliculaRepository.filtrarPeliculas(
+            filtro.getNombre(),
+            filtro.getValoracion(),
+            filtro.getAnio(),
+            generos,
+            productoras,
+            actores
+        );
+        return this.entity2DTO(entities);
+    }
+
+>>>>>>> Stashed changes
 }

@@ -2,8 +2,8 @@ package es.uma.taw.tarantuvi.entity;
 
 import es.uma.taw.tarantuvi.dto.DTO;
 import es.uma.taw.tarantuvi.dto.Pelicula;
+import es.uma.taw.tarantuvi.dto.PeliculaResumen;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +11,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -140,6 +139,11 @@ public class PeliculaEntity implements Serializable, DTO<Pelicula> {
         pelicula.setRecaudacion(this.recaudacion != null ? new String(String.valueOf(this.recaudacion)) : "");
         pelicula.setEslogan(this.eslogan);
         pelicula.setEstado(this.estado);
+        pelicula.setNota(this.nota);
+        pelicula.setFechaestreno(this.fechaestreno);
+        pelicula.setIdiomaoriginalhablado(this.idiomaoriginalhabladoid.toDto());
+        pelicula.setPopularidad(this.popularidad);
+        pelicula.setVotos(this.votos);
 
         if(this.generoPeliculaList != null
                 && this.palabraClaveList != null
@@ -213,6 +217,20 @@ public class PeliculaEntity implements Serializable, DTO<Pelicula> {
             pelicula.setTrabajoList(new ArrayList<>());
             pelicula.setValoracionList(new ArrayList<>());
         }
+
+        return pelicula;
+    }
+
+    public PeliculaResumen toDtoResumen() {
+        PeliculaResumen pelicula = new PeliculaResumen();
+
+        pelicula.setId(id);
+        pelicula.setTitulooriginal(titulooriginal);
+        pelicula.setUrlcaratula(urlcaratula);
+        pelicula.setEstado(estado);
+        pelicula.setDescripcion(descripcion);
+        pelicula.setDuracion(duracion);
+        pelicula.setFechaestreno(fechaestreno);
 
         return pelicula;
     }

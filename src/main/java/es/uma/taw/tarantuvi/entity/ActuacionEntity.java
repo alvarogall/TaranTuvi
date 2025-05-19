@@ -1,6 +1,7 @@
 package es.uma.taw.tarantuvi.entity;
 
 import es.uma.taw.tarantuvi.dto.Actuacion;
+import es.uma.taw.tarantuvi.dto.ActuacionResumen;
 import es.uma.taw.tarantuvi.dto.DTO;
 import es.uma.taw.tarantuvi.dto.Pelicula;
 import jakarta.persistence.*;
@@ -61,6 +62,18 @@ public class ActuacionEntity implements Serializable, DTO<Actuacion> {
         actuacion.setPersonaje(this.personaje);
 
         actuacion.setLabel(this.personaid.getNombre() + " – " + this.personaje);
+
+        return actuacion;
+    }
+
+    public ActuacionResumen toDtoResumen() {
+        ActuacionResumen actuacion = new ActuacionResumen();
+
+        actuacion.setId(id);
+        actuacion.setPersonaje(personaje);
+        actuacion.setOrden(orden);
+        actuacion.setPelicula(peliculaid.toDtoResumen());
+        actuacion.setPersona(personaid.getNombre());
 
         return actuacion;
     }

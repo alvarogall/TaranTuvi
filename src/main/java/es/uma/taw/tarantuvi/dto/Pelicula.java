@@ -8,6 +8,8 @@ import es.uma.taw.tarantuvi.entity.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,11 @@ public class Pelicula {
     protected String fecha;
     protected String duracion;
     protected String descripcion;
+    private BigDecimal nota;
+    private BigDecimal popularidad;
+    private LocalDate fechaestreno;
+    private IdiomaHablado idiomaoriginalhablado;
+    private Integer votos;
 
     protected List<Integer> cast = new ArrayList<>();
     protected List<Integer> crew = new ArrayList<>();

@@ -1,8 +1,7 @@
 package es.uma.taw.tarantuvi.controller;
 
-import es.uma.taw.tarantuvi.dao.UsuarioRepository;
 import es.uma.taw.tarantuvi.dto.Usuario;
-import es.uma.taw.tarantuvi.entity.UsuarioEntity;
+import es.uma.taw.tarantuvi.service.LoginService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,24 +13,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class LoginController extends BaseController {
     @Autowired
-    protected UsuarioRepository usuarioRepository;
+    protected LoginService loginService;
+
+    private String redirigirRol(HttpSession session) {
+        Usuario usuarioDto = (Usuario) session.getAttribute("usuario");
+        return "redirect:/" + usuarioDto.getRol() + "/";
+    }
 
     @GetMapping("/")
     public String doInit(HttpSession session,
                          Model model) {
         if(estaAutenticado(session)) {
-            Usuario usuarioDto = (Usuario) session.getAttribute("usuario");
-
-            StringBuilder sb = new StringBuilder();
-
-            sb.append("redirect:/");
-            sb.append(usuarioDto.getRol());
-            sb.append("/");
-
-            return sb.toString();
+            return redirigirRol(session);
         } else {
             model.addAttribute("usuario", new Usuario());
-            return "login/login";
+            return "login";
         }
     }
 
@@ -39,22 +35,14 @@ public class LoginController extends BaseController {
     public String doLogin (@ModelAttribute() Usuario usuario,
                            Model model,
                            HttpSession session) {
-        UsuarioEntity usuarioEntity = this.usuarioRepository.autenticar(usuario.getUsuario(), usuario.getPassword());
+        Usuario usuarioDto = this.loginService.autenticar(usuario.getUsuario(), usuario.getPassword());
 
-        if(usuarioEntity != null) {
-            Usuario usuarioDto = usuarioEntity.toDto();
+        if(usuarioDto != null) {
             session.setAttribute("usuario", usuarioDto);
-
-            StringBuilder sb = new StringBuilder();
-
-            sb.append("redirect:/");
-            sb.append(usuarioDto.getRol());
-            sb.append("/");
-
-            return sb.toString();
+            return redirigirRol(session);
         } else {
             model.addAttribute("error", "Te has equivocado");
-            return "login/login";
+            return "login";
         }
     }
 

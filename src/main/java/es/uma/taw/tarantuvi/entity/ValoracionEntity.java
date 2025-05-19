@@ -10,6 +10,8 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import es.uma.taw.tarantuvi.dto.Valoracion;
+
 @Getter
 @Setter
 @Entity
@@ -28,8 +30,16 @@ public class ValoracionEntity implements Serializable, DTO<Valoracion> {
     @JoinColumn(name = "USUARIOID")
     private UsuarioEntity usuarioid;
 
-    @Column(name = "NOTA", precision = 10)
-    private BigDecimal nota;
+    @Column(name = "NOTA")
+    private Integer nota;
+
+    public Valoracion toDto() {
+        Valoracion valoracion = new Valoracion();
+        
+        valoracion.setNota(nota);
+
+        return valoracion;
+    }
 
     public Valoracion toDto(){
         Valoracion valoracion = new Valoracion();

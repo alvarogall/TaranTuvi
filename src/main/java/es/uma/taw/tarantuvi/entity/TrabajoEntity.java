@@ -2,6 +2,7 @@ package es.uma.taw.tarantuvi.entity;
 
 import es.uma.taw.tarantuvi.dto.DTO;
 import es.uma.taw.tarantuvi.dto.Trabajo;
+import es.uma.taw.tarantuvi.dto.TrabajoResumen;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -58,5 +59,17 @@ public class TrabajoEntity implements Serializable, DTO<Trabajo> {
         trabajo.setLabel(this.getLabel());
 
         return trabajo;
+    }
+
+    public TrabajoResumen toDtoResumen() {
+        TrabajoResumen trabajoResumen = new TrabajoResumen();
+
+        trabajoResumen.setId(id);
+        trabajoResumen.setDepartamento(departamentoid.getDepartamentonombre());
+        trabajoResumen.setPelicula(peliculaid.getTitulooriginal());
+        trabajoResumen.setPersona(personaid.getNombre());
+        trabajoResumen.setTrabajo(trabajonombre);
+
+        return trabajoResumen;
     }
 }

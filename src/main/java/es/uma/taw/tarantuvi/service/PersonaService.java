@@ -2,7 +2,8 @@ package es.uma.taw.tarantuvi.service;
 
 import es.uma.taw.tarantuvi.dao.*;
 import es.uma.taw.tarantuvi.dto.Actor;
-import es.uma.taw.tarantuvi.dto.Pelicula;
+import es.uma.taw.tarantuvi.dto.ActorResumen;
+import es.uma.taw.tarantuvi.dto.FiltroActor;
 import es.uma.taw.tarantuvi.entity.ActuacionEntity;
 import es.uma.taw.tarantuvi.entity.PeliculaEntity;
 import es.uma.taw.tarantuvi.entity.PersonaEntity;
@@ -139,5 +140,32 @@ public class PersonaService extends DTOService<Actor, PersonaEntity> {
                 actuacionRepository.save(suelto);
             }
         }
+    }
+
+    public List<Actor> listarActores() {
+        List<PersonaEntity> entities = this.personaRepository.findAllActores();
+        return this.entity2DTO(entities);
+    }
+
+    public ActorResumen buscarActorConActuaciones(Integer id) {
+        PersonaEntity persona = this.personaRepository.findById(id).orElse(null);
+
+        if(persona != null) {
+            ActorResumen actorResumenDto = persona.toDtoResumen();
+            return actorResumenDto;
+        } else {
+            return new ActorResumen();
+        }
+    }
+
+    public List<Actor> filtrarActores(FiltroActor filtro) {
+        List<Integer> peliculas = (filtro.getPeliculas() == null || filtro.getPeliculas().isEmpty()) ? null : filtro.getPeliculas();
+        List<PersonaEntity> entities = personaRepository.filtrarActores(
+            filtro.getNombre(),
+            filtro.getGenero(),
+            filtro.getNacionalidad(),
+            peliculas
+        );
+        return this.entity2DTO(entities);
     }
 }

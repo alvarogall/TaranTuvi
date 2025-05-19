@@ -96,7 +96,8 @@ INSERT INTO PRODUCTORA (PRODUCTORANOMBRE) VALUES
 ('Warner Bros.'),
 ('Universal Pictures');
 
--- Películas
+-- Películas (sin votos ni nota)
+-- Películas (con votos y nota según las valoraciones)
 INSERT INTO PELICULA (
   TITULOORIGINAL, IDIOMAORIGINALHABLADOID, PRESUPUESTO, FECHAESTRENO,
   DURACION, RECAUDACION, ESTADO, PAGINAWEB, DESCRIPCION, ESLOGAN,
@@ -107,31 +108,31 @@ INSERT INTO PELICULA (
  'Un empresario millonario crea una armadura para luchar contra amenazas globales.',
  'Héroe en armadura',
  'https://i.postimg.cc/0jgKktHX/Iron-Man-1-Portada.webp',
- 800000, 7.9, 90.5),
+ 2, 8.5, 90.5),
 ('The Avengers', 1, 220000000, '2012-05-04', 143, 1518812988, 'Estrenada',
  'https://marvel.com/avengers',
  'Vengadores se unen para detener la invasión de Nueva York.',
  'Unos héroes nunca antes reunidos',
  'https://i.postimg.cc/VvD4Gs5T/s-l1200.jpg',
- 1200000, 8.0, 92.3),
+ 2, 8.5, 92.3),
 ('Titanic', 1, 200000000, '1997-12-19', 195, 2201647264, 'Estrenada',
  'https://paramount.com/titanic',
  'Historia de amor épica a bordo del mítico barco que se hunde.',
  'Nunca dejaré ir',
  'https://i.postimg.cc/J7qT4xKq/91z-Gp74-Qc4-L.jpg',
- 1800000, 7.8, 85.7),
+ 1, 10, 85.7),
 ('Spider-Man 2', 1, 200000000, '2004-06-30', 127, 783766341, 'Estrenada',
  'https://marvel.com/spiderman2',
  'Peter Parker lidia con la responsabilidad de ser Spider-Man.',
  'Con gran poder viene gran responsabilidad',
  'https://i.postimg.cc/NMvjhWS6/Spider-Man-2.webp',
- 950000, 7.3, 88.1),
+ 0, NULL, 88.1),
 ('Inception', 1, 160000000, '2010-07-16', 148, 836848102, 'Estrenada',
  'https://warnerbros.com/inception',
  'Un ladrón roba secretos a través de la tecnología de entrada a los sueños.',
  'Tu mente es el escenario',
  'https://i.postimg.cc/wvzCv1Sd/portada-Inception.jpg',
- 1100000, 8.8, 94.2);
+ 1, 8, 94.2);
 
 -- Relación película-género
 INSERT INTO PELICULAGENEROPELICULA (GENEROPELICULAID, PELICULAID) VALUES
@@ -214,10 +215,10 @@ INSERT INTO PELICULALISTAPELICULA (PELICULAID, LISTAPELICULAID) VALUES
 (5, 2);
 
 -- Valoraciones
-INSERT INTO VALORACION (PELICULAID, USUARIOID, NOTA, VALORACIONID) VALUES
-(1, 1, 8.5, 1),
-(1, 2, 9.0, 2),
-(2, 1, 9.5, 3),
-(2, 2, 8.7, 4),
-(3, 3, 10.0, 5),
-(5, 4, 8.9, 6);
+INSERT INTO VALORACION (PELICULAID, USUARIOID, NOTA) VALUES
+(1, 1, 8),
+(1, 2, 9),
+(2, 1, 9),
+(2, 2, 8),
+(3, 3, 10),
+(5, 4, 8);
