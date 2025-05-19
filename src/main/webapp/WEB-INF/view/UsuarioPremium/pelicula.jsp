@@ -3,8 +3,7 @@
 <%@ page import="es.uma.taw.tarantuvi.entity.PersonaEntity" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.PalabraClaveEntity" %>
-<%@ page import="es.uma.taw.tarantuvi.dto.Pelicula" %>
-<%@ page import="es.uma.taw.tarantuvi.dto.Valoracion" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -37,7 +36,7 @@
                 </div>
                 <div class="mb-6 flex flex-wrap gap-3">
                     <% if (pelicula.getGeneroPeliculaList() != null) {
-                        for (GeneroPeliculaEntity generoPelicula : pelicula.getGeneroPeliculaList()) { %>
+                        for (GeneroPelicula generoPelicula : pelicula.getGeneroPeliculaList()) { %>
                     <span class="bg-blue-100 text-blue-800 font-semibold rounded-full px-4 py-1 text-sm shadow-sm whitespace-nowrap">
                         <%= generoPelicula.getGeneronombre() %>
                     </span>
@@ -165,8 +164,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% for (ActuacionEntity actuacion : pelicula.getActuacionList()) {
-                    PersonaEntity actor = actuacion.getPersonaid();
+                <% for (Actuacion actuacion : pelicula.getActuacionList()) {
+                    Persona actor = actuacion.getPersonaid();
                 %>
                 <tr class="border-b last:border-b-0 hover:bg-blue-50 transition">
                     <td class="px-4 py-2">

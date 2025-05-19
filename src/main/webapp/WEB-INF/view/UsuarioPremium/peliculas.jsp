@@ -166,7 +166,7 @@
                 </div>
                 <div class="mt-1 flex flex-wrap gap-1">
                     <% if (pelicula.getGeneroPeliculaList() != null) {
-                        for (GeneroPeliculaEntity genero : pelicula.getGeneroPeliculaList()) { %>
+                        for (GeneroPelicula genero : pelicula.getGeneroPeliculaList()) { %>
                     <span class="inline-block bg-blue-50 text-blue-600 font-semibold rounded-full px-3 py-1 text-xs shadow-sm">
                         <%= genero.getGeneronombre() %>
                     </span>
