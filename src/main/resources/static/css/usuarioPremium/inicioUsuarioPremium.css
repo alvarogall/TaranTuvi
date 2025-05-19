@@ -1,3 +1,4 @@
+/*Máximo Prados Meléndez*/
 /* Reset */
 * {
     margin: 0;
@@ -215,3 +216,39 @@ body {
     font-size: 14px;
     color: #777;
 }
+
+.titulo-recomendadas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.titulo-texto {
+    font-size: 28px;
+    font-weight: bold;
+    background: linear-gradient(90deg, #ff6a00, #ff007f, #6a00ff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientMove 5s ease infinite;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+.emoji-bounce {
+    font-size: 30px;
+    animation: bounce 2.5s infinite ease-in-out;
+}
+
+.titulo-recomendadas-container {
+    background-color: #2b2b2b;
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    width: fit-content;
+    margin: 30px auto 20px;
+}
+

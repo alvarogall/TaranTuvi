@@ -1,3 +1,4 @@
+<%--/*Máximo Prados Meléndez*/--%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.uma.taw.tarantuvi.dto.*" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.ListaPeliculaEntity" %>
@@ -22,7 +23,7 @@
 
 <body>
 
-<jsp:include page="../Componentes/navBarEnlacePerfil.jsp">
+<jsp:include page="../Componentes/navBarEnlacePerfilPREMIUM.jsp">
     <jsp:param name="activePage" value="inicio"/>
 </jsp:include>
 

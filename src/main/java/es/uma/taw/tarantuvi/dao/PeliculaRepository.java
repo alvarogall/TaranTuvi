@@ -34,4 +34,9 @@ public interface PeliculaRepository extends JpaRepository<PeliculaEntity, Intege
                                           @Param("productoras") List<Integer> productoras,
                                           @Param("actores") List<Integer> actores);
 
+
+
+    @Query("select c from PeliculaEntity c where c not in :peliculasQueMeGustan")
+    List<PeliculaEntity> findPelisNoVistas(@Param("peliculasQueMeGustan") List<PeliculaEntity> peliculasQueMeGustan);
+
 }
