@@ -1,3 +1,4 @@
+<%--/*Máximo Prados Meléndez*/--%>
 <%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Random" %>
@@ -87,14 +88,27 @@ List<PeliculaEntity> peliculasQueMeGustan = (List<PeliculaEntity>) request.getAt
 
 
         <div class="peliculas-recomendadas">
-            <%-- Repite esto para 4 películas que tú elijas desde el controlador y pases como atributo --%>
-            <% for (PeliculaEntity peli : peliculasQueMeGustan) { %>
+
+
+            <%
+            if(peliculasQueMeGustan!=null && !peliculasQueMeGustan.isEmpty()){
+
+                for (PeliculaEntity peli : peliculasQueMeGustan) { %>
             <div class="pelicula-recomendada">
                 <img src="<%= peli.getUrlcaratula() != null ? peli.getUrlcaratula() : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>" alt="Carátula">
                 <h4><%= peli.getTitulooriginal() %></h4>
                 <p><%= peli.getFechaestreno().getYear() %></p>
             </div>
-            <% } %>
+            <%  }
+            }else{%>
+
+                <h4>¡Ya te has visto todas nuestras peliculas!</h4>
+
+
+            <%
+
+            }
+            %>
         </div>
     </section>
 

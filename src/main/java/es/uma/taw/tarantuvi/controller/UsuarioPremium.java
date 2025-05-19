@@ -1,3 +1,4 @@
+//Máximo Prados Meléndez
 package es.uma.taw.tarantuvi.controller;
 
 
@@ -60,6 +61,7 @@ public class UsuarioPremium extends BaseController {
     public String usuarioPlus(Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         Integer idUsuario = usuario.getUsuarioId();
+        List<PeliculaEntity> peliculasPendientes = new ArrayList<>();
         List<PeliculaEntity> peliculasQueMeGustan = new ArrayList<>();
         List<ListaPeliculaEntity> listasPeliculas = listaPeliculaRepository.findListasByUsuarioid(idUsuario);
         for(ListaPeliculaEntity playlist : listasPeliculas) {
@@ -67,11 +69,7 @@ public class UsuarioPremium extends BaseController {
 
         }
 
-        int contador = 0;
-        for(PeliculaEntity pelicula : peliculasQueMeGustan) {
-            contador++;
-
-        }
+        peliculasPendientes = peliculaRepository.findPelisNoVistas(peliculasQueMeGustan);
 
 
 
@@ -79,7 +77,7 @@ public class UsuarioPremium extends BaseController {
         List<PeliculaEntity> novedades = peliculaRepository.findPeliculasMasRecientes(PageRequest.of(0, 2));
         model.addAttribute("peliculas", peliculas);
         model.addAttribute("novedades", novedades);
-        model.addAttribute("peliculasQueMeGustan", peliculasQueMeGustan);
+        model.addAttribute("peliculasQueMeGustan", peliculasPendientes);
 
         return "UsuarioPremium/inicioUsuarioPremium";
     }
@@ -168,6 +166,8 @@ public class UsuarioPremium extends BaseController {
 
         return "redirect:/usuarioPremium/perfil";
     }
+
+
 
 
     @GetMapping("/pelicula/listar")
