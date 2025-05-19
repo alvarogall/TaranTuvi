@@ -3,6 +3,7 @@
 <%@ page import="es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity" %>
 <%@ page import="es.uma.taw.tarantuvi.dto.Pelicula" %>
 <%@ page import="java.time.LocalDate" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.GeneroPelicula" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -137,7 +138,7 @@
 
 <table id="tablaGeneros" style="display:none;">
     <% for (Pelicula pelicula : peliculasLista) {
-        for (GeneroPeliculaEntity genero : pelicula.getGeneroPeliculaList()) {
+        for (GeneroPelicula genero : pelicula.getGeneroPeliculaList()) {
     %>
     <tr data-genero-id="<%=genero.getId()%>">
         <td><%=genero.getGeneronombre()%></td>

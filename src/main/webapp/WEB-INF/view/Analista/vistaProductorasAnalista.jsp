@@ -58,7 +58,7 @@
         <tr>
         <th>Productora</th>
         <th>Nº Películas</th>
-        <th>Porcentaje Películas</th>
+        <th>% Películas</th>
         <th>Nota Media</th>
         <th>Presupuesto Medio</th>
         <th>Recaudación Media</th>
