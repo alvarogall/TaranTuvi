@@ -203,7 +203,6 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
         peliculaRepository.save(pelicula);
     }
 
-<<<<<<< Updated upstream
     public List<Object[]> buscarPeliculasPorGeneroIdioma(Integer generoID, Integer idiomaID, String ordenCampo, String ordenTipo){
         List<Object[]> peliculas = this.peliculaRepository.findPeliculasByFiltros(generoID, idiomaID);
 
@@ -240,9 +239,6 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
                 .toList();
     }
 
-
-
-=======
     public void valorarPelicula(Integer peliculaId, 
                                 Integer usuarioId, 
                                 Integer nota) {
@@ -298,6 +294,4 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
         );
         return this.entity2DTO(entities);
     }
-
->>>>>>> Stashed changes
 }
