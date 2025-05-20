@@ -24,6 +24,28 @@ public class ProductoraService extends DTOService<Productora, ProductoraEntity>{
         return this.entity2DTO(entities);
     }
 
+    public Productora buscarProductora(Integer id) {
+        ProductoraEntity productora = this.productoraRepository.findById(id).orElse(new ProductoraEntity());
+        if (productora != null) {
+            return productora.toDto();
+        } else {
+            return new Productora();
+        }
+    }
+
+    public void guardarProductora(Productora dtoProductora) {
+        ProductoraEntity productora;
+
+        if (dtoProductora.getId() != null) {
+            productora = this.productoraRepository.findById(dtoProductora.getId()).orElse(new ProductoraEntity());
+        } else {
+            productora = new ProductoraEntity();
+        }
+
+        productora.setProductoranombre(dtoProductora.getProductoranombre());
+        this.productoraRepository.save(productora);
+    }
+
     public void borrarProductora(Integer id) {
         this.productoraRepository.deleteById(id);
     }

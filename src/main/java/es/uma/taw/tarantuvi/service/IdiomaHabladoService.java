@@ -5,10 +5,8 @@ User: jesus
 package es.uma.taw.tarantuvi.service;
 
 import es.uma.taw.tarantuvi.dao.IdiomaHabladoRepository;
-import es.uma.taw.tarantuvi.dto.Actor;
 import es.uma.taw.tarantuvi.dto.IdiomaHablado;
 import es.uma.taw.tarantuvi.entity.IdiomaHabladoEntity;
-import es.uma.taw.tarantuvi.entity.PersonaEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

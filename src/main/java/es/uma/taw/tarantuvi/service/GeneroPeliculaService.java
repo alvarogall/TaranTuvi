@@ -23,6 +23,32 @@ public class GeneroPeliculaService extends DTOService<GeneroPelicula, GeneroPeli
         return this.entity2DTO(entities);
     }
 
+    public GeneroPelicula buscarGeneroPelicula(Integer id) {
+        GeneroPeliculaEntity genero = this.generoPeliculaRepository.findById(id).orElse(new GeneroPeliculaEntity());
+        if (genero != null) {
+            return genero.toDto();
+        } else {
+            return new GeneroPelicula();
+        }
+    }
+
+    public void guardarGeneroPelicula(GeneroPelicula dtoGeneroPelicula) {
+        GeneroPeliculaEntity generoPelicula;
+
+        if (dtoGeneroPelicula.getId() != null) {
+            generoPelicula = this.generoPeliculaRepository.findById(dtoGeneroPelicula.getId()).orElse(new GeneroPeliculaEntity());
+        } else {
+            generoPelicula = new GeneroPeliculaEntity();
+        }
+
+        generoPelicula.setGeneronombre(dtoGeneroPelicula.getGeneronombre());
+        this.generoPeliculaRepository.save(generoPelicula);
+    }
+
+    public void borrarGeneroPelicula(Integer id) {
+        this.generoPeliculaRepository.deleteById(id);
+    }
+
     public List<Object[]> obtenerNotaMediaPorGeneroPelicula() {
         return this.generoPeliculaRepository.findNotaMediaPorGenero();
     }

@@ -1,4 +1,4 @@
-<%@ page import="es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.GeneroPelicula" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: table
@@ -30,7 +30,7 @@
         </div>
 
         <%
-            List<GeneroPeliculaEntity> lista = (List<GeneroPeliculaEntity>) request.getAttribute("generos");
+            List<GeneroPelicula> lista = (List<GeneroPelicula>) request.getAttribute("generos");
         %>
 
         <div class="container">
@@ -43,7 +43,7 @@
                 </thead>
                 <tbody id="moviesTableBody">
                 <%
-                    for (GeneroPeliculaEntity genero : lista) {
+                    for (GeneroPelicula genero : lista) {
                 %>
                 <tr class="movie-row">
                     <td><%= (genero.getGeneronombre() != null) ? genero.getGeneronombre() : ""%></td>

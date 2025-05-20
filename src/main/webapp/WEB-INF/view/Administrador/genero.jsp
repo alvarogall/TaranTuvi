@@ -1,4 +1,5 @@
-<%@ page import="es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity" %><%--
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.GeneroPelicula" %><%--
   Created by IntelliJ IDEA.
   User: table
   Date: 04/05/2025
@@ -10,7 +11,7 @@
 
 <%
     boolean esEditar = true;
-    GeneroPeliculaEntity genero = (GeneroPeliculaEntity) request.getAttribute("genero");
+    GeneroPelicula genero = (GeneroPelicula) request.getAttribute("genero");
     if (genero.getId() == null) esEditar = false;
 %>
 
@@ -23,8 +24,8 @@
 
     <h1><%= (esEditar? "Editar" : "Nuevo") %> género</h1>
 
-    <form method="post" action="/administrador/generos/confirmarCambios">
-        <input type="hidden" name="id" value="<%= genero.getId() != null ? genero.getId() : -1 %>"/>
+    <form:form method="post" modelAttribute="genero" action="/administrador/generos/confirmarCambios">
+        <form:hidden path="id" />
         <!-- Contenedor flex -->
         <div class="movie-header-container">
             <!-- Campos a la derecha -->
@@ -32,20 +33,22 @@
                 <!-- Nombre -->
                 <div class="movie-field-row">
                     <label>Nombre:</label>
-                    <input type="text" name="nombre" value="<%= genero.getGeneronombre() !=null ? genero.getGeneronombre() :""%>">
+                    <form:input path="generonombre" />
                 </div>
             </div>
         </div>
 
         <!-- Botón de enviar -->
         <div class="submit-btn-container">
-            <input type="submit" class="submit-btn" value="<%= esEditar ? "Confirmar Cambios" : "Añadir género"%>">
+            <form:button class="submit-btn">
+                <%= (esEditar ? "Confirmar Cambios" : "Añadir género") %>
+            </form:button>
         </div>
 
         <!-- Botón de cancelar -->
         <jsp:include page="../Componentes/botonCancelar.jsp">
             <jsp:param name="activePage" value="genero"/>
         </jsp:include>
-    </form>
+    </form:form>
 </body>
 </html>

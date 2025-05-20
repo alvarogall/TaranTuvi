@@ -1,4 +1,5 @@
-<%@ page import="es.uma.taw.tarantuvi.entity.ProductoraEntity" %><%--
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Productora" %><%--
   Created by IntelliJ IDEA.
   User: table
   Date: 04/05/2025
@@ -10,7 +11,7 @@
 
 <%
     boolean esEditar = true;
-    ProductoraEntity productora = (ProductoraEntity) request.getAttribute("productora");
+    Productora productora = (Productora) request.getAttribute("productora");
     if (productora.getId() == null) esEditar = false;
 %>
 
@@ -23,8 +24,8 @@
 
     <h1><%= (esEditar? "Editar" : "Nueva") %> productora</h1>
 
-    <form method="post" action="/administrador/productoras/confirmarCambios">
-        <input type="hidden" name="id" value="<%= productora.getId() != null ? productora.getId() : -1 %>"/>
+    <form:form method="post" modelAttribute="productora" action="/administrador/productoras/confirmarCambios">
+        <form:hidden path="id" />
         <!-- Contenedor flex -->
         <div class="movie-header-container">
             <!-- Campos a la derecha -->
@@ -32,20 +33,22 @@
                 <!-- Nombre -->
                 <div class="movie-field-row">
                     <label>Nombre:</label>
-                    <input type="text" name="nombre" value="<%= productora.getProductoranombre() !=null ? productora.getProductoranombre() :""%>">
+                    <form:input path="productoranombre" />
                 </div>
             </div>
         </div>
 
         <!-- Botón de enviar -->
         <div class="submit-btn-container">
-            <input type="submit" class="submit-btn" value="<%= esEditar ? "Confirmar Cambios" : "Añadir productora"%>">
+            <form:button class="submit-btn">
+                <%= (esEditar ? "Confirmar Cambios" : "Añadir productora") %>
+            </form:button>
         </div>
 
         <!-- Botón de cancelar -->
         <jsp:include page="../Componentes/botonCancelar.jsp">
             <jsp:param name="activePage" value="productora"/>
         </jsp:include>
-    </form>
+    </form:form>
 </body>
 </html>

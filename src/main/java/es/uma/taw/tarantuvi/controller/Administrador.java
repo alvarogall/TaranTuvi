@@ -1,11 +1,6 @@
 package es.uma.taw.tarantuvi.controller;
 
-import es.uma.taw.tarantuvi.dao.GeneroPeliculaRepository;
-import es.uma.taw.tarantuvi.dao.ProductoraRepository;
 import es.uma.taw.tarantuvi.dto.*;
-import es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity;
-import es.uma.taw.tarantuvi.entity.ProductoraEntity;
-import es.uma.taw.tarantuvi.dao.*;
 import es.uma.taw.tarantuvi.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +15,10 @@ import java.util.Objects;
 @RequestMapping("/administrador")
 public class Administrador extends BaseController {
     @Autowired
-    protected GeneroPeliculaRepository generoPeliculaRepository;
+    protected GeneroPeliculaService generoPeliculaService;
 
     @Autowired
-    protected ProductoraRepository productoraRepository;
+    protected ProductoraService productoraService;
 
     @Autowired
     protected IdiomaHabladoService idiomaHabladoService;
@@ -54,31 +49,32 @@ public class Administrador extends BaseController {
         if (!estaAutenticado(session)){
             return "redirect:/";
         } else {
-            List<GeneroPeliculaEntity> generos = generoPeliculaRepository.findAll();
+            List<GeneroPelicula> generos = generoPeliculaService.listarGenerosPeliculas();
             model.addAttribute("generos", generos);
             return "Administrador/generos";
         }
     }
 
     @PostMapping("/generos/editar")
-    public String doEditarGenero(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model) {
-        GeneroPeliculaEntity genero = this.generoPeliculaRepository.findById(id).orElse(new GeneroPeliculaEntity());
-        model.addAttribute("genero", genero);
-        return "Administrador/genero";
+    public String doEditarGenero(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        }else {
+            GeneroPelicula genero = this.generoPeliculaService.buscarGeneroPelicula(id);
+            model.addAttribute("genero", genero);
+            return "Administrador/genero";
+        }
     }
 
     @PostMapping("/generos/confirmarCambios")
-    public String doConfirmarCambiosGenero(@RequestParam(value = "id", defaultValue = "-1") Integer id,
-                                     @RequestParam("nombre") String nombre) {
-        GeneroPeliculaEntity genero = this.generoPeliculaRepository.findById(id).orElse(new GeneroPeliculaEntity());
-        genero.setGeneronombre(nombre);
-        this.generoPeliculaRepository.save(genero);
+    public String doConfirmarCambiosGenero(@ModelAttribute GeneroPelicula dtoGeneroPelicula) {
+        this.generoPeliculaService.guardarGeneroPelicula(dtoGeneroPelicula);
         return "redirect:/administrador/generos";
     }
 
     @PostMapping("/generos/borrar")
     public String doBorrarGenero(@RequestParam("id") Integer id) {
-        this.generoPeliculaRepository.deleteById(id);
+        this.generoPeliculaService.borrarGeneroPelicula(id);
         return "redirect:/administrador/generos";
     }
 
@@ -87,7 +83,7 @@ public class Administrador extends BaseController {
         if (!estaAutenticado(session)){
             return "redirect:/";
         } else {
-            List<ProductoraEntity> productoras = productoraRepository.findAll();
+            List<Productora> productoras = productoraService.listarProductoras();
             model.addAttribute("productoras", productoras);
             return "Administrador/productoras";
         }
@@ -95,23 +91,20 @@ public class Administrador extends BaseController {
 
     @PostMapping("/productoras/editar")
     public String doEditarProductora(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model) {
-        ProductoraEntity productora = this.productoraRepository.findById(id).orElse(new ProductoraEntity());
+        Productora productora = this.productoraService.buscarProductora(id);
         model.addAttribute("productora", productora);
         return "Administrador/productora";
     }
 
     @PostMapping("/productoras/confirmarCambios")
-    public String doConfirmarCambiosProductora(@RequestParam(value = "id", defaultValue = "-1") Integer id,
-                                     @RequestParam("nombre") String nombre) {
-        ProductoraEntity productora = this.productoraRepository.findById(id).orElse(new ProductoraEntity());
-        productora.setProductoranombre(nombre);
-        this.productoraRepository.save(productora);
+    public String doConfirmarCambiosProductora(@ModelAttribute Productora dtoProductora) {
+        this.productoraService.guardarProductora(dtoProductora);
         return "redirect:/administrador/productoras";
     }
 
     @PostMapping("/productoras/borrar")
     public String vistaGeneros(@RequestParam("id") Integer id) {
-        this.productoraRepository.deleteById(id);
+        this.productoraService.borrarProductora(id);
         return "redirect:/administrador/productoras";
     }
 

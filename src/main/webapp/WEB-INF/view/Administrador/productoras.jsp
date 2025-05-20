@@ -1,4 +1,4 @@
-<%@ page import="es.uma.taw.tarantuvi.entity.ProductoraEntity" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Productora" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: table
@@ -30,7 +30,7 @@
         </div>
 
         <%
-            List<ProductoraEntity> lista = (List<ProductoraEntity>) request.getAttribute("productoras");
+            List<Productora> lista = (List<Productora>) request.getAttribute("productoras");
         %>
 
         <div class="container">
@@ -43,7 +43,7 @@
                 </thead>
                 <tbody id="moviesTableBody">
                 <%
-                    for (ProductoraEntity productora : lista) {
+                    for (Productora productora : lista) {
                 %>
                 <tr class="movie-row">
                     <td><%= (productora.getProductoranombre() != null) ? productora.getProductoranombre() : ""%></td>
