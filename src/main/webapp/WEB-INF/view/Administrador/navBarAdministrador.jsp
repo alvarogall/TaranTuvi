@@ -27,6 +27,11 @@
                 <li><a href="/administrador/" class="nav-link <%= "inicio".equals(activePage) ? "active" : "" %>">Inicio</a></li>
                 <li><a href="/administrador/generos" class="nav-link <%= "generos".equals(activePage) ? "active" : "" %>">Géneros</a></li>
                 <li><a href="/administrador/productoras" class="nav-link <%= "productoras".equals(activePage) ? "active" : "" %>">Productoras</a></li>
+                <li><a href="/administrador/idiomasHablados" class="nav-link <%= "idiomasHablados".equals(activePage) ? "active" : "" %>">Idiomas Hablados</a></li>
+                <li><a href="/administrador/nacionalidades" class="nav-link <%= "nacionalidades".equals(activePage) ? "active" : "" %>">Nacionalidades</a></li>
+                <li><a href="/administrador/paisesRodaje" class="nav-link <%= "paisesRodaje".equals(activePage) ? "active" : "" %>">Países de Rodaje</a></li>
+                <li><a href="/administrador/palabrasClave" class="nav-link <%= "palabrasClave".equals(activePage) ? "active" : "" %>">Palabras Clave</a></li>
+                <li><a href="/administrador/departamentos" class="nav-link <%= "departamentos".equals(activePage) ? "active" : "" %>">Departamentos</a></li>
             </ul>
             <div class="profile">
                 <img src="/img/imagenPerfil.png" alt="Perfil" onerror="this.onerror=null; this.src='https://via.placeholder.com/40';">
