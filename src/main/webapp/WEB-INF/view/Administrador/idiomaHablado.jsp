@@ -42,7 +42,7 @@
         <!-- Botón de enviar -->
         <div class="submit-btn-container">
             <form:button class="submit-btn">
-                <%= (esEditar ? "Confirmar Cambios" : "Añadir idioma hablado") %>
+                <%= (esEditar ? "Confirmar cambios" : "Añadir idioma hablado") %>
             </form:button>
         </div>
 

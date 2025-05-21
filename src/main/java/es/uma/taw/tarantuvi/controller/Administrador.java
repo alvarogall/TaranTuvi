@@ -141,4 +141,38 @@ public class Administrador extends BaseController {
         this.idiomaHabladoService.borrarIdiomaHablado(id);
         return "redirect:/administrador/idiomasHablados";
     }
+
+    @GetMapping("/nacionalidades")
+    public String vistaNacionalidades(Model model, HttpSession session) {
+        if (!estaAutenticado(session)){
+            return "redirect:/";
+        } else {
+            List<Nacionalidad> nacionalidades = nacionalidadService.listarNacionalidades();
+            model.addAttribute("nacionalidades", nacionalidades);
+            return "Administrador/nacionalidades";
+        }
+    }
+
+    @PostMapping("/nacionalidades/editar")
+    public String doEditarNacionalidades(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        }else {
+            Nacionalidad nacionalidad = this.nacionalidadService.buscarNacionalidad(id);
+            model.addAttribute("nacionalidad", nacionalidad);
+            return "Administrador/nacionalidad";
+        }
+    }
+
+    @PostMapping("/nacionalidades/confirmarCambios")
+    public String doConfirmarCambiosNacionalidad(@ModelAttribute Nacionalidad dtoNacionalidad) {
+        this.nacionalidadService.guardarNacionalidad(dtoNacionalidad);
+        return "redirect:/administrador/nacionalidades";
+    }
+
+    @PostMapping("/nacionalidades/borrar")
+    public String doBorrarNacionalidad(@RequestParam("id") Integer id){
+        this.nacionalidadService.borrarNacionalidad(id);
+        return "redirect:/administrador/nacionalidades";
+    }
 }

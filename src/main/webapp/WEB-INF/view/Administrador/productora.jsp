@@ -41,7 +41,7 @@
         <!-- Botón de enviar -->
         <div class="submit-btn-container">
             <form:button class="submit-btn">
-                <%= (esEditar ? "Confirmar Cambios" : "Añadir productora") %>
+                <%= (esEditar ? "Confirmar cambios" : "Añadir productora") %>
             </form:button>
         </div>
 
