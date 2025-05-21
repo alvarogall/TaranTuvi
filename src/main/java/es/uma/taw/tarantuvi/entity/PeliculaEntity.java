@@ -1,3 +1,7 @@
+/**
+ * @author Álvaro Gallardo
+ */
+
 package es.uma.taw.tarantuvi.entity;
 
 import es.uma.taw.tarantuvi.dto.*;
@@ -123,124 +127,118 @@ public class PeliculaEntity implements Serializable, DTO<Pelicula> {
         this.actuacionList.add(actuacion);
     }
 
-    public Pelicula toDto(){
+    public Pelicula toDto() {
         Pelicula pelicula = new Pelicula();
 
         pelicula.setId(this.id);
         pelicula.setTitulooriginal(this.titulooriginal);
         pelicula.setUrlcaratula(this.urlcaratula);
-        pelicula.setFecha(this.fechaestreno != null ? new String(String.valueOf(this.fechaestreno)) : "");
-        pelicula.setDuracion(this.duracion != null ? new String(String.valueOf(this.duracion)) : "");
+        pelicula.setFecha(this.fechaestreno != null ? this.fechaestreno.toString() : "");
+        pelicula.setDuracion(this.duracion != null ? String.valueOf(this.duracion) : "");
         pelicula.setDescripcion(this.descripcion);
         pelicula.setPaginaweb(this.paginaweb);
-        pelicula.setPresupuesto(this.presupuesto != null ? new String(String.valueOf(this.presupuesto)) : "");
-        pelicula.setRecaudacion(this.recaudacion != null ? new String(String.valueOf(this.recaudacion)) : "");
+        pelicula.setPresupuesto(this.presupuesto != null ? this.presupuesto.toString() : "");
+        pelicula.setRecaudacion(this.recaudacion != null ? this.recaudacion.toString() : "");
         pelicula.setEslogan(this.eslogan);
         pelicula.setEstado(this.estado);
         pelicula.setNota(this.nota);
         pelicula.setFechaestreno(this.fechaestreno);
-        pelicula.setIdiomaoriginalhablado(this.idiomaoriginalhabladoid.toDto());
         pelicula.setPopularidad(this.popularidad);
         pelicula.setVotos(this.votos);
 
-        if(this.generoPeliculaList != null
-                && this.palabraClaveList != null
-                && this.listaPeliculaList != null
-                && this.valoracionList != null
-                && this.actuacionList != null
-                && this.trabajoList != null
-                && this.productoraList != null
-                && this.paisRodajeList != null
-                && this.idiomaHabladoList != null
-                && this.generoPeliculaList != null){
-            List<Integer> idsCast = new ArrayList<Integer>();
-            for(ActuacionEntity a : this.actuacionList){
+        // Idioma original hablado
+        if (this.idiomaoriginalhabladoid != null) {
+            pelicula.setIdiomaoriginalhablado(this.idiomaoriginalhabladoid.toDto());
+        }
+
+        // Cast (Actuaciones)
+        if (this.actuacionList != null) {
+            List<Integer> idsCast = new ArrayList<>();
+            List<Actuacion> actuaciones = new ArrayList<>();
+            for (ActuacionEntity a : this.actuacionList) {
                 idsCast.add(a.getId());
+                actuaciones.add(a.toDto());
             }
             pelicula.setCast(idsCast);
+            pelicula.setActuacionList(actuaciones);
+        } else {
+            pelicula.setCast(new ArrayList<>());
+            pelicula.setActuacionList(new ArrayList<>());
+        }
 
-            List<Integer> idsCrew = new ArrayList<Integer>();
-            for(TrabajoEntity t : this.trabajoList){
+        // Crew (Trabajos)
+        if (this.trabajoList != null) {
+            List<Integer> idsCrew = new ArrayList<>();
+            List<Trabajo> trabajos = new ArrayList<>();
+            for (TrabajoEntity t : this.trabajoList) {
                 idsCrew.add(t.getId());
+                trabajos.add(t.toDto());
             }
             pelicula.setCrew(idsCrew);
+            pelicula.setTrabajoList(trabajos);
+        } else {
+            pelicula.setCrew(new ArrayList<>());
+            pelicula.setTrabajoList(new ArrayList<>());
+        }
 
-            List<Integer> idsProductoras = new ArrayList<Integer>();
-            for(ProductoraEntity p : this.productoraList){
+        // Productoras
+        if (this.productoraList != null) {
+            List<Integer> idsProductoras = new ArrayList<>();
+            List<Productora> productoras = new ArrayList<>();
+            for (ProductoraEntity p : this.productoraList) {
                 idsProductoras.add(p.getId());
+                productoras.add(p.toDto());
             }
             pelicula.setProductoras(idsProductoras);
+            pelicula.setProductoraList(productoras);
+        } else {
+            pelicula.setProductoras(new ArrayList<>());
+            pelicula.setProductoraList(new ArrayList<>());
+        }
 
-            List<Integer> idsPaisesRodaje = new ArrayList<Integer>();
-            for(PaisRodajeEntity p : this.paisRodajeList){
+        // Países de rodaje
+        if (this.paisRodajeList != null) {
+            List<Integer> idsPaisesRodaje = new ArrayList<>();
+            List<PaisRodaje> paisesRodaje = new ArrayList<>();
+            for (PaisRodajeEntity p : this.paisRodajeList) {
                 idsPaisesRodaje.add(p.getId());
+                paisesRodaje.add(p.toDto());
             }
             pelicula.setPaisesRodaje(idsPaisesRodaje);
+            pelicula.setPaisRodajeList(paisesRodaje);
+        } else {
+            pelicula.setPaisesRodaje(new ArrayList<>());
+            pelicula.setPaisRodajeList(new ArrayList<>());
+        }
 
-            List<Integer> idsIdiomas = new ArrayList<Integer>();
-            for(IdiomaHabladoEntity h : this.idiomaHabladoList){
+        // Idiomas hablados
+        if (this.idiomaHabladoList != null) {
+            List<Integer> idsIdiomas = new ArrayList<>();
+            List<IdiomaHablado> idiomas = new ArrayList<>();
+            for (IdiomaHabladoEntity h : this.idiomaHabladoList) {
                 idsIdiomas.add(h.getId());
+                idiomas.add(h.toDto());
             }
             pelicula.setIdiomas(idsIdiomas);
+            pelicula.setIdiomaHabladoList(idiomas);
+        } else {
+            pelicula.setIdiomas(new ArrayList<>());
+            pelicula.setIdiomaHabladoList(new ArrayList<>());
+        }
 
-            List<Integer> idsGeneros = new ArrayList<Integer>();
-            for(GeneroPeliculaEntity g : this.generoPeliculaList){
+        // Géneros
+        if (this.generoPeliculaList != null) {
+            List<Integer> idsGeneros = new ArrayList<>();
+            List<GeneroPelicula> generos = new ArrayList<>();
+            for (GeneroPeliculaEntity g : this.generoPeliculaList) {
                 idsGeneros.add(g.getId());
+                generos.add(g.toDto());
             }
             pelicula.setGeneros(idsGeneros);
-
-            if (this.generoPeliculaList != null) {
-                List<GeneroPelicula> generos = new ArrayList<>();
-                for (GeneroPeliculaEntity genero : this.generoPeliculaList) {
-                    generos.add(genero.toDto());
-                }
-                pelicula.setGeneroPeliculaList(generos);
-            }
-
-            if (this.idiomaHabladoList != null) {
-                List<IdiomaHablado> idiomas = new ArrayList<>();
-                for (IdiomaHabladoEntity idioma : this.idiomaHabladoList) {
-                    idiomas.add(idioma.toDto());
-                }
-                pelicula.setIdiomaHabladoList(idiomas);
-            }
-
-            if (this.actuacionList != null) {
-                List<Actuacion> actuaciones = new ArrayList<>();
-                for (ActuacionEntity actuacion : this.actuacionList) {
-                    actuaciones.add(actuacion.toDto());
-                }
-                pelicula.setActuacionList(actuaciones);
-            }
-
-            if (this.trabajoList != null) {
-                List<Trabajo> trabajos = new ArrayList<>();
-                for (TrabajoEntity trabajo : this.trabajoList) {
-                    trabajos.add(trabajo.toDto());
-                }
-                pelicula.setTrabajoList(trabajos);
-            }
-
-            if (this.productoraList != null) {
-                List<Productora> productoras = new ArrayList<>();
-                for (ProductoraEntity productora : this.productoraList) {
-                    productoras.add(productora.toDto());
-                }
-                pelicula.setProductoraList(productoras);
-            }
-        }else{
-            pelicula.setCast(new ArrayList<>());
-            pelicula.setCrew(new ArrayList<>());
-            pelicula.setProductoras(new ArrayList<>());
-            pelicula.setPaisesRodaje(new ArrayList<>());
-            pelicula.setIdiomas(new ArrayList<>());
+            pelicula.setGeneroPeliculaList(generos);
+        } else {
             pelicula.setGeneros(new ArrayList<>());
             pelicula.setGeneroPeliculaList(new ArrayList<>());
-            pelicula.setIdiomaHabladoList(new ArrayList<>());
-            pelicula.setPaisRodajeList(new ArrayList<>());
-            pelicula.setProductoraList(new ArrayList<>());
-            pelicula.setActuacionList(new ArrayList<>());
-            pelicula.setTrabajoList(new ArrayList<>());
         }
 
         return pelicula;

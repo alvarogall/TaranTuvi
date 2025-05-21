@@ -1,3 +1,7 @@
+/**
+ * @author Álvaro Gallardo
+ */
+
 package es.uma.taw.tarantuvi.dao;
 
 import es.uma.taw.tarantuvi.entity.PeliculaEntity;
@@ -38,5 +42,8 @@ public interface PeliculaRepository extends JpaRepository<PeliculaEntity, Intege
 
     @Query("select c from PeliculaEntity c where c not in :peliculasQueMeGustan")
     List<PeliculaEntity> findPelisNoVistas(@Param("peliculasQueMeGustan") List<PeliculaEntity> peliculasQueMeGustan);
+
+    @Query("select p from PeliculaEntity p where p.nota is not null order by p.nota desc, p.votos desc")
+    List<PeliculaEntity> findPeliculasMejorValoradas();
 
 }

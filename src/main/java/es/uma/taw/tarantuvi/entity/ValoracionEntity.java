@@ -1,10 +1,12 @@
+/**
+ * @author Álvaro Gallardo
+ */
+
 package es.uma.taw.tarantuvi.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.math.BigDecimal;
 
 import es.uma.taw.tarantuvi.dto.Valoracion;
 

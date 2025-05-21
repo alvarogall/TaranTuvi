@@ -1,8 +1,5 @@
-<%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.ActuacionEntity" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.PersonaEntity" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.PalabraClaveEntity" %>
+<%-- @author Álvaro Gallardo --%>
+
 <%@ page import="es.uma.taw.tarantuvi.dto.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -11,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <%
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
     Pelicula pelicula = (Pelicula) request.getAttribute("pelicula");
     Valoracion valoracion = (Valoracion) request.getAttribute("valoracion");
 %>
@@ -18,6 +16,7 @@
 <jsp:include page="navBar.jsp"/>
 <% if (pelicula != null) { %>
 <main class="flex-1 w-full flex flex-col items-center px-4 sm:px-6 lg:px-8">
+    <!-- Detalles de la película -->
     <div class="flex justify-center items-start py-12 w-full max-w-4xl">
         <div class="flex flex-col md:flex-row bg-white border border-gray-200 rounded-2xl w-full min-h-[340px] p-8 shadow-lg gap-10">
             <div class="flex-shrink-0 flex justify-center items-start">
@@ -50,26 +49,37 @@
                     </div>
                     <div>
                         <dt class="font-semibold text-gray-900 mb-1">Idiomas hablados</dt>
-                        <dd><%= (pelicula.getIdiomaHabladoList() != null) ? pelicula.getIdiomaHabladoList() : "-" %></dd>
+                        <dd>
+                            <% if (pelicula.getIdiomaHabladoList() != null && !pelicula.getIdiomaHabladoList().isEmpty()) {
+                                for (int i = 0; i < pelicula.getIdiomaHabladoList().size(); i++) { %>
+                                    <%= pelicula.getIdiomaHabladoList().get(i).getIdiomahabladonombre() %><%= (i < pelicula.getIdiomaHabladoList().size() - 1) ? ", " : "" %>
+                            <%  }
+                               } else { %>
+                                -
+                            <% } %>
+                        </dd>
                     </div>
                     <div>
                         <dt class="font-semibold text-gray-900 mb-1">Países de rodaje</dt>
-                        <dd><%= (pelicula.getPaisRodajeList() != null) ? pelicula.getPaisRodajeList().toString() : "-" %></dd>
+                        <dd>
+                            <% if (pelicula.getPaisRodajeList() != null && !pelicula.getPaisRodajeList().isEmpty()) {
+                                for (int i = 0; i < pelicula.getPaisRodajeList().size(); i++) { %>
+                                    <%= pelicula.getPaisRodajeList().get(i).getPaisrodajenombre() %><%= (i < pelicula.getPaisRodajeList().size() - 1) ? ", " : "" %>
+                            <%  }
+                               } else { %>
+                                -
+                            <% } %>
+                        </dd>
                     </div>
                     <div>
                         <dt class="font-semibold text-gray-900 mb-1">Productoras</dt>
-                        <dd><%= (pelicula.getProductoraList() != null) ? pelicula.getProductoraList().toString() : "-" %></dd>
-                    </div>
-                    <div class="sm:col-span-2">
-                        <dt class="font-semibold text-gray-900 mb-1">Palabras clave</dt>
-                        <dd class="flex flex-wrap gap-2">
-                            <% if (pelicula.getPalabraClaveList() != null) {
-                                for (PalabraClaveEntity palabraClave : pelicula.getPalabraClaveList()) { %>
-                            <span class="bg-purple-100 text-purple-800 font-semibold rounded-full px-3 py-1 text-xs shadow-sm">
-                                <%= palabraClave.getPalabraclavenombre() %>
-                            </span>
-                            <% }} else { %>
-                            <span class="text-gray-400">-</span>
+                        <dd>
+                            <% if (pelicula.getProductoraList() != null && !pelicula.getProductoraList().isEmpty()) {
+                                for (int i = 0; i < pelicula.getProductoraList().size(); i++) { %>
+                                    <%= pelicula.getProductoraList().get(i).getProductoranombre() %><%= (i < pelicula.getProductoraList().size() - 1) ? ", " : "" %>
+                            <%  }
+                               } else { %>
+                                -
                             <% } %>
                         </dd>
                     </div>
@@ -153,7 +163,8 @@
         </div>
     </div>
     <% if (pelicula.getActuacionList() != null && !pelicula.getActuacionList().isEmpty()) { %>
-    <section class="max-w-3xl w-full mx-auto mt-8 mb-16 px-2">
+    <!-- Reparto -->
+    <section class="max-w-4xl w-full mx-auto mt-8 mb-16 px-2">
         <h2 class="text-2xl font-bold text-gray-900 mb-4">Reparto</h2>
         <div class="overflow-x-auto rounded-lg shadow">
             <table class="min-w-full bg-white text-base rounded-lg overflow-hidden">
@@ -173,7 +184,10 @@
                             <img src="<%= actor.getUrlfoto() != null ? actor.getUrlfoto() : "" %>"
                                  alt="Foto de <%= actor.getNombre() %>"
                                  class="w-8 h-11 object-cover rounded border border-gray-200 bg-white" />
-                            <span class="text-gray-800 font-medium"><%= actor.getNombre() %></span>
+                            <a href="/<%= usuario.getRol() %>/actor?id=<%= actor.getId() %>"
+                               class="text-blue-700 font-semibold underline underline-offset-2 decoration-blue-400 hover:text-blue-900 hover:decoration-2 transition-colors duration-150 rounded px-1 py-0.5 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                                <%= actor.getNombre() %>
+                            </a>
                         </div>
                     </td>
                     <td class="px-4 py-2"><%= actuacion.getPersonaje() != null ? actuacion.getPersonaje() : "" %></td>

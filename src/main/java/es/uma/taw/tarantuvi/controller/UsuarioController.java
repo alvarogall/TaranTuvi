@@ -1,3 +1,7 @@
+/**
+ * @author Álvaro Gallardo
+ */
+
 package es.uma.taw.tarantuvi.controller;
 
 import es.uma.taw.tarantuvi.dto.Actor;
@@ -56,6 +60,9 @@ public class UsuarioController extends BaseController {
         if(!estaAutenticado(session)) {
             return "redirect:/";
         } else {
+            Pelicula peliculaMejorValoradaDto = this.peliculaService.obtenerPeliculaMejorValorada();
+            model.addAttribute("peliculaMejorValoradaDto", peliculaMejorValoradaDto);
+            model.addAttribute("peliculas", peliculaService.listarPeliculas());
             return USUARIO_VIEW_ENDPOINT + "dashboard";
         }
     }

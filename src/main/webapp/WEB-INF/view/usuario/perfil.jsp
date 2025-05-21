@@ -1,3 +1,5 @@
+<%-- @author Álvaro Gallardo --%>
+
 <%@ page import="es.uma.taw.tarantuvi.dto.Usuario" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>

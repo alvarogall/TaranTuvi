@@ -4,7 +4,6 @@ User: jesus
 
 package es.uma.taw.tarantuvi.dto;
 
-import es.uma.taw.tarantuvi.entity.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

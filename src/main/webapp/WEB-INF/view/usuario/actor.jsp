@@ -1,7 +1,6 @@
-<%@ page import="es.uma.taw.tarantuvi.dto.ActorResumen" %>
-<%@ page import="es.uma.taw.tarantuvi.dto.ActuacionResumen" %>
-<%@ page import="es.uma.taw.tarantuvi.dto.PeliculaResumen" %>
-<%@ page import="es.uma.taw.tarantuvi.dto.TrabajoResumen" %>
+<%-- @author Álvaro Gallardo --%>
+
+<%@ page import="es.uma.taw.tarantuvi.dto.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -9,13 +8,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <%
+    Usuario usuario = (Usuario) session.getAttribute("usuario");
   ActorResumen actor = (ActorResumen) request.getAttribute("actor");
 %>
 <body class="bg-[#f4f5f7] font-sans m-0">
 <jsp:include page="navBar.jsp"/>
 <% if (actor != null) { %>
 <div class="flex justify-center items-start py-12 pb-6">
-  <div class="flex flex-row bg-gradient-to-r from-white to-gray-50 border border-[#e0e3e8] rounded-[14px] max-w-[700px] w-full min-h-[260px] p-8 pl-6 shadow-md gap-9">
+  <div class="flex flex-row bg-gradient-to-r from-white to-gray-50 border border-[#e0e3e8] rounded-[14px] max-w-3xl w-full min-h-[260px] p-8 pl-6 shadow-md gap-9">
     <div class="flex-shrink-0 flex justify-center items-start">
       <img src="<%= actor.getUrlfoto() != null ? actor.getUrlfoto() : "" %>" alt="Foto de <%= actor.getNombre() %>"
            class="w-[170px] h-[220px] object-cover rounded-lg border border-[#e0e3e8] bg-white shadow-md block" />
@@ -42,7 +42,7 @@
 </div>
 
 <% if (actor.getActuaciones() != null && !actor.getActuaciones().isEmpty()) { %>
-<div class="max-w-[700px] mx-auto mb-8 px-6">
+<div class="max-w-3xl w-full mx-auto mb-8 px-6">
   <h2 class="text-2xl font-bold text-[#1a1a1a] mb-5 mt-10 text-left">Películas</h2>
   <% for (ActuacionResumen actuacion : actor.getActuaciones()) {
        PeliculaResumen pelicula = actuacion.getPelicula();
@@ -55,7 +55,12 @@
              class="w-[110px] h-[150px] object-cover rounded-md border border-[#e0e3e8] bg-white shadow" />
       </div>
       <div class="flex-1 flex flex-col min-w-0">
-        <h3 class="text-lg font-bold text-[#1a1a1a] mb-2"><%= pelicula.getTitulooriginal() %></h3>
+        <h3 class="text-lg font-bold text-[#1a1a1a] mb-2">
+          <a href="/<%= usuario.getRol() %>/pelicula?id=<%= pelicula.getId() %>"
+             class="text-blue-700 font-semibold underline underline-offset-2 decoration-blue-400 hover:text-blue-900 hover:decoration-2 transition-colors duration-150 rounded px-1 py-0.5 focus:outline-none focus:ring-2 focus:ring-blue-300">
+            <%= pelicula.getTitulooriginal() %>
+          </a>
+        </h3>
         <div class="flex gap-3 items-center text-[#5a5a5a] text-base mb-2">
           <span><%= pelicula.getFechaestreno() != null ? pelicula.getFechaestreno().toString() : "" %></span>
           <span class="text-gray-400">&bull;</span>
@@ -78,7 +83,7 @@
 <% } %>
 
 <% if (actor.getTrabajos() != null && !actor.getTrabajos().isEmpty()) { %>
-<div class="max-w-[700px] mx-auto mb-8 px-6">
+<div class="max-w-3xl w-full mx-auto mb-8 px-6">
   <h2 class="text-2xl font-bold text-[#1a1a1a] mb-5 mt-10 text-left">Trabajos</h2>
   <div class="space-y-6">
     <% for (TrabajoResumen trabajo : actor.getTrabajos()) { %>

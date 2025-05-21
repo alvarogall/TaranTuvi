@@ -1,6 +1,9 @@
 /*
 User: jesus
 */
+/**
+ * @author Álvaro Gallardo
+ */
 
 package es.uma.taw.tarantuvi.service;
 
@@ -242,7 +245,7 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
     public void valorarPelicula(Integer peliculaId, 
                                 Integer usuarioId, 
                                 Integer nota) {
-        ValoracionEntity valoracion = valoracionRepository.obtenerValoracionUPeliculaUsuario(peliculaId, usuarioId);
+        ValoracionEntity valoracion = valoracionRepository.obtenerValoracionPeliculaUsuario(peliculaId, usuarioId);
         PeliculaEntity pelicula = peliculaRepository.findById(peliculaId).orElse(null);
 
         boolean esNuevaValoracion = false;
@@ -267,6 +270,7 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
         }
 
         Double media = valoracionRepository.calcularNotaMediaPorPelicula(peliculaId);
+        
         if (pelicula != null && media != null) {
             pelicula.setNota(BigDecimal.valueOf(media));
             peliculaRepository.save(pelicula);
@@ -275,7 +279,7 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
 
     public Valoracion obtenerValoracionUsuario(Integer peliculaId,
                                                Integer usuarioId) {
-        ValoracionEntity valoracion = valoracionRepository.obtenerValoracionUPeliculaUsuario(peliculaId, usuarioId);
+        ValoracionEntity valoracion = valoracionRepository.obtenerValoracionPeliculaUsuario(peliculaId, usuarioId);
 
         return valoracion != null ? valoracion.toDto() : new Valoracion();
     }
@@ -293,5 +297,13 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
             actores
         );
         return this.entity2DTO(entities);
+    }
+
+    public Pelicula obtenerPeliculaMejorValorada() {
+    List<PeliculaEntity> entities = peliculaRepository.findPeliculasMejorValoradas();
+        if (entities != null && !entities.isEmpty()) {
+            return entities.get(0).toDto();
+        }
+        return null;
     }
 }
