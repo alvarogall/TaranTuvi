@@ -1,3 +1,7 @@
+/**
+ * @author Máximo Prados
+ */
+
 package es.uma.taw.tarantuvi.entity;
 import jakarta.persistence.*;
 import lombok.*;

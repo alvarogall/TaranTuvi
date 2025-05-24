@@ -1,3 +1,9 @@
+/**
+ * @author Jesús Repiso
+ * @author Máximo Prados
+ */
+
+
 package es.uma.taw.tarantuvi.dto;
 
 

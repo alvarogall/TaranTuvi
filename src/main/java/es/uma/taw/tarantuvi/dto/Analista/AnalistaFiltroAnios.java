@@ -1,3 +1,6 @@
+/**
+ * @author Alejandro Cueto
+ */
 package es.uma.taw.tarantuvi.dto.Analista;
 
 import lombok.Data;

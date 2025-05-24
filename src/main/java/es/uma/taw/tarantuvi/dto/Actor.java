@@ -1,6 +1,6 @@
-/*
-User: jesus
-*/
+/**
+ * @author Jesús Repiso
+ */
 
 package es.uma.taw.tarantuvi.dto;
 

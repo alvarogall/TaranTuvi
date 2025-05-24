@@ -1,3 +1,8 @@
+/**
+ * @author Pablo Gámez
+ */
+
+
 package es.uma.taw.tarantuvi.dto;
 
 import lombok.Data;

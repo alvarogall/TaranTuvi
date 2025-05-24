@@ -1,7 +1,7 @@
 /**
  * @author Álvaro Gallardo
+ * @author Alejandro Cueto
  */
-
 package es.uma.taw.tarantuvi.dao;
 
 import es.uma.taw.tarantuvi.entity.ValoracionEntity;

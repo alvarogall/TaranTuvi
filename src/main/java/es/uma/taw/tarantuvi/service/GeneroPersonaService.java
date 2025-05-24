@@ -1,7 +1,6 @@
-/*
-User: jesus
+/**
+ * @author Jesús Repiso
  */
-
 package es.uma.taw.tarantuvi.service;
 
 import es.uma.taw.tarantuvi.dao.GeneroPersonaRepository;

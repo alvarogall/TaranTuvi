@@ -1,3 +1,7 @@
+/**
+ * @author Álvaro Gallardo
+ */
+
 package es.uma.taw.tarantuvi.entity;
 
 import jakarta.persistence.*;

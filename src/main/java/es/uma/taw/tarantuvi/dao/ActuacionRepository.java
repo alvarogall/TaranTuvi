@@ -1,3 +1,7 @@
+/**
+ * @author Alejandro Cueto
+ */
+
 package es.uma.taw.tarantuvi.dao;
 
 import es.uma.taw.tarantuvi.entity.ActuacionEntity;

@@ -1,5 +1,6 @@
-/*
- * Users: jesus, alvaro
+/**
+ * @author Jesús Repiso
+ * @author Pablo Gámez
  */
 
 package es.uma.taw.tarantuvi.service;

@@ -1,15 +1,17 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.ActuacionEntity" %>
-<%@ page import="java.util.List" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
-
 <%--
+  AUTOR: ALEJANDRO CUETO DÍAZ
   Created by IntelliJ IDEA.
   User: Alejandro Cueto
   Date: 21/04/2025
   Time: 13:57
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page import="es.uma.taw.tarantuvi.entity.ActuacionEntity" %>
+<%@ page import="java.util.List" %>
+<%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
+
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>

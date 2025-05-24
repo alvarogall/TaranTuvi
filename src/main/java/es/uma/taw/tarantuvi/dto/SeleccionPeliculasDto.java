@@ -1,4 +1,7 @@
-//Máximo Prados Meléndez
+/**
+ * @author Máximo Prados
+ */
+
 package es.uma.taw.tarantuvi.dto;
 
 import lombok.Data;

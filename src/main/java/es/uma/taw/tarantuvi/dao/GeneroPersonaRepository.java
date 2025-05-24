@@ -1,3 +1,8 @@
+/**
+ * @author Jesús Repiso
+ * @author Álvaro Gallardo
+ */
+
 package es.uma.taw.tarantuvi.dao;
 
 import es.uma.taw.tarantuvi.entity.GeneroPersonaEntity;

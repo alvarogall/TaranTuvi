@@ -1,15 +1,13 @@
-/*
-User: jesus
-*/
+/**
+ * @author Alejandro Cueto
+ * @author Pablo Gámez
+ */
 
 package es.uma.taw.tarantuvi.service;
 
 import es.uma.taw.tarantuvi.dao.DepartamentoRepository;
-import es.uma.taw.tarantuvi.dao.TrabajoRepository;
 import es.uma.taw.tarantuvi.dto.Departamento;
-import es.uma.taw.tarantuvi.dto.Trabajo;
 import es.uma.taw.tarantuvi.entity.DepartamentoEntity;
-import es.uma.taw.tarantuvi.entity.TrabajoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

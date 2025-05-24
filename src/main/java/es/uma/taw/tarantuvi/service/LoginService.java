@@ -1,3 +1,7 @@
+/**
+ * @author Álvaro Gallardo
+ */
+
 package es.uma.taw.tarantuvi.service;
 
 import es.uma.taw.tarantuvi.dao.UsuarioRepository;

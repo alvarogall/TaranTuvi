@@ -1,7 +1,8 @@
-/*
-User: jesus
+/**
+ * @author Jesús Repiso
+ * @author Alejandro Cueto
+ * @author Pablo Gámez
  */
-
 package es.uma.taw.tarantuvi.service;
 
 import es.uma.taw.tarantuvi.dao.ProductoraRepository;

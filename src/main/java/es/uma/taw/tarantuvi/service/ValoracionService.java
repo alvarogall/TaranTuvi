@@ -1,5 +1,5 @@
-/*
-User: jesus
+/**
+ * @author Alejandro Cueto
  */
 
 package es.uma.taw.tarantuvi.service;

@@ -1,12 +1,14 @@
-<%@ page import="java.util.List" %>
-<%@ page import="java.math.BigDecimal" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.*" %><%--
+<%--
+  AUTOR: ALEJANDRO CUETO DÍAZ
   Created by IntelliJ IDEA.
   User: ALEJANDRO
   Date: 11/05/2025
   Time: 1:34
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page import="java.util.List" %>
+<%@ page import="java.math.BigDecimal" %>
+<%@ page import="es.uma.taw.tarantuvi.entity.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>

@@ -1,3 +1,12 @@
+<%--
+  AUTOR: ALEJANDRO CUETO DÍAZ
+  Created by IntelliJ IDEA.
+  User: Alejandro Cueto
+  Date: 21/04/2025
+  Time: 13:57
+  To change this template use File | Settings | File Templates.
+--%>
+
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity" %>

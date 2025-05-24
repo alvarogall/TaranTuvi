@@ -1,5 +1,7 @@
-/*
- * Users: jesus, Alvaro
+/**
+ * @author Jesús Repiso
+ * @author Álvaro Gallardo
+ * @author Alejandro Cueto
  */
 
 package es.uma.taw.tarantuvi.service;

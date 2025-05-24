@@ -1,5 +1,6 @@
-/*
- * Users: jesus, Alvaro
+/**
+ * @author Jesús Repiso
+ * @author Álvaro Gallardo
  */
 
 package es.uma.taw.tarantuvi.entity;
@@ -7,7 +8,6 @@ package es.uma.taw.tarantuvi.entity;
 import es.uma.taw.tarantuvi.dto.Actuacion;
 import es.uma.taw.tarantuvi.dto.ActuacionResumen;
 import es.uma.taw.tarantuvi.dto.DTO;
-import es.uma.taw.tarantuvi.dto.Pelicula;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
