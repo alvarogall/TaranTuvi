@@ -49,7 +49,7 @@ public class Administrador extends BaseController {
         if (!estaAutenticado(session)){
             return "redirect:/";
         } else {
-            List<GeneroPelicula> generos = generoPeliculaService.listarGenerosPeliculas();
+            List<GeneroPelicula> generos = this.generoPeliculaService.listarGenerosPeliculas();
             model.addAttribute("generos", generos);
             return "Administrador/generos";
         }
@@ -83,7 +83,7 @@ public class Administrador extends BaseController {
         if (!estaAutenticado(session)){
             return "redirect:/";
         } else {
-            List<Productora> productoras = productoraService.listarProductoras();
+            List<Productora> productoras = this.productoraService.listarProductoras();
             model.addAttribute("productoras", productoras);
             return "Administrador/productoras";
         }
@@ -113,7 +113,7 @@ public class Administrador extends BaseController {
         if (!estaAutenticado(session)){
             return "redirect:/";
         } else {
-            List<IdiomaHablado> idiomasHablados = idiomaHabladoService.listarIdiomasHablados();
+            List<IdiomaHablado> idiomasHablados = this.idiomaHabladoService.listarIdiomasHablados();
             model.addAttribute("idiomasHablados", idiomasHablados);
             return "Administrador/idiomasHablados";
         }
@@ -174,5 +174,39 @@ public class Administrador extends BaseController {
     public String doBorrarNacionalidad(@RequestParam("id") Integer id){
         this.nacionalidadService.borrarNacionalidad(id);
         return "redirect:/administrador/nacionalidades";
+    }
+
+    @GetMapping("/paisesRodaje")
+    public String vistaPaisesRodaje(Model model, HttpSession session) {
+        if (!estaAutenticado(session)){
+            return "redirect:/";
+        } else {
+            List<PaisRodaje> paisesRodaje = this.paisRodajeService.listarPaisesRodaje();
+            model.addAttribute("paisesRodaje", paisesRodaje);
+            return "Administrador/paisesRodaje";
+        }
+    }
+
+    @PostMapping("/paisesRodaje/editar")
+    public String doEditarPaisesRodaje(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        }else {
+            PaisRodaje paisRodaje = this.paisRodajeService.buscarPaisRodaje(id);
+            model.addAttribute("paisRodaje", paisRodaje);
+            return "Administrador/paisRodaje";
+        }
+    }
+
+    @PostMapping("/paisesRodaje/confirmarCambios")
+    public String doConfirmarCambiosPaisRodaje(@ModelAttribute PaisRodaje dtoPaisRodaje) {
+        this.paisRodajeService.guardarPaisRodaje(dtoPaisRodaje);
+        return "redirect:/administrador/paisesRodaje";
+    }
+
+    @PostMapping("/paisesRodaje/borrar")
+    public String doBorrarPaisRodaje(@RequestParam("id") Integer id){
+        this.paisRodajeService.borrarPaisRodaje(id);
+        return "redirect:/administrador/paisesRodaje";
     }
 }
