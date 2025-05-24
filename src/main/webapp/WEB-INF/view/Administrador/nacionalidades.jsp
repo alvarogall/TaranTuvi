@@ -10,7 +10,7 @@
 <html>
 <head>
   <title>Nacionalidades</title>
-  <link rel="stylesheet" type="text/css" href="/css/Editor/vistaPeliculasActoresEditor.css">
+  <link rel="stylesheet" type="text/css" href="/css/Administrador/vistaAdministrador.css">
 </head>
 <body>
   <jsp:include page="navBarAdministrador.jsp">
