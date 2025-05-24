@@ -120,7 +120,7 @@ public class Administrador extends BaseController {
     }
 
     @PostMapping("/idiomasHablados/editar")
-    public String doEditarIdiomasHablados(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
+    public String doEditarIdiomaHablado(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
         if(!estaAutenticado(session)) {
             return "redirect:/";
         }else {
@@ -154,7 +154,7 @@ public class Administrador extends BaseController {
     }
 
     @PostMapping("/nacionalidades/editar")
-    public String doEditarNacionalidades(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
+    public String doEditarNacionalidad(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
         if(!estaAutenticado(session)) {
             return "redirect:/";
         }else {
@@ -208,5 +208,39 @@ public class Administrador extends BaseController {
     public String doBorrarPaisRodaje(@RequestParam("id") Integer id){
         this.paisRodajeService.borrarPaisRodaje(id);
         return "redirect:/administrador/paisesRodaje";
+    }
+
+    @GetMapping("/palabrasClave")
+    public String vistaPalabrasClave(Model model, HttpSession session) {
+        if (!estaAutenticado(session)){
+            return "redirect:/";
+        } else {
+            List<PalabraClave> palabrasClave = this.palabraClaveService.listarPalabrasClave();
+            model.addAttribute("palabrasClave", palabrasClave);
+            return "Administrador/palabrasClave";
+        }
+    }
+
+    @PostMapping("/palabrasClave/editar")
+    public String doEditarPalabraClave(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        }else {
+            PalabraClave palabraClave = this.palabraClaveService.buscarPalabraClave(id);
+            model.addAttribute("palabraClave", palabraClave);
+            return "Administrador/palabraClave";
+        }
+    }
+
+    @PostMapping("/palabrasClave/confirmarCambios")
+    public String doConfirmarCambiosPalabraClave(@ModelAttribute PalabraClave dtoPalabraClave) {
+        this.palabraClaveService.guardarPalabraClave(dtoPalabraClave);
+        return "redirect:/administrador/palabrasClave";
+    }
+
+    @PostMapping("/palabrasClave/borrar")
+    public String doBorrarPalabraClave(@RequestParam("id") Integer id){
+        this.palabraClaveService.borrarPalabraClave(id);
+        return "redirect:/administrador/palabrasClave";
     }
 }
