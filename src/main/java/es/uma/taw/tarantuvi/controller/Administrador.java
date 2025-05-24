@@ -49,7 +49,7 @@ public class Administrador extends BaseController {
         if (!estaAutenticado(session)){
             return "redirect:/";
         } else {
-            List<GeneroPelicula> generos = generoPeliculaService.listarGenerosPeliculas();
+            List<GeneroPelicula> generos = this.generoPeliculaService.listarGenerosPeliculas();
             model.addAttribute("generos", generos);
             return "Administrador/generos";
         }
@@ -83,7 +83,7 @@ public class Administrador extends BaseController {
         if (!estaAutenticado(session)){
             return "redirect:/";
         } else {
-            List<Productora> productoras = productoraService.listarProductoras();
+            List<Productora> productoras = this.productoraService.listarProductoras();
             model.addAttribute("productoras", productoras);
             return "Administrador/productoras";
         }
@@ -103,7 +103,7 @@ public class Administrador extends BaseController {
     }
 
     @PostMapping("/productoras/borrar")
-    public String vistaGeneros(@RequestParam("id") Integer id) {
+    public String doBorrarProductora(@RequestParam("id") Integer id) {
         this.productoraService.borrarProductora(id);
         return "redirect:/administrador/productoras";
     }
@@ -113,14 +113,14 @@ public class Administrador extends BaseController {
         if (!estaAutenticado(session)){
             return "redirect:/";
         } else {
-            List<IdiomaHablado> idiomasHablados = idiomaHabladoService.listarIdiomasHablados();
+            List<IdiomaHablado> idiomasHablados = this.idiomaHabladoService.listarIdiomasHablados();
             model.addAttribute("idiomasHablados", idiomasHablados);
             return "Administrador/idiomasHablados";
         }
     }
 
     @PostMapping("/idiomasHablados/editar")
-    public String doEditarIdiomasHablados(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
+    public String doEditarIdiomaHablado(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
         if(!estaAutenticado(session)) {
             return "redirect:/";
         }else {
@@ -154,7 +154,7 @@ public class Administrador extends BaseController {
     }
 
     @PostMapping("/nacionalidades/editar")
-    public String doEditarNacionalidades(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
+    public String doEditarNacionalidad(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
         if(!estaAutenticado(session)) {
             return "redirect:/";
         }else {
@@ -174,5 +174,107 @@ public class Administrador extends BaseController {
     public String doBorrarNacionalidad(@RequestParam("id") Integer id){
         this.nacionalidadService.borrarNacionalidad(id);
         return "redirect:/administrador/nacionalidades";
+    }
+
+    @GetMapping("/paisesRodaje")
+    public String vistaPaisesRodaje(Model model, HttpSession session) {
+        if (!estaAutenticado(session)){
+            return "redirect:/";
+        } else {
+            List<PaisRodaje> paisesRodaje = this.paisRodajeService.listarPaisesRodaje();
+            model.addAttribute("paisesRodaje", paisesRodaje);
+            return "Administrador/paisesRodaje";
+        }
+    }
+
+    @PostMapping("/paisesRodaje/editar")
+    public String doEditarPaisRodaje(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        }else {
+            PaisRodaje paisRodaje = this.paisRodajeService.buscarPaisRodaje(id);
+            model.addAttribute("paisRodaje", paisRodaje);
+            return "Administrador/paisRodaje";
+        }
+    }
+
+    @PostMapping("/paisesRodaje/confirmarCambios")
+    public String doConfirmarCambiosPaisRodaje(@ModelAttribute PaisRodaje dtoPaisRodaje) {
+        this.paisRodajeService.guardarPaisRodaje(dtoPaisRodaje);
+        return "redirect:/administrador/paisesRodaje";
+    }
+
+    @PostMapping("/paisesRodaje/borrar")
+    public String doBorrarPaisRodaje(@RequestParam("id") Integer id){
+        this.paisRodajeService.borrarPaisRodaje(id);
+        return "redirect:/administrador/paisesRodaje";
+    }
+
+    @GetMapping("/palabrasClave")
+    public String vistaPalabrasClave(Model model, HttpSession session) {
+        if (!estaAutenticado(session)){
+            return "redirect:/";
+        } else {
+            List<PalabraClave> palabrasClave = this.palabraClaveService.listarPalabrasClave();
+            model.addAttribute("palabrasClave", palabrasClave);
+            return "Administrador/palabrasClave";
+        }
+    }
+
+    @PostMapping("/palabrasClave/editar")
+    public String doEditarPalabraClave(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        }else {
+            PalabraClave palabraClave = this.palabraClaveService.buscarPalabraClave(id);
+            model.addAttribute("palabraClave", palabraClave);
+            return "Administrador/palabraClave";
+        }
+    }
+
+    @PostMapping("/palabrasClave/confirmarCambios")
+    public String doConfirmarCambiosPalabraClave(@ModelAttribute PalabraClave dtoPalabraClave) {
+        this.palabraClaveService.guardarPalabraClave(dtoPalabraClave);
+        return "redirect:/administrador/palabrasClave";
+    }
+
+    @PostMapping("/palabrasClave/borrar")
+    public String doBorrarPalabraClave(@RequestParam("id") Integer id){
+        this.palabraClaveService.borrarPalabraClave(id);
+        return "redirect:/administrador/palabrasClave";
+    }
+
+    @GetMapping("/departamentos")
+    public String vistaDepartamentos(Model model, HttpSession session) {
+        if (!estaAutenticado(session)){
+            return "redirect:/";
+        } else {
+            List<Departamento> departamentos = this.departamentoService.listarDepartamentos();
+            model.addAttribute("departamentos", departamentos);
+            return "Administrador/departamentos";
+        }
+    }
+
+    @PostMapping("/departamentos/editar")
+    public String doEditarDepartamento(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model, HttpSession session) {
+        if(!estaAutenticado(session)) {
+            return "redirect:/";
+        }else {
+            Departamento departamento = this.departamentoService.buscarDepartamento(id);
+            model.addAttribute("departamento", departamento);
+            return "Administrador/departamento";
+        }
+    }
+
+    @PostMapping("/departamentos/confirmarCambios")
+    public String doConfirmarDepartamento(@ModelAttribute Departamento dtoDepartamento) {
+        this.departamentoService.guardarDepartamento(dtoDepartamento);
+        return "redirect:/administrador/departamentos";
+    }
+
+    @PostMapping("/departamentos/borrar")
+    public String doBorrarDepartamento(@RequestParam("id") Integer id){
+        this.departamentoService.borrarDepartamento(id);
+        return "redirect:/administrador/departamentos";
     }
 }

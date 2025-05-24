@@ -9,8 +9,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Idiomas Hablados</title>
-    <link rel="stylesheet" type="text/css" href="/css/Editor/vistaPeliculasActoresEditor.css">
+    <title>Idiomas hablados</title>
+    <link rel="stylesheet" type="text/css" href="/css/Administrador/vistaAdministrador.css">
 </head>
 <body>
     <jsp:include page="navBarAdministrador.jsp">

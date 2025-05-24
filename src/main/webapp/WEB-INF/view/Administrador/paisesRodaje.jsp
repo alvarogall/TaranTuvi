@@ -1,36 +1,36 @@
-<%@ page import="es.uma.taw.tarantuvi.dto.GeneroPelicula" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.PaisRodaje" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: table
-  Date: 03/05/2025
-  Time: 21:34
+  Date: 24/05/2025
+  Time: 15:03
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Géneros</title>
+    <title>Paises de rodaje</title>
     <link rel="stylesheet" type="text/css" href="/css/Administrador/vistaAdministrador.css">
 </head>
 <body>
     <jsp:include page="navBarAdministrador.jsp">
-        <jsp:param name="activePage" value="generos"/>
+        <jsp:param name="activePage" value="paisesRodaje"/>
     </jsp:include>
 
     <div class="container">
-        <h1>Géneros</h1>
+        <h1>Países de rodaje</h1>
 
         <div class="search-bar">
             <input type="text" placeholder="Buscar..." onkeyup="searchByTitle(this.value)">
             <div class="actions">
-                <form method="post" action="/administrador/generos/editar">
+                <form method="post" action="/administrador/paisesRodaje/editar">
                     <input type="submit" value="➕ Añadir" class="add-btn"/>
                 </form>
             </div>
         </div>
 
         <%
-            List<GeneroPelicula> lista = (List<GeneroPelicula>) request.getAttribute("generos");
+            List<PaisRodaje> lista = (List<PaisRodaje>) request.getAttribute("paisesRodaje");
         %>
 
         <div class="container">
@@ -43,18 +43,18 @@
                 </thead>
                 <tbody id="moviesTableBody">
                 <%
-                    for (GeneroPelicula genero : lista) {
+                    for (PaisRodaje paisRodaje : lista) {
                 %>
                 <tr class="movie-row">
-                    <td><%= (genero.getGeneronombre() != null) ? genero.getGeneronombre() : ""%></td>
+                    <td><%= (paisRodaje.getPaisrodajenombre() != null) ? paisRodaje.getPaisrodajenombre() : ""%></td>
                     <td>
-                        <form method="post" action="/administrador/generos/editar" style="display:inline;">
-                            <input type="hidden" name="id" value="<%= genero.getId() %>"/>
+                        <form method="post" action="/administrador/paisesRodaje/editar" style="display:inline;">
+                            <input type="hidden" name="id" value="<%= paisRodaje.getId() %>"/>
                             <input type="submit" value="✏️ Editar" class="edit-btn"/>
                         </form>
-                        <form method="post" action="/administrador/generos/borrar" style="display:inline;"
-                              onsubmit="return confirm('¿Está seguro de que quiere borrar la película <%= genero.getGeneronombre() %>?');">
-                            <input type="hidden" name="id" value="<%= genero.getId() %>"/>
+                        <form method="post" action="/administrador/paisesRodaje/borrar" style="display:inline;"
+                              onsubmit="return confirm('¿Está seguro de que quiere borrar la película <%= paisRodaje.getPaisrodajenombre() %>?');">
+                            <input type="hidden" name="id" value="<%= paisRodaje.getId() %>"/>
                             <input type="submit" value="🗑️ Borrar" class="delete-btn"/>
                         </form>
                     </td>

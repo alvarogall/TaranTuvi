@@ -1,36 +1,36 @@
-<%@ page import="es.uma.taw.tarantuvi.dto.Nacionalidad" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Departamento" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: table
-  Date: 21/05/2025
-  Time: 14:00
+  Date: 24/05/2025
+  Time: 16:03
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <title>Nacionalidades</title>
+  <title>Departamentos</title>
   <link rel="stylesheet" type="text/css" href="/css/Administrador/vistaAdministrador.css">
 </head>
 <body>
   <jsp:include page="navBarAdministrador.jsp">
-    <jsp:param name="activePage" value="nacionalidades"/>
+    <jsp:param name="activePage" value="departamentos"/>
   </jsp:include>
 
   <div class="container">
-    <h1>Nacionalidades</h1>
+    <h1>Departamentos</h1>
 
     <div class="search-bar">
       <input type="text" placeholder="Buscar..." onkeyup="searchByTitle(this.value)">
       <div class="actions">
-        <form method="post" action="/administrador/nacionalidades/editar">
+        <form method="post" action="/administrador/departamentos/editar">
           <input type="submit" value="➕ Añadir" class="add-btn"/>
         </form>
       </div>
     </div>
 
     <%
-      List<Nacionalidad> lista = (List<Nacionalidad>) request.getAttribute("nacionalidades");
+      List<Departamento> lista = (List<Departamento>) request.getAttribute("departamentos");
     %>
 
     <div class="container">
@@ -43,18 +43,18 @@
         </thead>
         <tbody id="moviesTableBody">
         <%
-          for (Nacionalidad nacionalidad : lista) {
+          for (Departamento departamento : lista) {
         %>
         <tr class="movie-row">
-          <td><%= (nacionalidad.getNacionalidadnombre() != null) ? nacionalidad.getNacionalidadnombre() : ""%></td>
+          <td><%= (departamento.getDepartamentonombre() != null) ? departamento.getDepartamentonombre() : ""%></td>
           <td>
-            <form method="post" action="/administrador/nacionalidades/editar" style="display:inline;">
-              <input type="hidden" name="id" value="<%= nacionalidad.getId() %>"/>
+            <form method="post" action="/administrador/departamentos/editar" style="display:inline;">
+              <input type="hidden" name="id" value="<%= departamento.getId() %>"/>
               <input type="submit" value="✏️ Editar" class="edit-btn"/>
             </form>
-            <form method="post" action="/administrador/nacionalidades/borrar" style="display:inline;"
-                  onsubmit="return confirm('¿Está seguro de que quiere borrar la película <%= nacionalidad.getNacionalidadnombre() %>?');">
-              <input type="hidden" name="id" value="<%= nacionalidad.getId() %>"/>
+            <form method="post" action="/administrador/departamentos/borrar" style="display:inline;"
+                  onsubmit="return confirm('¿Está seguro de que quiere borrar la película <%= departamento.getDepartamentonombre() %>?');">
+              <input type="hidden" name="id" value="<%= departamento.getId() %>"/>
               <input type="submit" value="🗑️ Borrar" class="delete-btn"/>
             </form>
           </td>

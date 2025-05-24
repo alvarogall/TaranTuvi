@@ -24,6 +24,32 @@ public class PaisRodajeService extends DTOService<PaisRodaje, PaisRodajeEntity> 
         return this.entity2DTO(entities);
     }
 
+    public PaisRodaje buscarPaisRodaje(Integer id) {
+        PaisRodajeEntity paisRodaje = this.paisRodajeRepository.findById(id).orElse(new PaisRodajeEntity());
+        if (paisRodaje != null) {
+            return paisRodaje.toDto();
+        } else {
+            return new PaisRodaje();
+        }
+    }
+
+    public void guardarPaisRodaje(PaisRodaje dtoPaisRodaje) {
+        PaisRodajeEntity paisRodaje;
+
+        if (dtoPaisRodaje.getId() != null) {
+            paisRodaje = this.paisRodajeRepository.findById(dtoPaisRodaje.getId()).orElse(new PaisRodajeEntity());
+        } else {
+            paisRodaje = new PaisRodajeEntity();
+        }
+
+        paisRodaje.setPaisrodajenombre(dtoPaisRodaje.getPaisrodajenombre());
+        this.paisRodajeRepository.save(paisRodaje);
+    }
+
+    public void borrarPaisRodaje(Integer id) {
+        this.paisRodajeRepository.deleteById(id);
+    }
+
     public int contarPeliculasAsociadasPaisRodaje() {
         // Aquí debería ir la consulta que devuelve el total de películas asociadas
         return paisRodajeRepository.countPeliculasAsociadasPaisRodaje();
