@@ -1,3 +1,7 @@
+/*
+User: jesus
+*/
+
 package es.uma.taw.tarantuvi.entity;
 
 import es.uma.taw.tarantuvi.dto.DTO;

@@ -6,10 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%@ page import="es.uma.taw.tarantuvi.entity.ActuacionEntity" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.HashSet" %>
 <%@ page import="es.uma.taw.tarantuvi.dto.Pelicula" %>
@@ -31,7 +28,6 @@
     List<Actor> personas = (List<Actor>) request.getAttribute("personas");
     List<Actuacion> actuaciones = (List<Actuacion>) request.getAttribute("actuaciones");
     List<Pelicula> peliculas = (List<Pelicula>) request.getAttribute("peliculas");
-    List<GeneroPelicula> generos = (List<GeneroPelicula>) request.getAttribute("generos");
 %>
 
 <div class="container">
@@ -69,9 +65,9 @@
                 }
                 if(esActor){
         %>
-        <tr class="movie-row">
+        <tr class="movie-row"> <!-- Se queda como "movie-row" para usar el mismo css y el mismo script -->
             <td>
-                <div class="movie-poster">
+                <div class="movie-poster"> <!-- Se queda como "movie-poster" para usar el mismo css y el mismo script -->
                     <img src="<%= persona.getUrlfoto() != null ? persona.getUrlfoto() : "https://i.postimg.cc/x1GgSpbn/add-circle-svgrepo-com.png" %>" alt="Foto">
                 </div>
             </td>
@@ -176,52 +172,46 @@
         alphabet.forEach(letter => {
             const btn = document.createElement("button");
             btn.textContent = letter;
-            btn.onclick = () => selectLetter(letter);
+            btn.onclick = () => selectLetter(letter.toUpperCase());
             btn.classList.add("letter-btn");
             lettersContainer.appendChild(btn);
         });
 
-        // Mostrar todas las películas al inicio
+        // Mostrar todos los actores al inicio
         filterActorsByLetter('ALL');
     });
 
     function selectLetter(letter) {
-        document.querySelectorAll(".letter-btn, #allButton").forEach(btn => {
-            btn.classList.remove("active-letter");
-        });
-
+        /*console.log("Letra seleccionada:", letter);*/
+        document.querySelectorAll(".letter-btn, #allButton").forEach(btn =>
+            btn.classList.remove("active-letter")
+        );
         const activeBtn = letter === 'ALL'
             ? document.getElementById("allButton")
             : [...document.querySelectorAll(".letter-btn")].find(b => b.textContent === letter);
-
         if (activeBtn) activeBtn.classList.add("active-letter");
-
         filterActorsByLetter(letter);
     }
 
     function filterActorsByLetter(letter) {
         const rows = document.querySelectorAll(".movie-row");
-        const searchTerm = document.querySelector(".search-bar input[type='text']").value.trim().toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const searchTerm = document.querySelector(".search-bar input[type='text']")
+            .value.trim().toUpperCase();
 
         rows.forEach(row => {
-            const cells = row.querySelectorAll("td");
-            const name = cells[1].textContent.trim().toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // LIMPIO
-
-            const matchesLetter = letter === 'ALL' || name.startsWith(letter);
+            const name = row.querySelectorAll("td")[1].textContent.trim().toUpperCase();
+            const matchesLetter = letter === 'ALL' || name.startsWith(letter.toUpperCase());
             const matchesSearch = searchTerm === '' || name.includes(searchTerm);
-
-            row.style.display = matchesLetter && matchesSearch ? "" : "none";
+            row.style.display = (matchesLetter && matchesSearch) ? "" : "none";
         });
     }
 
-
     function searchByName(query) {
-        // Reutilizamos filterActorsByLetter para aplicar ambos filtros
-        const activeLetterBtn = document.querySelector(".active-letter");
-        const activeLetter = activeLetterBtn?.textContent === 'TODAS' ? 'ALL' : activeLetterBtn?.textContent;
+        // Se reutiliza filterActorsByLetter para aplicar ambos filtros
+        const activeBtn = document.querySelector(".active-letter");
+        const activeLetter = activeBtn?.textContent === 'TODOS' ? 'ALL' : activeBtn?.textContent;
         filterActorsByLetter(activeLetter || 'ALL');
     }
-
 </script>
 
 </body>

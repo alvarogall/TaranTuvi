@@ -1,14 +1,16 @@
+/*
+User: jesus
+*/
+
 package es.uma.taw.tarantuvi.entity;
 
 import es.uma.taw.tarantuvi.dto.DTO;
 import es.uma.taw.tarantuvi.dto.GeneroPelicula;
-import es.uma.taw.tarantuvi.dto.Pelicula;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter

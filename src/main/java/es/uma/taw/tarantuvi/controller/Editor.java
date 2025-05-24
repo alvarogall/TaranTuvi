@@ -4,9 +4,7 @@ User: jesus
 
 package es.uma.taw.tarantuvi.controller;
 
-import es.uma.taw.tarantuvi.dao.*;
 import es.uma.taw.tarantuvi.dto.*;
-import es.uma.taw.tarantuvi.entity.*;
 import es.uma.taw.tarantuvi.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;

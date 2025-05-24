@@ -26,14 +26,11 @@
 <form:form method="post" modelAttribute="actor" action="/editor/actores/confirmarCambios">
     <form:hidden path="id" />
 
-    <!-- Contenedor flex (imagen + campos) -->
     <div class="movie-header-container">
-        <!-- Imagen -->
         <div class="movie-poster">
             <img src="${actor.urlfoto != null ? actor.urlfoto : 'https://i.postimg.cc/x1GgSpbn/add-circle-svgrepo-com.png'}" alt="Foto">
         </div>
 
-        <!-- Campos a la derecha -->
         <div class="movie-info-fields">
             <div class="movie-field-row">
                 <label>URL de la foto:</label>
@@ -53,7 +50,7 @@
         </div>
     </div>
 
-    <!-- Contenedor de 3 columnas -->
+    <!-- Contenedor de 2 columnas -->
     <div class="columns-container">
         <!-- Columna 1 -->
         <div class="column">

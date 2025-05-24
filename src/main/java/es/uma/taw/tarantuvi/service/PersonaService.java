@@ -1,5 +1,5 @@
-/**
- * @author Álvaro Gallardo
+/*
+ * Users: jesus, alvaro
  */
 
 package es.uma.taw.tarantuvi.service;

@@ -1,6 +1,9 @@
+/*
+User: jesus
+*/
+
 package es.uma.taw.tarantuvi.dto;
 
-import es.uma.taw.tarantuvi.entity.TrabajoEntity;
 import lombok.Data;
 
 import java.util.List;

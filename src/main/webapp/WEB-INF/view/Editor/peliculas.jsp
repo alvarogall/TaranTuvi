@@ -3,7 +3,6 @@
 --%>
 
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.*" %>
 <%@ page import="es.uma.taw.tarantuvi.dto.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -20,9 +19,7 @@
     <div class="search-bar">
         <input type="text" placeholder="Buscar..." onkeyup="searchByTitle(this.value)">
         <div class="actions">
-            <!-- Forma para 'Añadir' debe apuntar a /editor/peliculas/editar -->
             <form method="post" action="/editor/peliculas/editar" style="display:inline;">
-                <!-- Sin id, se tomará defaultValue=-1 en el controlador -->
                 <input type="submit" value="➕ Añadir" class="add-btn"/>
             </form>
         </div>
@@ -149,10 +146,12 @@
 </div>
 
 <script>
+    // Al cargar la página
     document.addEventListener('DOMContentLoaded', function() {
         const lettersContainer = document.querySelector(".letters");
         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
+        // Crear botón TODAS primero y activarlo
         const allButton = document.createElement("button");
         allButton.id = "allButton";
         allButton.textContent = "TODAS";
@@ -160,6 +159,7 @@
         allButton.onclick = () => selectLetter('ALL');
         lettersContainer.appendChild(allButton);
 
+        // Crear botones de letras
         alphabet.forEach(letter => {
             const btn = document.createElement("button");
             btn.textContent = letter;
@@ -168,7 +168,7 @@
             lettersContainer.appendChild(btn);
         });
 
-        // Corregido: llama a filterMoviesByLetter en lugar de la función inexistente
+        // Mostrar todas las películas al inicio
         filterMoviesByLetter('ALL');
     });
 
@@ -197,7 +197,7 @@
     }
 
     function searchByTitle(query) {
-        // Se reutiliza filterMoviesByLetter para aplicar filtros combinados
+        // Se reutiliza filterMoviesByLetter para aplicar ambos filtros
         const activeBtn = document.querySelector(".active-letter");
         const activeLetter = activeBtn?.textContent === 'TODAS' ? 'ALL' : activeBtn?.textContent;
         filterMoviesByLetter(activeLetter || 'ALL');

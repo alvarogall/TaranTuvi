@@ -22,40 +22,32 @@
 
 <form:form method="post" action="/editor/peliculas/confirmarCambios" modelAttribute="pelicula">
   <form:hidden path="id" />
-  <!-- Contenedor flex (imagen + campos) -->
   <div class="movie-header-container">
-    <!-- Imagen -->
     <div class="movie-poster">
       <img src="<%= pelicula.getUrlcaratula() != null ? pelicula.getUrlcaratula() : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>" alt="Portada">
     </div>
 
-    <!-- Campos a la derecha -->
     <div class="movie-info-fields">
-      <!-- URL -->
       <div class="movie-field-row">
         <label>URL de la portada:</label>
         <form:input path="urlcaratula" />
       </div>
 
-      <!-- Nombre -->
       <div class="movie-field-row">
         <label>Película:</label>
         <form:input path="titulooriginal" />
       </div>
 
-      <!-- Fecha -->
       <div class="movie-field-row">
         <label>Fecha de Estreno:</label>
         <form:input path="fecha" />
       </div>
 
-      <!-- Duración -->
       <div class="movie-field-row">
         <label>Duración (min):</label>
         <form:input path="duracion" />
       </div>
 
-      <!-- Sinopsis -->
       <div class="movie-field-row">
         <label>Sinópsis:</label>
         <form:textarea path="descripcion" />
@@ -63,9 +55,9 @@
     </div>
   </div>
 
-  <!-- Contenedor de 3 columnas -->
+  <!-- Contenedor de 2 columnas -->
   <div class="columns-container">
-    <!-- Columna 1 (Crew, Cast, Productoras) -->
+    <!-- Columna 1 (Cast, Crew, Productoras, Página web, Presupuesto y Recaudación) -->
     <div class="column">
 
       <label class="select-label">Cast (Actor/Actriz - Personaje):</label>
@@ -87,7 +79,7 @@
       <form:input path="recaudacion" />
     </div>
 
-    <!-- Columna 2 (Países, Idiomas, Géneros) -->
+    <!-- Columna 2 (Países, Idiomas, Géneros, Eslogan y Estado) -->
     <div class="column">
       <label class="select-label">Países de rodaje:</label>
       <form:select path="paisesRodaje" items="${paisesRodaje}" itemValue="id" itemLabel="paisrodajenombre" multiple="true" cssClass="multi-select" />
