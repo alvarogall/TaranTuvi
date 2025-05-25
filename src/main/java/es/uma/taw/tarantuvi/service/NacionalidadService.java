@@ -1,7 +1,6 @@
 /**
  * @author Jesús Repiso
  * @author Pablo Gámez
- * @author Pablo Gámez
  */
 
 package es.uma.taw.tarantuvi.service;
