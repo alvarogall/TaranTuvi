@@ -56,7 +56,7 @@ public class PaisRodajeService extends DTOService<PaisRodaje, PaisRodajeEntity> 
         return paisRodajeRepository.countPeliculasAsociadasPaisRodaje();
     }
 
-    public List<PaisRodajeEntity> listarPaisesRodajeOrdenados(String ordenCampoAuxiliar, String ordenTipoAuxiliar) {
+    public List<PaisRodaje> listarPaisesRodajeOrdenados(String ordenCampoAuxiliar, String ordenTipoAuxiliar) {
         List<PaisRodajeEntity> paisesRodaje = paisRodajeRepository.findAll();
 
         if (ordenCampoAuxiliar != null && ordenTipoAuxiliar != null) {
@@ -74,7 +74,7 @@ public class PaisRodajeService extends DTOService<PaisRodaje, PaisRodajeEntity> 
             }
         }
 
-        return paisesRodaje;
+        return this.entity2DTO(paisesRodaje);
 
     }
 }

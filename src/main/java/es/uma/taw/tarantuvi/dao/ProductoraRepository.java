@@ -19,12 +19,14 @@ public interface ProductoraRepository extends JpaRepository<ProductoraEntity, In
     @Query("SELECT COUNT(pl) FROM ProductoraEntity P JOIN P.peliculaList pl")
     Integer countPeliculasAsociadasProductora();
 
-    @Query("SELECT P, AVG(V.nota), AVG(pl.presupuesto), AVG(pl.recaudacion) " +
-            "FROM ProductoraEntity P LEFT JOIN P.peliculaList pl LEFT JOIN pl.valoracionList V " +
-            "GROUP BY P " +
-            "HAVING (:presupuestoMin IS NULL OR AVG(pl.presupuesto) >= :presupuestoMin) " +
-            "AND (:presupuestoMax IS NULL OR AVG(pl.presupuesto) <= :presupuestoMax) " +
-            "AND (:recaudacionMin IS NULL OR AVG(pl.recaudacion) >= :recaudacionMin) " +
-            "AND (:recaudacionMax IS NULL OR AVG(pl.recaudacion) <= :recaudacionMax)")
+    @Query("SELECT P, " +
+            "       (SELECT AVG(V.nota) FROM ValoracionEntity V JOIN V.peliculaid pl2 JOIN pl2.productoraList p2 WHERE p2 = P), " +
+            "       (SELECT AVG(pl3.presupuesto) FROM PeliculaEntity pl3 JOIN pl3.productoraList p3 WHERE p3 = P), " +
+            "       (SELECT AVG(pl4.recaudacion) FROM PeliculaEntity pl4 JOIN pl4.productoraList p4 WHERE p4 = P) " +
+            "FROM ProductoraEntity P " +
+            "WHERE (:presupuestoMin IS NULL OR (SELECT AVG(pl3.presupuesto) FROM PeliculaEntity pl3 JOIN pl3.productoraList p3 WHERE p3 = P) >= :presupuestoMin) " +
+            "AND (:presupuestoMax IS NULL OR (SELECT AVG(pl3.presupuesto) FROM PeliculaEntity pl3 JOIN pl3.productoraList p3 WHERE p3 = P) <= :presupuestoMax) " +
+            "AND (:recaudacionMin IS NULL OR (SELECT AVG(pl4.recaudacion) FROM PeliculaEntity pl4 JOIN pl4.productoraList p4 WHERE p4 = P) >= :recaudacionMin) " +
+            "AND (:recaudacionMax IS NULL OR (SELECT AVG(pl4.recaudacion) FROM PeliculaEntity pl4 JOIN pl4.productoraList p4 WHERE p4 = P) <= :recaudacionMax)")
     List<Object[]> getProductorasConNotasMediasYFiltros(Double presupuestoMin,Double presupuestoMax,Double recaudacionMin,Double recaudacionMax);
 }

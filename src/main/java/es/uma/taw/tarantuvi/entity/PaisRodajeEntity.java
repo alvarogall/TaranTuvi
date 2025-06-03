@@ -35,6 +35,7 @@ public class PaisRodajeEntity implements Serializable, DTO<PaisRodaje> {
 
         paisRodaje.setId(id);
         paisRodaje.setPaisrodajenombre(this.paisrodajenombre);
+        paisRodaje.setNumeroPeliculas(this.peliculaList != null ? this.peliculaList.size() : 0);
 
         return paisRodaje;
     }

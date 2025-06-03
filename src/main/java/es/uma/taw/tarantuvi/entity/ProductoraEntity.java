@@ -35,6 +35,7 @@ public class ProductoraEntity implements Serializable, DTO<Productora> {
 
         productora.setId(this.id);
         productora.setProductoranombre(this.productoranombre);
+        productora.setNumeroPeliculas(this.getPeliculaList().size());
 
         return productora;
     }

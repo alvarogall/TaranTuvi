@@ -82,8 +82,9 @@ public class ActuacionService extends DTOService<Actuacion, ActuacionEntity>{
         return actuacionRepository.getActorCount();
     }
 
-    public List<ActuacionEntity> obtenerActoresDePelicula(Integer peliculaId) {
-        return actuacionRepository.getActoresPelicula(peliculaId);
+    public List<Actuacion> obtenerActoresDePelicula(Integer peliculaId) {
+        List<ActuacionEntity> entities = actuacionRepository.getActoresPelicula(peliculaId);
+        return entity2DTO(entities);
     }
 
 }

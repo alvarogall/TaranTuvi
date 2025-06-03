@@ -8,8 +8,6 @@
 --%>
 
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.GeneroPeliculaEntity" %>
 <%@ page import="es.uma.taw.tarantuvi.dto.Pelicula" %>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="es.uma.taw.tarantuvi.dto.GeneroPelicula" %>
@@ -75,17 +73,17 @@
             </thead>
             <tbody>
             <%
-                List<Object[]> peliculasListaFiltradas =(List<Object[]>) request.getAttribute("peliculasFiltradas");
+                List<Pelicula> peliculasListaFiltradas =(List<Pelicula>) request.getAttribute("peliculasFiltradas");
                 List<Pelicula> peliculasLista = (List<Pelicula>) request.getAttribute("peliculas");
-                for (Object[] peliculaObjeto : peliculasListaFiltradas) {
-                    PeliculaEntity pelicula = (PeliculaEntity) peliculaObjeto[0];
+                for (Pelicula pelicula : peliculasListaFiltradas) {
+
             %>
             <tr>
                 <td><%=pelicula.getTitulooriginal()%></td>
-                <td><%=pelicula.getIdiomaoriginalhabladoid().getIdiomahabladonombre()%></td>
+                <td><%=pelicula.getIdiomaoriginalhablado().getIdiomahabladonombre()%></td>
                 <td><%=pelicula.getFechaestreno()%></td>
                 <td><%=pelicula.getDuracion()%></td>
-                <td><%= (peliculaObjeto[1] == null) ? "No Valorada" : String.format("%.2f", peliculaObjeto[1]) %></td>
+                <td><%= (pelicula.getNota() == null) ? "No Valorada" : String.format("%.2f", pelicula.getNota()) %></td>
 
                 <td>
                     <%
