@@ -63,7 +63,7 @@ List<Pelicula> peliculasQueMeGustan = (List<Pelicula>) request.getAttribute("pel
                 <div class="novedad-info">
                     <strong><%=novedades.get(0) != null ? novedades.get(0).getTitulooriginal() : "Fallo"%></strong>
                     <p><%=novedades.get(0) != null ? novedades.get(0).getFechaestreno().getYear() : "Fallo"%></p>
-                    <button>▶️</button>
+                    <a href="/usuarioPremium/pelicula?id=<%=novedades.get(0).getId()%>"><button>▶️</button></a>
                 </div>
             </div>
             <div class="novedad">
@@ -71,7 +71,7 @@ List<Pelicula> peliculasQueMeGustan = (List<Pelicula>) request.getAttribute("pel
                 <div class="novedad-info">
                     <strong><%=novedades.get(1) != null ? novedades.get(1).getTitulooriginal() : "Fallo"%></strong>
                     <p><%=novedades.get(1) != null ? novedades.get(1).getFechaestreno().getYear() : "Fallo"%></p>
-                    <button>▶️</button>
+                    <a href="/usuarioPremium/pelicula?id=<%=novedades.get(1).getId()%>"><button>▶️</button></a>
                 </div>
             </div>
         </aside>
@@ -95,11 +95,14 @@ List<Pelicula> peliculasQueMeGustan = (List<Pelicula>) request.getAttribute("pel
             if(peliculasQueMeGustan!=null && !peliculasQueMeGustan.isEmpty()){
 
                 for (Pelicula peli : peliculasQueMeGustan) { %>
+            <a href="/usuarioPremium/pelicula?id=<%=peli.getId()%>">
             <div class="pelicula-recomendada">
+
                 <img src="<%= peli.getUrlcaratula() != null ? peli.getUrlcaratula() : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>" alt="Carátula">
                 <h4><%= peli.getTitulooriginal() %></h4>
                 <p><%= peli.getFechaestreno().getYear() %></p>
             </div>
+            </a>
             <%  }
             }else{%>
 

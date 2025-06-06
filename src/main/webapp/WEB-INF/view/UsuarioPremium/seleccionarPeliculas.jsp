@@ -20,12 +20,12 @@
 %>
 <body>
 
-<jsp:include page="../Componentes/navBarEnlacePerfilPREMIUM.jsp">
-    <jsp:param name="activePage" value="inicio"/>
+<jsp:include page="navBar.jsp">
+    <jsp:param name="activePage" value=""/>
 </jsp:include>
 
 <main class="selector-contenedor">
-    <h2>Selecciona las películas para añadir a la lista</h2>
+    <h2><strong>Selecciona las películas para añadir a la lista</strong></h2>
 
     <form:form method="POST" action="/usuarioPremium/guardarPeliculasSeleccionadas" modelAttribute="seleccionPeliculas">
         <form:hidden path="listaId"/>

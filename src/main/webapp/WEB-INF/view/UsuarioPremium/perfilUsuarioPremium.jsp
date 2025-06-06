@@ -51,7 +51,7 @@
 
         %>
                 <div class="seccion">
-                    <h3><%=lista.getListaPeliculaNombre()%>    <a id="enlaceEliminarLista" class="cerrar-sesion" href="/usuarioPremium/eliminarLista?idLista=<%=lista.getListaPeliculaId()%>">Eliminar Lista</a>
+                    <h3><strong><%=lista.getListaPeliculaNombre()%></strong>           <a id="enlaceEliminarLista" class="cerrar-sesion" href="/usuarioPremium/eliminarLista?idLista=<%=lista.getListaPeliculaId()%>">Eliminar Lista</a>
                     <a id="enlaceAnyadirPelicula" class="anyadir-pelicula" href="/usuarioPremium/anyadirPelicula?idLista=<%=lista.getListaPeliculaId()%>">Añadir película</a></h3>
 
 
@@ -97,7 +97,7 @@
     </section>
 
     <div class="formulario-lista">
-        <h2>Crear nueva lista</h2>
+        <h2><strong>Crear nueva lista</strong></h2>
         <br>
         <form:form method="POST" action="/usuarioPremium/crearLista" modelAttribute="listaPelicula">
             <!-- Campo oculto para usuario -->

@@ -2,6 +2,7 @@
  * @author Jesús Repiso
  * @author Álvaro Gallardo
  * @author Alejandro Cueto
+ * @author Máximo Prados
  */
 
 package es.uma.taw.tarantuvi.service;
