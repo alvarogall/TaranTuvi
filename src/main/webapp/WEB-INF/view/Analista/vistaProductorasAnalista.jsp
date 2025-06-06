@@ -7,9 +7,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.ProductoraEntity" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.PaisRodajeEntity" %>
 <%@ page import="es.uma.taw.tarantuvi.dto.Departamento" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.PaisRodaje" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Productora" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -65,19 +65,18 @@
         <th>Recaudación Media</th>
         </tr>
         <%
-        List<Object[]> productorasListaNotaMedia = (List<Object[]>) request.getAttribute("productorasNotaMedia");
+        List<Productora> productorasListaNotaMedia = (List<Productora>) request.getAttribute("productorasNotaMedia");
         int totalPeliculas = (int) request.getAttribute("totalPeliculas");
-        for(Object[] objectoProductora : productorasListaNotaMedia){
-            ProductoraEntity productora = (ProductoraEntity) objectoProductora[0];
-            Long porcentaje = (long) ((productora.getPeliculaList().size()*100)/totalPeliculas);
+        for(Productora productora : productorasListaNotaMedia){
+            Long porcentaje = (long) ((productora.getNumeroPeliculas()*100)/totalPeliculas);
         %>
         <tr>
         <td><%=productora.getProductoranombre()%></td>
-        <td><%=productora.getPeliculaList().size()%></td>
+        <td><%=productora.getNumeroPeliculas()%></td>
         <td><%=porcentaje + "%"%></td>
-        <td><%= (objectoProductora[1] == null) ? "No Valorada" : String.format("%.2f", objectoProductora[1]) %></td>
-        <td><%= (objectoProductora[2] == null) ? "No Presupuesto" : String.format("%.0f", objectoProductora[2]) %></td>
-        <td><%= (objectoProductora[3] == null) ? "No Recaudación" : String.format("%.0f", objectoProductora[3]) %></td>
+        <td><%= (productora.getNotaMedia() == 0.0) ? "No Valorada" : String.format("%.2f", productora.getNotaMedia()) %></td>
+        <td><%= (productora.getPresupuestoMedio() == 0.0) ? "No Presupuesto" : String.format("%.0f", productora.getPresupuestoMedio() ) %></td>
+        <td><%= (productora.getRecaudacionMedia() == 0.0) ? "No Recaudación" : String.format("%.0f", productora.getRecaudacionMedia()) %></td>
         </tr>
         <%
         }
@@ -138,14 +137,14 @@
                     <th>Porcentaje</th>
                 </tr>
                 <%
-                    List<PaisRodajeEntity> paisRodajeLista = (List<PaisRodajeEntity>) request.getAttribute("paisesRodaje");
+                    List<PaisRodaje> paisRodajeLista = (List<PaisRodaje>) request.getAttribute("paisesRodaje");
                     int totalPaisesRodaje = (int) request.getAttribute("totalPaisesRodaje");
-                    for(PaisRodajeEntity paisRodaje: paisRodajeLista){
-                        Long porcentaje = (long) ((paisRodaje.getPeliculaList().size()*100)/totalPaisesRodaje);
+                    for(PaisRodaje paisRodaje: paisRodajeLista){
+                        Long porcentaje = (long) ((paisRodaje.getNumeroPeliculas()*100)/totalPaisesRodaje);
                 %>
                 <tr>
                     <td><%=paisRodaje.getPaisrodajenombre()%></td>
-                    <td><%=paisRodaje.getPeliculaList().size()%></td>
+                    <td><%=paisRodaje.getNumeroPeliculas()%></td>
                     <td><%=porcentaje + "%"%></td>
                 </tr>
                 <%

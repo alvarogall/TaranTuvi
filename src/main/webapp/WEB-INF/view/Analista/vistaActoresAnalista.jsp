@@ -7,9 +7,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.ActuacionEntity" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.PeliculaEntity" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Actuacion" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Pelicula" %>
 
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -150,7 +150,7 @@
         <%
             List<Object[]> mejorPeliculaLista = (List<Object[]>) request.getAttribute("pelicula");
             Object[] peliculaObjeto = (Object[]) mejorPeliculaLista.get(0);
-            PeliculaEntity pelicula = (PeliculaEntity) peliculaObjeto[0];
+            Pelicula pelicula = (Pelicula) peliculaObjeto[3];
         %>
         <table>
             <tr>
@@ -169,8 +169,8 @@
                 <th>Personaje</th>
             </tr>
             <%
-                List<ActuacionEntity> listaActoresMejorPelicula = (List<ActuacionEntity>) request.getAttribute("listaActoresMejorPelicula");
-                for(ActuacionEntity actor : listaActoresMejorPelicula){
+                List<Actuacion> listaActoresMejorPelicula = (List<Actuacion>) request.getAttribute("listaActoresMejorPelicula");
+                for(Actuacion actor : listaActoresMejorPelicula){
             %>
             <tr>
                 <td><%=actor.getPersonaid().getNombre()%></td>

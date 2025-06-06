@@ -5,7 +5,6 @@
 package es.uma.taw.tarantuvi.controller;
 
 import es.uma.taw.tarantuvi.dto.*;
-import es.uma.taw.tarantuvi.entity.*;
 import es.uma.taw.tarantuvi.dto.Analista.AnalistaFiltroAnios;
 import es.uma.taw.tarantuvi.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,7 @@ public class Analista extends BaseController {
     public String rankingAnalista(Model model, @ModelAttribute("filtro") AnalistaFiltroAnios filtro) {
         model.addAttribute("paginaActual", "peliculas");
 
-        List<Object[]> listaPeliculasFiltradas = this.peliculaService.buscarPeliculasPorGeneroIdioma(filtro.getGenero(), filtro.getIdioma(), filtro.getOrdenCampo(), filtro.getOrdenTipo());;
+        List<Pelicula> listaPeliculasFiltradas = this.peliculaService.buscarPeliculasPorGeneroIdioma(filtro.getGenero(), filtro.getIdioma(), filtro.getOrdenCampo(), filtro.getOrdenTipo());;
         model.addAttribute("peliculasFiltradas", listaPeliculasFiltradas);
 
         List<Pelicula> listaPeliculas = this.peliculaService.listarPeliculas();
@@ -89,8 +88,8 @@ public class Analista extends BaseController {
         List<Object[]> topPeliculas = this.peliculaService.obtenerMejorPelicula();
         model.addAttribute("pelicula", topPeliculas);
 
-        PeliculaEntity peliculaID = (PeliculaEntity) topPeliculas.get(0)[0];
-        List<ActuacionEntity> listaActoresMejorPelicula= this.actuacionService.obtenerActoresDePelicula(peliculaID.getId());
+        Pelicula pelicula = (Pelicula) topPeliculas.get(0)[3];
+        List<Actuacion> listaActoresMejorPelicula= this.actuacionService.obtenerActoresDePelicula(pelicula.getId());
         model.addAttribute("listaActoresMejorPelicula", listaActoresMejorPelicula);
 
 
@@ -101,11 +100,11 @@ public class Analista extends BaseController {
     public String productorasAnalista(@ModelAttribute("orden") AnalistaFiltroAnios orden, Model model) {
         model.addAttribute("paginaActual", "productoras");
 
-        List<Object[]> productorasNotaMedia = this.productoraService.obtenerProductorasConNotasMediasYFiltrosOrdenadas(orden.getCantidadMinima(), orden.getCantidadMaxima(), orden.getOrdenCampo(), orden.getOrdenTipo());
+        List<Productora> productorasNotaMedia = this.productoraService.obtenerProductorasConNotasMediasYFiltrosOrdenadas(orden.getCantidadMinima(), orden.getCantidadMaxima(), orden.getOrdenCampo(), orden.getOrdenTipo());
         model.addAttribute("productorasNotaMedia", productorasNotaMedia);
         model.addAttribute("totalPeliculas", this.productoraService.contarPeliculasAsociadasProductora());
 
-        List<PaisRodajeEntity> paisesRodaje = this.paisRodajeService.listarPaisesRodajeOrdenados(orden.getOrdenCampoAuxiliar(), orden.getOrdenTipoAuxiliar());
+        List<PaisRodaje> paisesRodaje = this.paisRodajeService.listarPaisesRodajeOrdenados(orden.getOrdenCampoAuxiliar(), orden.getOrdenTipoAuxiliar());
         model.addAttribute("paisesRodaje", paisesRodaje);
         model.addAttribute("totalPaisesRodaje", this.paisRodajeService.contarPeliculasAsociadasPaisRodaje());
 

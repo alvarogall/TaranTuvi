@@ -23,10 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
@@ -230,7 +227,7 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
         peliculaRepository.save(pelicula);
     }
 
-    public List<Object[]> buscarPeliculasPorGeneroIdioma(Integer generoID, Integer idiomaID, String ordenCampo, String ordenTipo){
+    public List<Pelicula> buscarPeliculasPorGeneroIdioma(Integer generoID, Integer idiomaID, String ordenCampo, String ordenTipo){
         List<Object[]> peliculas = this.peliculaRepository.findPeliculasByFiltros(generoID, idiomaID);
 
         if (ordenCampo != null && ordenTipo != null) {
@@ -249,20 +246,46 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
             }
         }
 
-        return peliculas;
+        List<Pelicula> resultado = new ArrayList<>();
+        for (Object[] fila : peliculas) {
+            PeliculaEntity entity = (PeliculaEntity) fila[0];
+            Double mediaNota = (Double) fila[1];
+
+            Pelicula dto = entity.toDto();
+            dto.setNota(mediaNota != null ? BigDecimal.valueOf(mediaNota) : null);
+            resultado.add(dto);
+        }
+
+        return resultado;
     }
 
     public List<Object[]> obtenerMejorPelicula() {
         return peliculaRepository.findPeliculasOrdenadasPorNotaYValoraciones()
                 .stream()
                 .limit(1)
+                .map(fila -> {
+                    Object[] extendido = Arrays.copyOf(fila, 4);
+                    PeliculaEntity entity = (PeliculaEntity) fila[0];
+                    Pelicula dto = this.entity2DTO(List.of(entity)).get(0);
+                    extendido[3] = dto;
+                    return extendido;
+                })
                 .toList();
+
+
     }
 
     public List<Object[]> obtener10MejoresPelicula() {
         return peliculaRepository.findPeliculasOrdenadasPorNotaYValoraciones()
                 .stream()
                 .limit(10)
+                .map(fila -> {
+                    Object[] extendido = Arrays.copyOf(fila, 4);
+                    PeliculaEntity entity = (PeliculaEntity) fila[0];
+                    Pelicula dto = this.entity2DTO(List.of(entity)).get(0);
+                    extendido[3] = dto;
+                    return extendido;
+                })
                 .toList();
     }
 

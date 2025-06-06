@@ -11,6 +11,8 @@ import es.uma.taw.tarantuvi.entity.ProductoraEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -51,7 +53,7 @@ public class ProductoraService extends DTOService<Productora, ProductoraEntity>{
         this.productoraRepository.deleteById(id);
     }
 
-    public List<Object[]> obtenerProductorasConNotasMediasYFiltrosOrdenadas(Double cantidadMinima, Double cantidadMaxima, String ordenCampo, String ordenTipo) {
+    public List<Productora> obtenerProductorasConNotasMediasYFiltrosOrdenadas(Double cantidadMinima, Double cantidadMaxima, String ordenCampo, String ordenTipo) {
 
         Double presupuestoMin = null, presupuestoMax = null, recaudacionMin = null, recaudacionMax = null;
         if(ordenCampo != null) {
@@ -83,10 +85,25 @@ public class ProductoraService extends DTOService<Productora, ProductoraEntity>{
                 }
                 productoras.sort(comparator);
             }
-
-
         }
-        return productoras;
+
+        List<Productora> resultado = new ArrayList<>();
+        for (Object[] fila : productoras) {
+            ProductoraEntity entidad = (ProductoraEntity) fila[0];
+            Double nota = (Double) fila[1];
+            Double presupuesto = (Double) fila[2];
+            Double recaudacion = (Double) fila[3];
+
+            Productora dto = entidad.toDto();
+
+            dto.setNotaMedia(nota != null ? nota : 0.0);
+            dto.setPresupuestoMedio(presupuesto != null ? presupuesto : 0.0);
+            dto.setRecaudacionMedia(recaudacion != null ? recaudacion : 0.0);
+
+            resultado.add(dto);
+        }
+
+        return resultado;
     }
 
     public int contarPeliculasAsociadasProductora() {

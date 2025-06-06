@@ -7,8 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="java.util.List" %>
-<%@ page import="java.math.BigDecimal" %>
-<%@ page import="es.uma.taw.tarantuvi.entity.*" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Pelicula" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -40,7 +39,7 @@
                 List<Object[]> topPeliculas = (List<Object[]>) request.getAttribute("topPeliculas");
                 if (topPeliculas != null) {
                     for (Object[] fila : topPeliculas) {
-                        PeliculaEntity pelicula = (PeliculaEntity) fila[0];
+                        Pelicula pelicula = (Pelicula) fila[3];
                         Double notaMedia = (Double) fila[1];
                         Long numValoraciones = (Long) fila[2];
                         String urlImagen = (pelicula.getUrlcaratula() != null) ? pelicula.getUrlcaratula() : null;
