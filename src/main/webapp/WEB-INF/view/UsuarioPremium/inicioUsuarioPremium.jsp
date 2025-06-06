@@ -3,20 +3,21 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Random" %>
 <%@ page import="java.util.Collections" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Pelicula" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 
 <%
 
-List<PeliculaEntity> peliculas = (List<PeliculaEntity>) request.getAttribute("peliculas");
-List<PeliculaEntity> novedades = (List<PeliculaEntity>) request.getAttribute("novedades");
+List<Pelicula> peliculas = (List<Pelicula>) request.getAttribute("peliculas");
+List<Pelicula> novedades = (List<Pelicula>) request.getAttribute("novedades");
 Collections.shuffle(peliculas);
 
 String img1 = peliculas.get(0).getUrlcaratula();
 String img2 = peliculas.get(1).getUrlcaratula();
 String img3 = peliculas.get(2).getUrlcaratula();
 
-List<PeliculaEntity> peliculasQueMeGustan = (List<PeliculaEntity>) request.getAttribute("peliculasQueMeGustan");
+List<Pelicula> peliculasQueMeGustan = (List<Pelicula>) request.getAttribute("peliculasQueMeGustan");
 
 
 %>
@@ -29,7 +30,7 @@ List<PeliculaEntity> peliculasQueMeGustan = (List<PeliculaEntity>) request.getAt
 </head>
 <body>
 
-<jsp:include page="../Componentes/navBarEnlacePerfilPREMIUM.jsp">
+<jsp:include page="navBar.jsp">
     <jsp:param name="activePage" value="inicio"/>
 </jsp:include>
 
@@ -93,7 +94,7 @@ List<PeliculaEntity> peliculasQueMeGustan = (List<PeliculaEntity>) request.getAt
             <%
             if(peliculasQueMeGustan!=null && !peliculasQueMeGustan.isEmpty()){
 
-                for (PeliculaEntity peli : peliculasQueMeGustan) { %>
+                for (Pelicula peli : peliculasQueMeGustan) { %>
             <div class="pelicula-recomendada">
                 <img src="<%= peli.getUrlcaratula() != null ? peli.getUrlcaratula() : "https://i.postimg.cc/Ghm0s21d/add-photo-svgrepo-com.png" %>" alt="Carátula">
                 <h4><%= peli.getTitulooriginal() %></h4>

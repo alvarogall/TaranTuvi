@@ -6,6 +6,7 @@
 
 package es.uma.taw.tarantuvi.dao;
 
+import es.uma.taw.tarantuvi.dto.Pelicula;
 import es.uma.taw.tarantuvi.entity.PeliculaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -43,7 +44,7 @@ public interface PeliculaRepository extends JpaRepository<PeliculaEntity, Intege
 
 
     @Query("select c from PeliculaEntity c where c not in :peliculasQueMeGustan")
-    List<PeliculaEntity> findPelisNoVistas(@Param("peliculasQueMeGustan") List<PeliculaEntity> peliculasQueMeGustan);
+    List<PeliculaEntity> findPelisNoVistas(@Param("peliculasQueMeGustan") List<Pelicula> peliculasQueMeGustan);
 
     @Query("select p from PeliculaEntity p where p.nota is not null order by p.nota desc, p.votos desc")
     List<PeliculaEntity> findPeliculasMejorValoradas();

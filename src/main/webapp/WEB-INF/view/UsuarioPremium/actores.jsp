@@ -1,3 +1,5 @@
+<%-- @author Álvaro Gallardo --%>
+
 <%@ page import="es.uma.taw.tarantuvi.dto.Actor" %>
 <%@ page import="es.uma.taw.tarantuvi.dto.Usuario" %>
 <%@ page import="es.uma.taw.tarantuvi.dto.GeneroPersona" %>
@@ -21,7 +23,9 @@
   Usuario usuario = (Usuario) session.getAttribute("usuario");
 %>
 <body class="bg-[#f4f5f7] font-sans m-0">
-<jsp:include page="navBar.jsp"/>
+<jsp:include page="navBar.jsp">
+  <jsp:param name="activePage" value="actores"/>
+</jsp:include>
 <div class="max-w-6xl mx-auto py-10 px-2">
   <form:form method="post" action="/${usuario.rol}/actor/filtrar"
              cssClass="bg-white border border-gray-200 rounded-xl shadow-md p-6 mb-10 flex flex-col gap-6"
@@ -87,27 +91,25 @@
   </form:form>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
     <% if (actores != null) {
-         for (Actor actor : actores) { %>
-      <div class="flex flex-row items-center bg-gradient-to-r from-white via-white to-gray-50 border border-[#e0e3e8] rounded-xl min-h-[170px] p-5 transition hover:border-[#b6b9c3] hover:bg-gradient-to-r hover:from-[#f7faff] hover:to-[#eaf2fb] shadow-sm">
-        <img src="<%= actor.getUrlfoto() != null ? actor.getUrlfoto() : "" %>"
-             alt="Foto de <%= actor.getNombre() %>"
-             class="w-[90px] h-[135px] object-cover rounded-md mr-5 border border-[#e0e3e8] bg-white shadow-sm" />
-        <div class="flex flex-col justify-center min-w-0 flex-1">
-          <div class="text-[1.18em] font-bold mb-1 text-[#1a1a1a] truncate">
-            <a href="<%= "/" + usuario.getRol() %>/actor?id=<%= actor.getId() %>"
-               class="hover:text-[#2a5db0] transition-colors duration-200">
-              <%= actor.getNombre() %>
-            </a>
-          </div>
-          <div class="flex flex-wrap gap-2 text-[0.98em] text-[#5a5a5a] mb-2">
+      for (Actor actor : actores) { %>
+    <a href="<%= "/" + usuario.getRol() %>/actor?id=<%= actor.getId() %>"
+       class="flex flex-row items-center bg-gradient-to-r from-white via-white to-gray-50 border border-[#e0e3e8] rounded-xl min-h-[170px] p-5 transition hover:border-[#b6b9c3] hover:bg-gradient-to-r hover:from-[#f7faff] hover:to-[#eaf2fb] shadow-sm no-underline">
+      <img src="<%= actor.getUrlfoto() != null ? actor.getUrlfoto() : "" %>"
+           alt="Foto de <%= actor.getNombre() %>"
+           class="w-[90px] h-[135px] object-cover rounded-md mr-5 border border-[#e0e3e8] bg-white shadow-sm" />
+      <div class="flex flex-col justify-center min-w-0 flex-1">
+        <div class="text-[1.18em] font-bold mb-1 text-[#1a1a1a] truncate">
+          <%= actor.getNombre() %>
+        </div>
+        <div class="flex flex-wrap gap-2 text-[0.98em] text-[#5a5a5a] mb-2">
             <span class="badge badge-nacionalidad bg-[#f3e9ff] text-[#8e44ad] font-semibold rounded-full px-3 py-1 text-xs shadow-sm">
               <%= actor.getNombreNacionalidad() != null ? actor.getNombreNacionalidad() : "" %>
             </span>
-          </div>
         </div>
       </div>
+    </a>
     <%   }
-       } %>
+    } %>
   </div>
 </div>
 </body>

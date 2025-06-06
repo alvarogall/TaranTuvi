@@ -56,25 +56,30 @@ public class UsuarioPremium extends BaseController {
     protected ListaPeliculaRepository listaPeliculaRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    protected ListaPeliculaService listaPeliculaService;
+    @Autowired
+    private PeliculaListaPeliculaService peliculaListaPeliculaService;
 
     @GetMapping("/")
     public String usuarioPlus(Model model, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         Integer idUsuario = usuario.getUsuarioId();
-        List<PeliculaEntity> peliculasPendientes = new ArrayList<>();
-        List<PeliculaEntity> peliculasQueMeGustan = new ArrayList<>();
-        List<ListaPeliculaEntity> listasPeliculas = listaPeliculaRepository.findListasByUsuarioid(idUsuario);
-        for(ListaPeliculaEntity playlist : listasPeliculas) {
-            peliculasQueMeGustan.addAll(peliculaListaPeliculaRepository.findByListaId(playlist));
+        List<Pelicula> peliculasPendientes = new ArrayList<>();
+        List<Pelicula> peliculasQueMeGustan = new ArrayList<>();
+        List<ListaPelicula> listasPeliculas = listaPeliculaService.findListasByUsuarioid(idUsuario);
+        for(ListaPelicula playlist : listasPeliculas) {
+
+            peliculasQueMeGustan.addAll(peliculaService.findByListaId(playlist.getListaPeliculaId()));
 
         }
 
-        peliculasPendientes = peliculaRepository.findPelisNoVistas(peliculasQueMeGustan);
+        peliculasPendientes = peliculaService.findPelisNoVistas(peliculasQueMeGustan); //Fallo en esta query
 
 
 
-        List<PeliculaEntity> peliculas = peliculaRepository.findAll();
-        List<PeliculaEntity> novedades = peliculaRepository.findPeliculasMasRecientes(PageRequest.of(0, 2));
+        List<Pelicula> peliculas = peliculaService.listarPeliculas();
+        List<Pelicula> novedades = peliculaService.findPeliculasMasRecientes();
         model.addAttribute("peliculas", peliculas);
         model.addAttribute("novedades", novedades);
         model.addAttribute("peliculasQueMeGustan", peliculasPendientes);
@@ -87,18 +92,18 @@ public class UsuarioPremium extends BaseController {
 
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         Integer idUsuario = usuario.getUsuarioId();
-        List<PeliculaEntity> peliculasQueMeGustan = new ArrayList<>();
+        List<Pelicula> peliculasQueMeGustan = new ArrayList<>();
 
 
-        List<ListaPeliculaEntity> listasPeliculas = listaPeliculaRepository.findListasByUsuarioid(idUsuario);
-        for(ListaPeliculaEntity playlist : listasPeliculas) {
-            peliculasQueMeGustan.addAll(peliculaListaPeliculaRepository.findByListaId(playlist));
+        List<ListaPelicula> listasPeliculas = listaPeliculaService.findListasByUsuarioid(idUsuario);
+        for(ListaPelicula playlist : listasPeliculas) {
+            peliculasQueMeGustan.addAll(peliculaService.findByListaId(playlist.getListaPeliculaId()));
 
         }
         model.addAttribute("peliculasQueMeGustan", peliculasQueMeGustan);
         model.addAttribute("listasPeliculas", listasPeliculas);
         model.addAttribute("listaPelicula", new ListaPelicula());
-        model.addAttribute("peliculas",peliculaRepository.findAll());
+        model.addAttribute("peliculas",peliculaService.listarPeliculas());
 
         return "UsuarioPremium/perfilUsuarioPremium";
     }
@@ -106,11 +111,12 @@ public class UsuarioPremium extends BaseController {
     @PostMapping("/crearLista")
     public String doCrearLista(@ModelAttribute()ListaPelicula listaPelicula, Model model, HttpSession session) {
 
-        ListaPeliculaEntity listaPeliculaEntity = new ListaPeliculaEntity();
-        listaPeliculaEntity.setListapeliculanombre(listaPelicula.getListaPeliculaNombre());
-        listaPeliculaEntity.setUsuarioid(usuarioRepository.getReferenceById(listaPelicula.getUsuarioId()));
-        listaPeliculaEntity.setPeliculaList(new ArrayList<>());
-        listaPeliculaRepository.save(listaPeliculaEntity);
+        ListaPelicula listaPeliculaCrear = new ListaPelicula();
+        listaPeliculaCrear.setListaPeliculaNombre(listaPelicula.getListaPeliculaNombre());
+        listaPeliculaCrear.setUsuarioId(listaPelicula.getUsuarioId());
+        listaPeliculaCrear.setPeliculaList(new ArrayList<>());
+
+        listaPeliculaService.guardar(listaPeliculaCrear);
 
         return "redirect:/usuarioPremium/perfil";
     }
@@ -119,9 +125,9 @@ public class UsuarioPremium extends BaseController {
     public String doEliminarLista(Model model, HttpSession session,@RequestParam("idLista") Integer idLista) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         Integer idUsuario = usuario.getUsuarioId();
-        listaPeliculaRepository.deleteById(idLista);
+        listaPeliculaService.deleteById(idLista);
 
-        model.addAttribute("listasPeliculas",listaPeliculaRepository.findListasByUsuarioid(idUsuario));
+        model.addAttribute("listasPeliculas",listaPeliculaService.findListasByUsuarioid(idUsuario));
         model.addAttribute("listaPelicula", new ListaPelicula());
 
 
@@ -132,9 +138,17 @@ public class UsuarioPremium extends BaseController {
     public String doAnyadirPelicula(Model model, HttpSession session,@RequestParam("idLista") Integer listaId) {
         SeleccionPeliculasDto seleccionPeliculas = new SeleccionPeliculasDto();
         seleccionPeliculas.setListaId(listaId);
+        ListaPelicula listaPelicula = listaPeliculaService.findById(listaId);
+        List<Integer> peliculasYaSeleccionadas = new ArrayList<Integer>();
+        for(Pelicula p:listaPelicula.getPeliculaList()){
+
+            peliculasYaSeleccionadas.add(p.getId());
+        }
+        seleccionPeliculas.setPeliculaIds(peliculasYaSeleccionadas);
+
         model.addAttribute("seleccionPeliculas", seleccionPeliculas);
-        model.addAttribute("peliculas", peliculaRepository.findAll());
-        model.addAttribute("listaPelicula", listaPeliculaRepository.findById(listaId).get());
+        model.addAttribute("peliculas", peliculaService.listarPeliculas());
+        model.addAttribute("listaPelicula", listaPelicula);
         return "UsuarioPremium/seleccionarPeliculas";
     }
 
@@ -144,10 +158,10 @@ public class UsuarioPremium extends BaseController {
         List<Integer> peliculasIds = seleccionPeliculas.getPeliculaIds();
         if(peliculasIds!=null && !peliculasIds.isEmpty()){
             for(Integer peliculaId : peliculasIds){
-                PeliculaListaPeliculaEntity nuevaPelicula = new PeliculaListaPeliculaEntity();
-                nuevaPelicula.setPelicula(peliculaRepository.findById(peliculaId).get());
-                nuevaPelicula.setListaPelicula(listaPeliculaRepository.findById(idLista).get());
-                peliculaListaPeliculaRepository.save(nuevaPelicula);
+                PeliculaListaPelicula nuevaPelicula = new PeliculaListaPelicula();
+                nuevaPelicula.setPeliculaId(peliculaId);
+                nuevaPelicula.setListaPeliculaId(idLista);
+                peliculaListaPeliculaService.guardar(nuevaPelicula);
 
             }
         }
@@ -162,7 +176,7 @@ public class UsuarioPremium extends BaseController {
 
         PeliculaListaPeliculaId id = new PeliculaListaPeliculaId(idPelicula, idLista);
 
-        peliculaListaPeliculaRepository.deleteById(id);
+        peliculaListaPeliculaService.eliminar(id);
 
         return "redirect:/usuarioPremium/perfil";
     }

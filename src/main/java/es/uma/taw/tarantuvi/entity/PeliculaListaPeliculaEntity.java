@@ -3,6 +3,7 @@
  */
 
 package es.uma.taw.tarantuvi.entity;
+import es.uma.taw.tarantuvi.dto.PeliculaListaPelicula;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,14 @@ public class PeliculaListaPeliculaEntity {
     @ManyToOne
     @JoinColumn(name = "LISTAPELICULAID", referencedColumnName = "LISTAPELICULAID")
     private ListaPeliculaEntity listaPelicula;
+
+
+    public PeliculaListaPelicula toDto() {
+        PeliculaListaPelicula dto = new PeliculaListaPelicula();
+        dto.setPeliculaId(this.pelicula.getId());
+        dto.setListaPeliculaId(this.listaPelicula.getId());
+        return dto;
+    }
 
 }
 

@@ -8,6 +8,7 @@ package es.uma.taw.tarantuvi.service;
 
 import es.uma.taw.tarantuvi.dao.*;
 import es.uma.taw.tarantuvi.dto.FiltroPelicula;
+import es.uma.taw.tarantuvi.dto.ListaPelicula;
 import es.uma.taw.tarantuvi.dto.Pelicula;
 import es.uma.taw.tarantuvi.dto.Valoracion;
 import es.uma.taw.tarantuvi.entity.ActuacionEntity;
@@ -17,6 +18,7 @@ import es.uma.taw.tarantuvi.entity.UsuarioEntity;
 import es.uma.taw.tarantuvi.entity.ValoracionEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -55,6 +57,29 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
 
     @Autowired
     protected UsuarioRepository usuarioRepository;
+    @Autowired
+    private PeliculaListaPeliculaRepository peliculaListaPeliculaRepository;
+
+
+    public List<Pelicula> findPelisNoVistas(List<Pelicula> peliculasYaVistas) {
+        List<Pelicula> peliculasTotales = this.listarPeliculas();
+        List<Pelicula> res = new ArrayList<>();
+        for(Pelicula pelicula : peliculasTotales) {
+            if(!peliculasYaVistas.contains(pelicula)) {
+                res.add(pelicula);
+            }
+        }
+
+
+
+        return res;
+    }
+
+
+    public List<Pelicula> findByListaId(Integer playlist){
+        List<PeliculaEntity> entities = peliculaListaPeliculaRepository.findByListaId(playlist);
+        return  this.entity2DTO(entities);
+    }
 
     public List<Pelicula> listarPeliculas () {
         List<PeliculaEntity> entities = this.peliculaRepository.findAll();
@@ -304,5 +329,12 @@ public class PeliculaService extends DTOService<Pelicula, PeliculaEntity> {
             return entities.get(0).toDto();
         }
         return null;
+    }
+
+    public List<Pelicula> findPeliculasMasRecientes() {
+
+        List<PeliculaEntity> peliculas = peliculaRepository.findPeliculasMasRecientes(PageRequest.of(0, 2));
+
+        return this.entity2DTO(peliculas);
     }
 }

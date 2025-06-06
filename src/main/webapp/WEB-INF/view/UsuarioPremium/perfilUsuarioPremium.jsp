@@ -13,9 +13,9 @@
 </head>
 
 <%
-    List<PeliculaEntity> peliculasQueMeGustan = (List<PeliculaEntity>) request.getAttribute("peliculasQueMeGustan");
+    List<Pelicula> peliculasQueMeGustan = (List<Pelicula>) request.getAttribute("peliculasQueMeGustan");
     Usuario user = (Usuario) session.getAttribute("usuario");
-    List<ListaPeliculaEntity> listasPeliculas = (List<ListaPeliculaEntity>) request.getAttribute("listasPeliculas");
+    List<ListaPelicula> listasPeliculas = (List<ListaPelicula>) request.getAttribute("listasPeliculas");
 %>
 
 
@@ -23,8 +23,8 @@
 
 <body>
 
-<jsp:include page="../Componentes/navBarEnlacePerfilPREMIUM.jsp">
-    <jsp:param name="activePage" value="inicio"/>
+<jsp:include page="navBar.jsp">
+    <jsp:param name="activePage" value=""/>
 </jsp:include>
 
 <main class="perfil-container">
@@ -47,12 +47,12 @@
         <%
             }else{
 
-                for(ListaPeliculaEntity lista : listasPeliculas){
+                for(ListaPelicula lista : listasPeliculas){
 
         %>
                 <div class="seccion">
-                    <h3><%=lista.getListapeliculanombre()%>    <a id="enlaceEliminarLista" class="cerrar-sesion" href="/usuarioPremium/eliminarLista?idLista=<%=lista.getId()%>">Eliminar Lista</a>
-                    <a id="enlaceAnyadirPelicula" class="anyadir-pelicula" href="/usuarioPremium/anyadirPelicula?idLista=<%=lista.getId()%>">Añadir película</a></h3>
+                    <h3><%=lista.getListaPeliculaNombre()%>    <a id="enlaceEliminarLista" class="cerrar-sesion" href="/usuarioPremium/eliminarLista?idLista=<%=lista.getListaPeliculaId()%>">Eliminar Lista</a>
+                    <a id="enlaceAnyadirPelicula" class="anyadir-pelicula" href="/usuarioPremium/anyadirPelicula?idLista=<%=lista.getListaPeliculaId()%>">Añadir película</a></h3>
 
 
                     <div class="grid-caratulas">
@@ -65,13 +65,13 @@
                         <%
                             }else{
                         
-                                for(PeliculaEntity pelicula : lista.getPeliculaList()){
+                                for(Pelicula pelicula : lista.getPeliculaList()){
                         %>
                         <div>
                             <div class="pelicula-item">
                                 <img class="caratula" src="<%=pelicula.getUrlcaratula()%>" alt="">
                                 <p class="titulo-pelicula"><%=pelicula.getTitulooriginal()%></p>
-                                <a id="botonEliminarPelicula" href="/usuarioPremium/eliminarPeliculaLista?idLista=<%=lista.getId()%>&idPelicula=<%=pelicula.getId()%>" class="cerrar-sesion">Eliminar película</a>
+                                <a id="botonEliminarPelicula" href="/usuarioPremium/eliminarPeliculaLista?idLista=<%=lista.getListaPeliculaId()%>&idPelicula=<%=pelicula.getId()%>" class="cerrar-sesion">Eliminar película</a>
                             </div>
 
                         </div>

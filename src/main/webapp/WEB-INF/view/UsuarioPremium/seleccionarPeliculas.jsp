@@ -4,6 +4,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.tarantuvi.entity.ListaPeliculaEntity" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.ListaPelicula" %>
+<%@ page import="es.uma.taw.tarantuvi.dto.Pelicula" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +15,7 @@
 
 
 <%
-    ListaPeliculaEntity listaPelicula = (ListaPeliculaEntity) request.getAttribute("listaPelicula");
+    ListaPelicula listaPelicula = (ListaPelicula) request.getAttribute("listaPelicula");
 
 %>
 <body>
@@ -30,9 +32,10 @@
 
         <div class="grid-peliculas">
             <%
-                List<PeliculaEntity> peliculas = (List<PeliculaEntity>) request.getAttribute("peliculas");
+                List<Pelicula> peliculas = (List<Pelicula>) request.getAttribute("peliculas");
                 if (peliculas != null) {
-                    for (PeliculaEntity pelicula : peliculas) {
+                    for (Pelicula pelicula : peliculas) {
+
             %>
             <div class="pelicula-card">
                 <label>

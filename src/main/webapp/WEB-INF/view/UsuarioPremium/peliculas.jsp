@@ -1,3 +1,5 @@
+<%-- @author Álvaro Gallardo --%>
+
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.taw.tarantuvi.dto.Pelicula" %>
@@ -22,7 +24,9 @@
     List<Actor> actores = (List<Actor>) request.getAttribute("actores");
 %>
 <body class="bg-gray-100 font-sans m-0">
-<jsp:include page="navBar.jsp"/>
+<jsp:include page="navBar.jsp">
+    <jsp:param name="activePage" value="peliculas"/>
+</jsp:include>
 <div class="max-w-6xl mx-auto py-10 px-2">
     <form:form method="post" action="/${usuario.rol}/pelicula/filtrar"
                cssClass="bg-white border border-gray-200 rounded-xl shadow-md p-6 mb-10 flex flex-col gap-6" modelAttribute="filtroPelicula">
@@ -38,9 +42,9 @@
                     <%
                         for (int i = 0; i <= 10; i++) {
                     %>
-                        <button type="button"
-                                class="valoracion-btn w-9 h-9 rounded-full border-2 border-blue-400 text-blue-700 font-bold text-base bg-white hover:bg-blue-100 transition"
-                                data-value="<%= i %>"><%= i %></button>
+                    <button type="button"
+                            class="valoracion-btn w-9 h-9 rounded-full border-2 border-blue-400 text-blue-700 font-bold text-base bg-white hover:bg-blue-100 transition"
+                            data-value="<%= i %>"><%= i %></button>
                     <%
                         }
                     %>
@@ -145,15 +149,13 @@
             if (peliculas != null) {
                 for (Pelicula pelicula : peliculas) {
         %>
-        <div class="flex flex-row items-center bg-gradient-to-r from-white via-white to-gray-50 border border-gray-200 rounded-xl min-h-[170px] p-4 transition hover:border-blue-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 shadow-sm">
+        <a href="<%= "/" + usuario.getRol() %>/pelicula?id=<%= pelicula.getId() %>"
+           class="flex flex-row items-center bg-gradient-to-r from-white via-white to-gray-50 border border-gray-200 rounded-xl min-h-[170px] p-4 transition hover:border-blue-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 shadow-sm no-underline">
             <img src="<%= pelicula.getUrlcaratula() %>" alt="Carátula de <%= pelicula.getTitulooriginal() %>"
                  class="w-[90px] h-[135px] object-cover rounded-md mr-6 border border-gray-200 bg-white shadow-sm" />
             <div class="flex flex-col justify-center min-w-0 flex-1">
                 <div class="text-lg font-bold mb-1 text-gray-900 truncate">
-                    <a href="<%= "/" + usuario.getRol() %>/pelicula?id=<%= pelicula.getId() %>"
-                       class="hover:text-blue-700 transition-colors duration-200">
-                        <%= pelicula.getTitulooriginal() %>
-                    </a>
+                    <%= pelicula.getTitulooriginal() %>
                 </div>
                 <div class="flex items-center text-yellow-500 mb-2 text-base">
                     <span class="text-xl mr-1">&#9733;</span>
@@ -174,7 +176,7 @@
                     } %>
                 </div>
             </div>
-        </div>
+        </a>
         <%
                 }
             }
