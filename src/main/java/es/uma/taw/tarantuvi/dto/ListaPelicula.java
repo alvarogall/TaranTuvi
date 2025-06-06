@@ -6,8 +6,6 @@
 
 package es.uma.taw.tarantuvi.dto;
 
-
-import es.uma.taw.tarantuvi.entity.PeliculaEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
