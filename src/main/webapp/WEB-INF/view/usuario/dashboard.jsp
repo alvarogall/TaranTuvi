@@ -20,7 +20,6 @@
 
     <div class="max-w-5xl mx-auto mt-12 px-4">
         <div class="flex flex-col md:flex-row gap-10 items-center justify-center">
-            <!-- Carrusel de carátulas grande -->
             <div class="w-full md:w-[50%] flex flex-col items-center justify-center relative">
                 <h2 class="text-3xl font-extrabold text-blue-900 mb-6 tracking-tight text-center">Películas</h2>
                 <div class="relative w-full flex justify-center items-center" style="min-height: 420px;">
@@ -60,7 +59,6 @@
                     </button>
                 </div>
             </div>
-            <!-- Mejor valorada -->
             <div class="w-full md:w-[50%] flex flex-col items-center justify-center">
                 <h2 class="text-3xl font-extrabold text-blue-900 mb-6 tracking-tight text-center">Mejor valorada</h2>
                 <% if (peliculaMejorValorada != null) { %>
@@ -103,7 +101,6 @@
         </div>
     </div>
     <script>
-        // Carrusel JS
         const peliculas = [
             <% if (peliculas != null && !peliculas.isEmpty()) {
                 for (int i = 0; i < peliculas.size(); i++) {
