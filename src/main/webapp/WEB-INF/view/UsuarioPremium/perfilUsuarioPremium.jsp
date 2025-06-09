@@ -32,7 +32,7 @@
         <div class="icono-usuario">👤</div>
         <h2><%=user.getUsuario().toUpperCase()%></h2>
 
-        <a class="cerrar-sesion" href="/logout">Cerrar Sesión</a>
+        <a class="cerrar-sesion" onclick="return confirm('¿Está seguro de que quiere cerrar sesión?')" href="/logout">Cerrar Sesión</a>
 
     </aside>
 
