@@ -1,5 +1,6 @@
 /**
  * @author Álvaro Gallardo
+ * @author Máximo Prados
  */
 
 package es.uma.taw.tarantuvi.entity;
