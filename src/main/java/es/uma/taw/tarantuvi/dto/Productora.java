@@ -19,4 +19,7 @@ public class Productora {
     protected Double presupuestoMedio;
     protected Double recaudacionMedia;
     protected Integer numeroPeliculas;
+    protected Nacionalidad nacionalidad;
+    protected String ceo;
+    protected String sede;
 }

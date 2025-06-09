@@ -5,13 +5,13 @@
  */
 package es.uma.taw.tarantuvi.service;
 
+import es.uma.taw.tarantuvi.dao.NacionalidadRepository;
 import es.uma.taw.tarantuvi.dao.ProductoraRepository;
 import es.uma.taw.tarantuvi.dto.Productora;
 import es.uma.taw.tarantuvi.entity.ProductoraEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -21,6 +21,9 @@ public class ProductoraService extends DTOService<Productora, ProductoraEntity>{
 
     @Autowired
     private ProductoraRepository productoraRepository;
+
+    @Autowired
+    private NacionalidadRepository nacionalidadRepository;
 
     public List<Productora> listarProductoras () {
         List<ProductoraEntity> entities = this.productoraRepository.findAll();
@@ -46,6 +49,11 @@ public class ProductoraService extends DTOService<Productora, ProductoraEntity>{
         }
 
         productora.setProductoranombre(dtoProductora.getProductoranombre());
+        productora.setCeo(dtoProductora.getCeo());
+        productora.setSede(dtoProductora.getSede());
+        if (dtoProductora.getNacionalidad() != null && dtoProductora.getNacionalidad().getId() != null) {
+            productora.setNacionalidadid(nacionalidadRepository.findById(dtoProductora.getNacionalidad().getId()).orElse(null));
+        }
         this.productoraRepository.save(productora);
     }
 

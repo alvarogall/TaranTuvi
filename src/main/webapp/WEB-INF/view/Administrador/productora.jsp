@@ -35,6 +35,20 @@
                     <label>Nombre:</label>
                     <form:input path="productoranombre" />
                 </div>
+                <div class="movie-field-row">
+                    <label class="select-label">Nacionalidad:</label>
+                    <form:select path="nacionalidad.id" multiple="false" cssClass="multi-select-one">
+                        <form:options items="${nacionalidades}" itemValue="id" itemLabel="nacionalidadnombre"/>
+                    </form:select>
+                </div>
+                <div class="movie-field-row">
+                    <label>CEO:</label>
+                    <form:input path="ceo" />
+                </div>
+                <div class="movie-field-row">
+                    <label>Sede:</label>
+                    <form:input path="sede" />
+                </div>
             </div>
         </div>
 

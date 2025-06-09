@@ -44,6 +44,7 @@ public class GeneroPeliculaService extends DTOService<GeneroPelicula, GeneroPeli
         }
 
         generoPelicula.setGeneronombre(dtoGeneroPelicula.getGeneronombre());
+        generoPelicula.setDescripcion(dtoGeneroPelicula.getDescripcion());
         this.generoPeliculaRepository.save(generoPelicula);
     }
 

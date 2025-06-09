@@ -34,10 +34,11 @@
         %>
 
         <div class="container">
-            <table border="1">
+            <table border="1" class="tabla-generos">
                 <thead>
                 <tr>
                     <th>Nombre</th>
+                    <th>Descripción</th>
                     <th>Acciones</th>
                 </tr>
                 </thead>
@@ -47,6 +48,7 @@
                 %>
                 <tr class="movie-row">
                     <td><%= (genero.getGeneronombre() != null) ? genero.getGeneronombre() : ""%></td>
+                    <td><%= (genero.getDescripcion() != null) ? genero.getDescripcion() : "" %></td></td>
                     <td>
                         <form method="post" action="/administrador/generos/editar" style="display:inline;">
                             <input type="hidden" name="id" value="<%= genero.getId() %>"/>

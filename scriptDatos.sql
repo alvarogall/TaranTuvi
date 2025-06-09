@@ -17,15 +17,16 @@ INSERT INTO USUARIO (USUARIO, PASSWORD, ROLID) VALUES
 ('usuarioPremium', 'usuarioPremium', 5);
 
 -- Géneros de película
-INSERT INTO GENEROPELICULA (GENERONOMBRE) VALUES
-('Acción'),
-('Comedia'),
-('Drama'),
-('Terror'),
-('Ciencia Ficción'),
-('Romántico'),
-('Suspense'),
-('Aventura');
+INSERT INTO GENEROPELICULA (GENERONOMBRE, DESCRIPCION) VALUES
+('Acción', 'Películas con escenas intensas, peleas y persecuciones.'),
+('Comedia', 'Historias diseñadas para hacer reír al espectador.'),
+('Drama', 'Relatos emocionales centrados en conflictos humanos.'),
+('Terror', 'Películas que buscan provocar miedo o tensión.'),
+('Ciencia Ficción', 'Historias con tecnología futura o mundos alternativos.'),
+('Romántico', 'Narrativas centradas en relaciones amorosas.'),
+('Suspense', 'Películas con tensión e intriga, a menudo con giros.'),
+('Aventura', 'Historias con viajes, exploraciones o misiones épicas.');
+
 
 -- Palabras clave
 INSERT INTO PALABRACLAVE (PALABRACLAVENOMBRE) VALUES
@@ -88,13 +89,14 @@ INSERT INTO PAISRODAJE (PAISRODAJENOMBRE) VALUES
 ('Francia');
 
 -- Productoras
-INSERT INTO PRODUCTORA (PRODUCTORANOMBRE) VALUES
-('Marvel Studios'),
-('Pixar'),
-('Paramount Pictures'),
-('20th Century Fox'),
-('Warner Bros.'),
-('Universal Pictures');
+INSERT INTO PRODUCTORA (PRODUCTORANOMBRE, NACIONALIDADID, CEO, SEDE) VALUES
+('Marvel Studios', 1, 'Kevin Feige', 'Burbank, California'),
+('Pixar', 1, 'Jim Morris', 'Emeryville, California'),
+('Paramount Pictures', 1, 'Brian Robbins', 'Hollywood, California'),
+('20th Century Fox', 1, 'Steve Asbell', 'Century City, Los Angeles'),
+('Warner Bros.', 1, 'David Zaslav', 'Burbank, California'),
+('Universal Pictures', 1, 'Donna Langley', 'Universal City, California'),
+('CJ Entertainment', 6, 'Miky Lee', 'Seúl, Corea del Sur');
 
 -- Películas (sin votos ni nota)
 -- Películas (con votos y nota según las valoraciones)

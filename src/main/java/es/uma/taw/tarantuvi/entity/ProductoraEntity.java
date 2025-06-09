@@ -27,6 +27,16 @@ public class ProductoraEntity implements Serializable, DTO<Productora> {
     @Column(name = "PRODUCTORANOMBRE")
     private String productoranombre;
 
+    @ManyToOne
+    @JoinColumn(name = "NACIONALIDADID")
+    private NacionalidadEntity nacionalidadid;
+
+    @Column(name = "CEO")
+    private String ceo;
+
+    @Column(name = "SEDE")
+    private String sede;
+
     @ManyToMany(mappedBy = "productoraList")
     private List<PeliculaEntity> peliculaList;
 
@@ -35,7 +45,14 @@ public class ProductoraEntity implements Serializable, DTO<Productora> {
 
         productora.setId(this.id);
         productora.setProductoranombre(this.productoranombre);
-        productora.setNumeroPeliculas(this.getPeliculaList().size());
+        if (this.getPeliculaList() != null) {
+            productora.setNumeroPeliculas(this.getPeliculaList().size());
+        }
+        if (this.nacionalidadid != null) {
+            productora.setNacionalidad(this.nacionalidadid.toDto());
+        }
+        productora.setCeo(this.ceo);
+        productora.setSede(this.sede);
 
         return productora;
     }

@@ -1,5 +1,6 @@
 /**
  * @author Jesús Repiso
+ * @author Pablo Gámez
  */
 
 package es.uma.taw.tarantuvi.dto;
@@ -12,4 +13,5 @@ import lombok.NoArgsConstructor;
 public class GeneroPelicula {
     protected Integer id;
     protected String generonombre;
+    protected String descripcion;
 }

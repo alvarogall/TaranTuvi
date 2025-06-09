@@ -1,6 +1,7 @@
 /**
  * @author Jesús Repiso
  * @author Álvaro Gallardo
+ * @author Pablo Gámez
  */
 
 package es.uma.taw.tarantuvi.entity;
@@ -27,6 +28,9 @@ public class GeneroPeliculaEntity implements Serializable, DTO<GeneroPelicula> {
     @Column(name = "GENERONOMBRE")
     private String generonombre;
 
+    @Column(name = "DESCRIPCION")
+    private String descripcion;
+
     @ManyToMany(mappedBy = "generoPeliculaList")
     private List<PeliculaEntity> peliculaList;
 
@@ -35,6 +39,7 @@ public class GeneroPeliculaEntity implements Serializable, DTO<GeneroPelicula> {
 
         generoPelicula.setId(id);
         generoPelicula.setGeneronombre(generonombre);
+        generoPelicula.setDescripcion(descripcion);
 
         return generoPelicula;
     }

@@ -34,10 +34,13 @@
         %>
 
         <div class="container">
-            <table border="1">
+            <table border="1" class="tabla-productoras">
                 <thead>
                 <tr>
                     <th>Nombre</th>
+                    <th>Nacionalidad</th>
+                    <th>CEO</th>
+                    <th>Sede</th>
                     <th>Acciones</th>
                 </tr>
                 </thead>
@@ -47,6 +50,9 @@
                 %>
                 <tr class="movie-row">
                     <td><%= (productora.getProductoranombre() != null) ? productora.getProductoranombre() : ""%></td>
+                    <td><%= (productora.getNacionalidad() != null) ? productora.getNacionalidad().getNacionalidadnombre() : ""%></td>
+                    <td><%= (productora.getCeo() != null) ? productora.getCeo() : ""%></td>
+                    <td><%= (productora.getSede() != null) ? productora.getSede() : ""%></td>
                     <td>
                         <form method="post" action="/administrador/productoras/editar" style="display:inline;">
                             <input type="hidden" name="id" value="<%= productora.getId() %>"/>

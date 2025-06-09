@@ -284,20 +284,86 @@ th, td {
     font-weight: bold;
 }
 
-table {
+table:not(.tabla-productoras):not(.tabla-generos) {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
     font-size: 0.9em;
-    table-layout: fixed; /* Fija el layout de la tabla */
+    table-layout: fixed;
 }
 
-th:first-child,
-td:first-child {
-    width: 94%; /* Primera columna ocupa más espacio */
+table:not(.tabla-productoras):not(.tabla-generos) th:first-child,
+table:not(.tabla-productoras):not(.tabla-generos) td:first-child {
+    width: 94%;
 }
 
-th:last-child,
-td:last-child {
-    width: 6%; /* Segunda columna (acciones) ocupa menos */
+table:not(.tabla-productoras):not(.tabla-generos) th:last-child,
+table:not(.tabla-productoras):not(.tabla-generos) td:last-child {
+    width: 6%;
+}
+
+
+table.tabla-productoras {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 0.9em;
+    table-layout: fixed;
+}
+
+table.tabla-productoras th:first-child,
+table.tabla-productoras td:first-child {
+    width: 59%;
+}
+
+table.tabla-productoras th:nth-child(2),
+table.tabla-productoras td:nth-child(2) {
+    width: 10%;
+}
+
+table.tabla-productoras th:nth-child(3),
+table.tabla-productoras td:nth-child(3) {
+    width: 10%;
+}
+
+table.tabla-productoras th:nth-child(4),
+table.tabla-productoras td:nth-child(4) {
+    width: 15%;
+}
+
+table.tabla-productoras th:last-child,
+table.tabla-productoras td:last-child {
+    width: 6%;
+}
+
+table.tabla-generos {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 0.9em;
+    table-layout: fixed;
+}
+
+table.tabla-generos th:first-child,
+table.tabla-generos td:first-child {
+    width: 30%;
+}
+
+table.tabla-generos th:nth-child(2),
+table.tabla-generos td:nth-child(2) {
+    width: 64%;
+}
+
+table.tabla-generos th:last-child,
+table.tabla-generos td:last-child {
+    width: 6%;
+}
+
+th, td {
+    box-sizing: border-box;
+    padding: 6px;
+    border: 1px solid #ccc;
+    text-align: left;
+    word-wrap: break-word;
+    white-space: normal;
 }

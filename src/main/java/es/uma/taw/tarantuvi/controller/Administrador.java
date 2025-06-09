@@ -92,7 +92,9 @@ public class Administrador extends BaseController {
     @PostMapping("/productoras/editar")
     public String doEditarProductora(@RequestParam(value = "id", defaultValue = "-1") Integer id, Model model) {
         Productora productora = this.productoraService.buscarProductora(id);
+        List<Nacionalidad> nacionalidades = nacionalidadService.listarNacionalidades();
         model.addAttribute("productora", productora);
+        model.addAttribute("nacionalidades", nacionalidades);
         return "Administrador/productora";
     }
 

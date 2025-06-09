@@ -35,6 +35,10 @@
                     <label>Nombre:</label>
                     <form:input path="generonombre" />
                 </div>
+                <div class="movie-field-row">
+                    <label>Descripción:</label>
+                    <form:textarea path="descripcion" />
+                </div>
             </div>
         </div>
 
