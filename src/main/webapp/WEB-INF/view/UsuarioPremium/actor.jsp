@@ -1,3 +1,4 @@
+<%-- @author Álvaro Gallardo --%>
 <%@ page import="es.uma.taw.tarantuvi.dto.ActorResumen" %>
 <%@ page import="es.uma.taw.tarantuvi.dto.ActuacionResumen" %>
 <%@ page import="es.uma.taw.tarantuvi.dto.PeliculaResumen" %>
