@@ -1,3 +1,7 @@
+/**
+ * @author Pablo Gámez
+ */
+
 package es.uma.taw.tarantuvi.controller;
 
 import es.uma.taw.tarantuvi.dto.*;
@@ -9,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/administrador")

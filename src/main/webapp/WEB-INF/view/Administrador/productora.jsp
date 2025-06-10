@@ -1,7 +1,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="es.uma.taw.tarantuvi.dto.Productora" %><%--
+<%@ page import="es.uma.taw.tarantuvi.dto.Productora" %>
+<%--
   Created by IntelliJ IDEA.
-  User: table
+  User: Pablo Gámez
   Date: 04/05/2025
   Time: 14:37
   To change this template use File | Settings | File Templates.

@@ -1,7 +1,8 @@
 <%@ page import="es.uma.taw.tarantuvi.dto.GeneroPelicula" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%--
   Created by IntelliJ IDEA.
-  User: table
+  User: Pablo Gámez
   Date: 03/05/2025
   Time: 21:34
   To change this template use File | Settings | File Templates.

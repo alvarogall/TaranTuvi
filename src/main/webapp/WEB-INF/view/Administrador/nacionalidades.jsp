@@ -1,7 +1,8 @@
 <%@ page import="es.uma.taw.tarantuvi.dto.Nacionalidad" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%--
   Created by IntelliJ IDEA.
-  User: table
+  User: Pablo Gámez
   Date: 21/05/2025
   Time: 14:00
   To change this template use File | Settings | File Templates.

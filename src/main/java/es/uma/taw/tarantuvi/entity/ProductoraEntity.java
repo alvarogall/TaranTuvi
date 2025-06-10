@@ -1,6 +1,7 @@
 /**
  * @author Jesús Repiso
  * @author Álvaro Gallardo
+ * @author Pablo Gámez
  */
 
 package es.uma.taw.tarantuvi.entity;

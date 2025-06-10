@@ -36,12 +36,38 @@
             </div>
             <form action="/logout" method="get" class="mt-8">
                 <button type="submit"
-                        class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow transition text-lg">
+                        class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow transition text-lg"
+                        onclick="confirmLogout(event)">
                     Cerrar sesión
                 </button>
             </form>
         </div>
     </div>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script>
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            document
+                .getElementById('profile-dropdown')
+                .classList.toggle('show');
+        }
+
+        function confirmLogout(event) {
+            event.preventDefault();
+            if (confirm("¿Estás seguro de que quieres cerrar sesión?")) {
+                window.location.href = "/logout";
+            }
+        }
+
+        // Cerrar si clicas fuera
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('profile-dropdown');
+            if (!dropdown.contains(e.target) &&
+                !e.target.matches('.menu-toggle')) {
+                dropdown.classList.remove('show');
+            }
+        });
+    </script>
 </body>
 </html>
